@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { AppThunk, RootState } from '../store'
 import type { Coords } from '../../types/location'
 import api from '../../api'
