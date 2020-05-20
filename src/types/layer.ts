@@ -7,6 +7,7 @@ export type LayerOptions = {
     url: string,
     layers: Array<Layer>,
     name: string,
+    service: string,
     id: string
 }
 

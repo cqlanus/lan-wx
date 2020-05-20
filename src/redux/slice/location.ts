@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk, RootState } from '../store'
+import { AppThunk } from '../store'
 import type { Coords } from '../../types/location'
 import api from '../../api'
 
@@ -11,9 +11,6 @@ interface LocationState {
 const initialState: LocationState = {
     coords: undefined
 }
-
-// SELECTORS
-export const selectCoords = ( state: RootState ) => state.location.coords
 
 export const location = createSlice({
     name: 'location',

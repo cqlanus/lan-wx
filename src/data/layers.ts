@@ -3,6 +3,7 @@ import type { LAYER_MAPPING } from '../types/layer'
 const LAYERS: LAYER_MAPPING = {
     radar: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/radar_meteo_imagery_nexrad_time/MapServer/WMSServer',
+        service: 'radar_meteo_imagery_nexrad_time',
         layers: [
             {
                 id: '1',
@@ -14,6 +15,7 @@ const LAYERS: LAYER_MAPPING = {
     },
     satellite: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/sat_meteo_imagery_time/MapServer/WMSServer',
+        service: 'sat_meteo_imagery_time',
         layers: [
             {
                 name: 'Global SWIR',
@@ -45,6 +47,7 @@ const LAYERS: LAYER_MAPPING = {
     },
     rtma: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_rtma_time/MapServer/WMSServer',
+        service: 'analysis_meteohydro_sfc_rtma_time',
         layers: [
             {
                 name: 'Temperature',
@@ -72,6 +75,7 @@ const LAYERS: LAYER_MAPPING = {
     },
     forecast: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/WMSServer',
+        service: 'forecast_meteoceanhydro_sfc_ndfd_time',
         layers: [
             {
                 name: 'Temperature',
@@ -107,12 +111,14 @@ const LAYERS: LAYER_MAPPING = {
     },
     // lightning: {
     //     url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/sat_meteo_emulated_imagery_lightningstrikedensity_goes_time/MapServer/WMSServer',
+    // service: 'sat_meteo_emulated_imagery_lightningstrikedensity_goes_time',
     //     layers: '1',
     //     name: 'Lightning',
     //     id: 'lightning'
     // },
     severe: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/guidance_natlcenters_meteoceanhydro_outlooks_time/MapServer/WMSServer',
+        service: 'guidance_natlcenters_meteoceanhydro_outlooks_time',
         layers: [
             {
                 id: '9',

@@ -23,4 +23,20 @@ export default class MapService {
         const url = `${layer.url}?${queryString}`
         return decodeURI(url)
     }
+
+    buildLegendUrl = ({ layerTypeId, layerId }: any): string => {
+        const layer = LAYERS[layerTypeId]
+        if (!layer) { return '' }
+        const foundLayer = layer.layers.find(({ id: layId }) => layId === layerId)
+        if (!foundLayer) { return '' }
+        const queryParams = {
+            request: 'legend',
+            service: layer.service,
+            layers: foundLayer.id + 2,
+            format: 'json',
+        }
+        const queryString = qs.stringify(queryParams)
+        const url = `${layer.url}?${queryString}`
+        return decodeURI(url)
+    }
 }
