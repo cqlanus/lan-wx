@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import MapCard from './components/MapCard'
+import Home from './components/screens/Home'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
 
@@ -11,7 +11,7 @@ function App() {
     }, [dispatch])
   return (
     <div className="App">
-        <MapCard/>
+        <Home/>
     </div>
   );
 }

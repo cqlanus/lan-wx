@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Layer, Source, ZoomControl, ScaleControl } from 'react-mapbox-gl'
 
 import MapBox from './Map'
 import LayerDropdown from './LayerDropdown'
-import { getCurrentWeather } from '../redux/slice/weather'
 import { selectCoords, selectLayerUrl } from '../redux/selectors'
 
 const Container = styled.div`
@@ -15,15 +14,14 @@ const Container = styled.div`
     min-height: 300px;
 `
 
+// TODO:
+// * Create a settings screen that facilitates unit selection
+
 const MapCard = () => {
-    const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const layerUrl = useSelector(selectLayerUrl)
 
-    useEffect(() => {
-        dispatch(getCurrentWeather())
-    }, [dispatch, coords])
-    const defaultStyle = "mapbox://styles/mapbox/streets-v11"
+    const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {
         "type": "raster",
         "tiles": [
