@@ -1,7 +1,16 @@
 import React, { useMemo } from 'react'
+import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { getLayer } from '../redux/slice/map'
 import { selectAllLayers } from '../redux/selectors'
+
+const Select = styled.select`
+    width: 100%;
+    font-size: 1rem;
+    font-family: monospace;
+    border: none;
+    text-align: center;
+`
 
 type LayerListItem = { layerTypeId: string, layerId: string, key: string, name: string }
 const LayerDropdown = () => {
@@ -13,11 +22,11 @@ const LayerDropdown = () => {
     }
     const layers: Array<LayerListItem> = useMemo(selectAllLayers, [])
     return (
-        <select id="" name="" onChange={handleSelect}>
-            { layers.map((l: any) => (
+        <Select id="" name="" onChange={handleSelect}>
+            {layers.map((l: any) => (
                 <option key={l.key} value={JSON.stringify(l)} >{l.name}</option>
-            )) }
-        </select>
+            ))}
+        </Select>
     )
 }
 

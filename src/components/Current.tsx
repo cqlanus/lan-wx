@@ -3,16 +3,17 @@ import moment from 'moment'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { selectCoords, selectCurrentWeather } from '../redux/selectors'
-import type { WeatherValue } from '../types/weather'
+import type { WeatherValue, CurrentWeather } from '../types/weather'
 
-const Container = styled.div`
-    height: 30vh;
+const Container = styled(Card)`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 40vh;
 `
 
 const Title = styled.h3``
@@ -73,7 +74,7 @@ const CURRENT_WX_STRUCTURE = {
 const Current = (p: any) => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
-    const currentWeather = useSelector(selectCurrentWeather)
+    const currentWeather: any = useSelector(selectCurrentWeather)
 
     useEffect(() => {
         dispatch(getCurrentWeather())

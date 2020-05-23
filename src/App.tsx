@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import Home from './components/screens/Home'
+import NavDrawer from './components/NavDrawer'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
 
@@ -11,6 +12,7 @@ function App() {
     }, [dispatch])
   return (
     <div className="App">
+        <NavDrawer/>
         <Home/>
     </div>
   );

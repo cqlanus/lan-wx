@@ -14,6 +14,7 @@ export type CurrentWeatherResponse = {
     textDescription: string,
     cloudLayers: any,
     icon: string,
+    timestamp: string,
 }
 
 export type CurrentWeather = {
@@ -29,4 +30,21 @@ export type CurrentWeather = {
     textDescription: string,
     cloudLayers: any,
     icon: string,
+    timestamp: string,
+}
+
+type Period = {
+    startTime: string,
+    endTime: string,
+    isDaytime: boolean,
+    temperature: number,
+    temperatureUnit: string,
+    temperatureTrend: string,
+    windSpeed: string,
+    windDirection: string,
+    shortForecast: string,
+    detailedForecast: string
+}
+export type DailyForecast = {
+    periods: Array<Period>
 }

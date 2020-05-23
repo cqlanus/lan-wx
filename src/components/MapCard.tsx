@@ -4,14 +4,12 @@ import styled from 'styled-components'
 import { Layer, Source, ZoomControl, ScaleControl } from 'react-mapbox-gl'
 
 import MapBox from './Map'
+import Card from './Card'
 import LayerDropdown from './LayerDropdown'
 import { selectCoords, selectLayerUrl } from '../redux/selectors'
 
-const Container = styled.div`
+const Container = styled(Card)`
     background-color: white;
-    border: 1px solid rgba(0,0,0,0.2);
-    height: 30vh;
-    min-height: 300px;
 `
 
 // TODO:
@@ -34,7 +32,7 @@ const MapCard = () => {
             const { latitude = 41, longitude = -87 } = coords
             return (
                 // eslint-disable-next-line
-                <MapBox center={[longitude, latitude]} style={defaultStyle} containerStyle={{ height: '100%', width: '100%' }} >
+                <MapBox center={[longitude, latitude]} style={defaultStyle} containerStyle={{ height: '40vh', width: '100%' }} >
                     <Source id="source_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
                     <Layer paint={{ 'raster-opacity': 0.7 }} type="raster" id="layer_id" sourceId="source_id" />
                     <ZoomControl />
