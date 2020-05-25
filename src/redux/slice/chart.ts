@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { AppThunk } from '../store'
 import api from '../../api'
+import { selectCoords } from '../selectors'
 import type { CH_TYPES } from '../../types/chart'
 
 interface ChartState {
@@ -43,9 +44,22 @@ export const getUpperAir = ({ isobar, timeOfDay }: UpperAirArgs): AppThunk => as
     }
 }
 
+type SkewTArgs = { timeOfDay: string }
+export const getSkewT = ({ timeOfDay }: SkewTArgs): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const skewTUrl = await api.weather.getSkewTChart(coords, timeOfDay)
+        dispatch(setSkewT(skewTUrl))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setSkewT(undefined))
+    }
+}
+
 const CHART_TYPES: CH_TYPES = {
     upperAir: getUpperAir,
-    skewT: getUpperAir,
+    skewT: getSkewT,
     surface: () => {}
 }
 

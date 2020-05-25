@@ -24,4 +24,10 @@ export default class Weather {
         const resp = await fetch(url)
         return await resp.json()
     }
+
+    getSkewTChart = async ({ latitude, longitude }: any, timeOfDay = 'morning'): Promise<any> => {
+        const url = `${this.BASE}/charts/sounding/${latitude}/${longitude}/${timeOfDay}`
+        const resp = await fetch(url)
+        return await resp.json()
+    }
 }
