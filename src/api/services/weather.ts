@@ -30,4 +30,11 @@ export default class Weather {
         const resp = await fetch(url)
         return await resp.json()
     }
+
+    getSurfaceChart = async (timeOfDay = '00', surfaceObservations = true): Promise<any> => {
+        const queryString = surfaceObservations ? '' : '?fronts=1'
+        const url = `${this.BASE}/charts/surface/${timeOfDay}${queryString}`
+        const resp = await fetch(url)
+        return await resp.json()
+    }
 }

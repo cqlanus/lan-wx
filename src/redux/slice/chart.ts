@@ -26,11 +26,14 @@ export const chart = createSlice({
         },
         setSkewT: (state, action: PayloadAction<string | undefined>) => {
             state.skewT = action.payload
+        },
+        setSurface: (state, action: PayloadAction<string | undefined>) => {
+            state.surface = action.payload
         }
     }
 })
 
-export const { setUpperAir, setSkewT } = chart.actions
+export const { setUpperAir, setSkewT, setSurface } = chart.actions
 
 
 type UpperAirArgs = { isobar: string, timeOfDay: string }
@@ -57,10 +60,21 @@ export const getSkewT = ({ timeOfDay }: SkewTArgs): AppThunk => async (dispatch,
     }
 }
 
+type SurfaceArgs = { timeOfDay: string, surfaceObservations: boolean }
+export const getSurfaceAnalysis = ({ timeOfDay, surfaceObservations }: SurfaceArgs) => async (dispatch: any) => {
+    try {
+        const surfaceUrl = await api.weather.getSurfaceChart(timeOfDay, surfaceObservations)
+        dispatch(setSurface(surfaceUrl))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setSurface(undefined))
+    }
+}
+
 const CHART_TYPES: CH_TYPES = {
     upperAir: getUpperAir,
     skewT: getSkewT,
-    surface: () => {}
+    surface: getSurfaceAnalysis,
 }
 
 export const getChart = (chartType: keyof CH_TYPES, args: any): AppThunk => dispatch => {

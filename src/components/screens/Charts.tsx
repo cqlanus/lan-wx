@@ -42,8 +42,10 @@ const ButtonGroup = styled.div`
     display: flex;
 `
 
+type ChButtonProps = { selected: boolean }
 const ChartButton = styled(Button)`
     flex: 1;
+    font-weight: ${(p: ChButtonProps) => p.selected ? 'bold' : 'normal'};
 `
 
 const ImgContainer = styled.div`
@@ -61,21 +63,25 @@ const Charts = (p: any) => {
     const [chartType, setChartType] = useState<keyof CH_TYPES>(initialChart)
 
     const initialChartOptions = { isobar: '500', timeOfDay: 'morning' }
+    const initalSurfaceOptions = { timeOfDay: '00', surfaceObservations: true }
     const [ upperAirOptions, setUpperAirOptions ] = useState(initialChartOptions)
     const [ skewTOptions, setSkewTOptions ] = useState(initialChartOptions)
+    const [ surfaceOptions, setSurfaceOptions ] = useState(initalSurfaceOptions)
 
     const OPTIONS_STATE: any = {
         upperAir: upperAirOptions,
         skewT: skewTOptions,
+        surface: surfaceOptions,
     }
     const OPTIONS_SELECT: any = {
         upperAir: setUpperAirOptions,
         skewT: setSkewTOptions,
+        surface: setSurfaceOptions
     }
 
     const options = OPTIONS_STATE[chartType]
     const handleSelectChartType = (type: keyof CH_TYPES) => () => setChartType(type)
-    const handleSelectOptions = (key: string, value: string) => () => {
+    const handleSelectOptions = (key: string, value: string | boolean) => () => {
         OPTIONS_SELECT[chartType]({
             ...options,
             [key]: value
@@ -103,7 +109,7 @@ const Charts = (p: any) => {
                         Object.entries(CHART_TYPES).map((entry) => {
                             const [k, chType]: any = entry
                             return (
-                                <ChartButton onClick={handleSelectChartType(k)} key={k}>{chType.display}</ChartButton>
+                                <ChartButton selected={k === chartType} onClick={handleSelectChartType(k)} key={k}>{chType.display}</ChartButton>
                             )
                         })
                     }

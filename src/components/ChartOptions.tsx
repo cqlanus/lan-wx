@@ -4,6 +4,10 @@ import styled from 'styled-components'
 const OptionContainer = styled.div`
     border: 1px dashed black;
     border-bottom: none;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
 `
 
 const OptionTitle = styled.div`
@@ -15,15 +19,33 @@ const OptionLabel = styled.label`
     margin-left: 0.5rem;
 `
 
-const UpperAirContainer = styled(OptionContainer)`
-    display: flex;
-    justify-content: space-around;
-    padding: 1rem;
-`
-
-const SurfaceOptions = () => {
+const SURFACE_OPTIONS = {
+    timeOfDay: ['00', '03', '06', '09', '12', '15', '18', '21'],
+    surfaceObservations: ['Include surface analysis', 'Fronts only']
+}
+const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
     return (
-        <div />
+        <OptionContainer>
+            <div>
+                <OptionTitle>Time</OptionTitle>
+                {
+                    SURFACE_OPTIONS.timeOfDay.map(t => {
+                        return <div>
+                            <input onChange={handleSelect('timeOfDay', t)} checked={selectedOptions.timeOfDay === t} type="radio" name={t} value={t} />
+                            <OptionLabel>{t}</OptionLabel>
+                        </div>
+                    })
+                }
+            </div>
+            <div>
+                <OptionTitle>Show Sfc Obs?</OptionTitle>
+
+                    <input onChange={handleSelect('surfaceObservations', true)} checked={selectedOptions.surfaceObservations === true} type="radio" name={'Yes'} value={'Yes'} />
+                    <OptionLabel>{'Yes'}</OptionLabel>
+                    <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
+                    <OptionLabel>{'No'}</OptionLabel>
+            </div>
+        </OptionContainer>
     )
 }
 
@@ -32,7 +54,7 @@ const SKEW_T_OPTIONS = {
 }
 const SkewTOptions = ({ handleSelect, selectedOptions }: any) => {
     return (
-        <UpperAirContainer>
+        <OptionContainer>
             <div>
                 <OptionTitle>Time</OptionTitle>
                 {
@@ -44,7 +66,7 @@ const SkewTOptions = ({ handleSelect, selectedOptions }: any) => {
                     })
                 }
             </div>
-        </UpperAirContainer>
+        </OptionContainer>
     )
 }
 
@@ -54,7 +76,7 @@ const UPPER_AIR_OPTIONS = {
 }
 const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
     return (
-        <UpperAirContainer>
+        <OptionContainer>
             <div>
                 <OptionTitle>Isobar</OptionTitle>
                 {
@@ -77,7 +99,7 @@ const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
                     })
                 }
             </div>
-        </UpperAirContainer>
+        </OptionContainer>
     )
 }
 
