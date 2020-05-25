@@ -18,4 +18,10 @@ export default class Weather {
         const data = await resp.json()
         return data
     }
+
+    getUpperAirChart = async (isobar = '500', timeOfDay = 'morning'): Promise<any> => {
+        const url = `${this.BASE}/charts/upperair/${isobar}/${timeOfDay}`
+        const resp = await fetch(url)
+        return await resp.json()
+    }
 }

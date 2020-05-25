@@ -24,7 +24,8 @@ const Drawer = styled.div`
     transition: 0.5s;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     padding-left: 1rem;
     z-index: 100;
 `
@@ -43,6 +44,7 @@ const Link = styled.a`
 const Dismiss = styled(Link)`
     cursor: pointer;
     position: absolute;
+    top: 0;
     right: 2rem;
     border-bottom: none;
 `

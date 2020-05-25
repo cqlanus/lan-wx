@@ -3,6 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import locationReducer from './slice/location'
 import mapReducer from './slice/map'
 import weatherReducer from './slice/weather'
+import chartReducer from './slice/chart'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
       location: locationReducer,
       map: mapReducer,
       weather: weatherReducer,
+      chart: chartReducer,
   },
 });
 

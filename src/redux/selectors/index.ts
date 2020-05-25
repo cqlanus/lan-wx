@@ -4,11 +4,13 @@ import moment from 'moment'
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
 import { DailyForecast } from '../../types/weather'
+import { CH_TYPES } from '../../types/chart'
 
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
 export const selectCoords = (state: RootState) => state.location.coords
 export const selectCurrentWeather = (state: RootState) => state.weather.current
 export const selectDailyForecast = (state: RootState): DailyForecast | undefined => state.weather.dailyForecast
+export const selectCurrentChart = (chart: keyof CH_TYPES) => (state: RootState): string | undefined => state.chart[chart]
 
 export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {
