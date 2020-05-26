@@ -7,14 +7,13 @@ import type { Discussion } from '../../types/forecast'
 
 interface ForecastState {
     discussion?: Discussion,
-    hourly?: any,
+    detailed?: any,
     grid?: any,
 }
 
 const initialState: ForecastState = {
     discussion: undefined,
-    hourly: undefined,
-    grid: undefined,
+    detailed: undefined,
 }
 
 export const forecast = createSlice({
@@ -23,11 +22,14 @@ export const forecast = createSlice({
     reducers: {
         setDiscussion: (state, action: PayloadAction<any>) => {
             state.discussion = action.payload
+        },
+        setDetailedForecast: (state, action: PayloadAction<any>) => {
+            state.detailed = action.payload
         }
     }
 })
 
-export const { setDiscussion } = forecast.actions
+export const { setDiscussion, setDetailedForecast } = forecast.actions
 
 export const getForecastDiscussion = (): AppThunk => async (dispatch, getState) => {
     try {
@@ -38,6 +40,18 @@ export const getForecastDiscussion = (): AppThunk => async (dispatch, getState) 
     } catch (err) {
         console.log({err})
         dispatch(setDiscussion(undefined))
+    }
+}
+
+export const getDetailedForecast = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const detailedForecast = await api.weather.getDetailedForecast(coords)
+        dispatch(setDetailedForecast(detailedForecast))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setDetailedForecast(undefined))
     }
 }
 

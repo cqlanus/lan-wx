@@ -6,14 +6,14 @@ import { selectCoords } from '../selectors'
 import type { CH_TYPES } from '../../types/chart'
 
 interface ChartState {
-    upperAir?: string,
-    skewT?: string,
+    upperair?: string,
+    skewt?: string,
     surface?: string
 }
 
 const initialState: ChartState = {
-    upperAir: undefined,
-    skewT: undefined,
+    upperair: undefined,
+    skewt: undefined,
     surface: undefined,
 }
 
@@ -22,10 +22,10 @@ export const chart = createSlice({
     initialState,
     reducers: {
         setUpperAir: (state, action: PayloadAction<string | undefined>) => {
-            state.upperAir = action.payload
+            state.upperair = action.payload
         },
         setSkewT: (state, action: PayloadAction<string | undefined>) => {
-            state.skewT = action.payload
+            state.skewt = action.payload
         },
         setSurface: (state, action: PayloadAction<string | undefined>) => {
             state.surface = action.payload
@@ -72,8 +72,8 @@ export const getSurfaceAnalysis = ({ timeOfDay, surfaceObservations }: SurfaceAr
 }
 
 const CHART_TYPES: CH_TYPES = {
-    upperAir: getUpperAir,
-    skewT: getSkewT,
+    upperair: getUpperAir,
+    skewt: getSkewT,
     surface: getSurfaceAnalysis,
 }
 

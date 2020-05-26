@@ -34,7 +34,7 @@ const Section = ({ header, textArray }: SectionProps) => {
         <SectionContainer>
             <SectionHeader onClick={toggleOpen}>{header}</SectionHeader>
             {
-                isOpen && textArray.map(t => <Text>{t}</Text>)
+                isOpen && textArray.map((t, idx) => <Text key={idx}>{t}</Text>)
             }
         </SectionContainer>
     )
@@ -54,7 +54,7 @@ const ForecastDiscussion = (p: any) => {
         <Container>
             <Title>Forecast Discussion</Title>
             {
-                Object.entries(discussion).map(([header, textArray]) => <Section header={header} textArray={textArray} />)
+                Object.entries(discussion).map(([header, textArray]) => <Section key={header} header={header} textArray={textArray} />)
             }
         </Container>
     )

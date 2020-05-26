@@ -13,6 +13,7 @@ export const selectCurrentWeather = (state: RootState) => state.weather.current
 export const selectDailyForecast = (state: RootState): DailyForecast | undefined => state.weather.dailyForecast
 export const selectCurrentChart = (chart: keyof CH_TYPES) => (state: RootState): string | undefined => state.chart[chart]
 export const selectForecastDiscussion = (state: RootState): Discussion | undefined => state.forecast.discussion
+export const selectDetailedForecast = (state: RootState): any | undefined => state.forecast.detailed
 
 export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {

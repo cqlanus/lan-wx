@@ -108,13 +108,13 @@ type OptionsProps = {
     selectedOptions: any,
 }
 type CH_OPTIONS = {
-    skewT: (p: OptionsProps) => ReactElement
-    upperAir: (p: OptionsProps) => ReactElement
+    skewt: (p: OptionsProps) => ReactElement
+    upperair: (p: OptionsProps) => ReactElement
     surface: (p: OptionsProps) => ReactElement
 }
 
 export const CHART_OPTIONS: CH_OPTIONS = {
-    skewT: SkewTOptions,
+    skewt: SkewTOptions,
     upperAir: UpperAirOptions,
     surface: SurfaceOptions,
 }

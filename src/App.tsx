@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import {
     HashRouter as Router,
     Switch,
+    Redirect,
     Route,
 } from "react-router-dom"
 import Home from './components/screens/Home'
@@ -23,8 +24,12 @@ function App() {
             <NavDrawer/>
             <Switch>
                 <Route exact path="/"><Home/></Route>
-                <Route path="/charts"><Charts/></Route>
-                <Route path="/forecast"><Forecast/></Route>
+
+                <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
+                <Route path="/charts/:chartType"><Charts/></Route>
+
+                <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
+                <Route path="/forecast/:forecastType"><Forecast/></Route>
             </Switch>
         </Router>
     </div>

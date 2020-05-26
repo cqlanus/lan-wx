@@ -1,5 +1,5 @@
 export type CH_TYPES = {
-    upperAir: any,
-    skewT: any,
+    upperair: any,
+    skewt: any,
     surface: any,
 }

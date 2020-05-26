@@ -1,8 +1,9 @@
 import React, { useEffect, useState, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { withRouter, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
-import Button from '../Button'
+import BottomNav from '../BottomNav'
 import { getChart } from '../../redux/slice/chart'
 import { selectCurrentChart } from '../../redux/selectors'
 
@@ -11,15 +12,15 @@ import { CHART_OPTIONS } from '../ChartOptions'
 
 type CHART_TYPE = { display: string }
 type CH_TYPES = {
-    skewT: CHART_TYPE,
-    upperAir: CHART_TYPE,
+    skewt: CHART_TYPE,
+    upperair: CHART_TYPE,
     surface: CHART_TYPE,
 }
 const CHART_TYPES: CH_TYPES = {
-    skewT: {
+    skewt: {
         display: 'SkewT'
     },
-    upperAir: {
+    upperair: {
         display: 'Upper Air',
     },
     surface: {
@@ -29,23 +30,6 @@ const CHART_TYPES: CH_TYPES = {
 
 const Container = styled.div`
     height: 90vh;
-`
-
-const BottomContainer = styled.div`
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-`
-
-const ButtonGroup = styled.div`
-    display: flex;
-`
-
-type ChButtonProps = { selected: boolean }
-const ChartButton = styled(Button)`
-    flex: 1;
-    font-weight: ${(p: ChButtonProps) => p.selected ? 'bold' : 'normal'};
 `
 
 const ImgContainer = styled.div`
@@ -59,28 +43,27 @@ const ChartImage = styled.img`
     width: 100%;
 `
 const Charts = (p: any) => {
-    const initialChart: keyof CH_TYPES = 'upperAir'
-    const [chartType, setChartType] = useState<keyof CH_TYPES>(initialChart)
+    const params: { chartType: keyof CH_TYPES } = useParams()
+    const { chartType } = params
 
     const initialChartOptions = { isobar: '500', timeOfDay: 'morning' }
     const initalSurfaceOptions = { timeOfDay: '00', surfaceObservations: true }
-    const [ upperAirOptions, setUpperAirOptions ] = useState(initialChartOptions)
-    const [ skewTOptions, setSkewTOptions ] = useState(initialChartOptions)
-    const [ surfaceOptions, setSurfaceOptions ] = useState(initalSurfaceOptions)
+    const [upperAirOptions, setUpperAirOptions] = useState(initialChartOptions)
+    const [skewTOptions, setSkewTOptions] = useState(initialChartOptions)
+    const [surfaceOptions, setSurfaceOptions] = useState(initalSurfaceOptions)
 
     const OPTIONS_STATE: any = {
-        upperAir: upperAirOptions,
-        skewT: skewTOptions,
+        upperair: upperAirOptions,
+        skewt: skewTOptions,
         surface: surfaceOptions,
     }
     const OPTIONS_SELECT: any = {
-        upperAir: setUpperAirOptions,
-        skewT: setSkewTOptions,
+        upperair: setUpperAirOptions,
+        skewt: setSkewTOptions,
         surface: setSurfaceOptions
     }
 
     const options = OPTIONS_STATE[chartType]
-    const handleSelectChartType = (type: keyof CH_TYPES) => () => setChartType(type)
     const handleSelectOptions = (key: string, value: string | boolean) => () => {
         OPTIONS_SELECT[chartType]({
             ...options,
@@ -96,27 +79,17 @@ const Charts = (p: any) => {
     }, [OPTIONS_STATE, chartType, dispatch, options])
 
     const Options = CHART_OPTIONS[chartType]
-
     return (
         <Container>
             <ImgContainer>
                 {currentChart && <ChartImage src={currentChart} alt="" />}
             </ImgContainer>
-            <BottomContainer>
+
+            <BottomNav root="charts" options={CHART_TYPES} selected={ (k: string) => k === chartType }>
                 <Options handleSelect={handleSelectOptions} selectedOptions={options} />
-                <ButtonGroup>
-                    {
-                        Object.entries(CHART_TYPES).map((entry) => {
-                            const [k, chType]: any = entry
-                            return (
-                                <ChartButton selected={k === chartType} onClick={handleSelectChartType(k)} key={k}>{chType.display}</ChartButton>
-                            )
-                        })
-                    }
-                </ButtonGroup>
-            </BottomContainer>
+            </BottomNav>
         </Container>
     )
 }
 
-export default Charts
+export default withRouter(Charts)

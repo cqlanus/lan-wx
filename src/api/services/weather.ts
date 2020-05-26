@@ -44,4 +44,10 @@ export default class Weather {
         const resp = await fetch(url)
         return await resp.json()
     }
+
+    getDetailedForecast = async ({ latitude, longitude }: Coords): Promise<any> => {
+        const url = `${this.BASE}/forecast/grid/${latitude}/${longitude}`
+        const resp = await fetch(url)
+        return await resp.json()
+    }
 }
