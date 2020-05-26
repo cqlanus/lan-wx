@@ -1,6 +1,7 @@
 import { getConfigVar } from '../../utils'
 import { parseCurrentWeather } from '../../utils/weather'
 import type { CurrentWeather } from '../../types/weather'
+import type { Coords } from '../../types/location'
 
 export default class Weather {
     BASE = getConfigVar('LAN_WX_API')
@@ -34,6 +35,12 @@ export default class Weather {
     getSurfaceChart = async (timeOfDay = '00', surfaceObservations = true): Promise<any> => {
         const queryString = surfaceObservations ? '' : '?fronts=1'
         const url = `${this.BASE}/charts/surface/${timeOfDay}${queryString}`
+        const resp = await fetch(url)
+        return await resp.json()
+    }
+
+    getForecastDiscussion = async ({ latitude, longitude }: Coords): Promise<any> => {
+        const url = `${this.BASE}/forecast/discussion/${latitude}/${longitude}`
         const resp = await fetch(url)
         return await resp.json()
     }

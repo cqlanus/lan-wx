@@ -58,7 +58,7 @@ const NavDrawer = () => {
             <Drawer isOpen={isOpen}>
                 <Dismiss onClick={toggleOpen}>✕</Dismiss>
                 {
-                    Object.entries(PAGES).map(([k, p]) => <Link key={k} href={`#${p.path}`}>{p.display}</Link>)
+                    Object.entries(PAGES).map(([k, p]) => <Link key={k} onClick={toggleOpen} href={`#${p.path}`}>{p.display}</Link>)
                 }
             </Drawer>
         </div>

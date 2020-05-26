@@ -7,6 +7,7 @@ import {
 } from "react-router-dom"
 import Home from './components/screens/Home'
 import Charts from './components/screens/Charts'
+import Forecast from './components/screens/Forecast'
 import NavDrawer from './components/NavDrawer'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
@@ -23,6 +24,7 @@ function App() {
             <Switch>
                 <Route exact path="/"><Home/></Route>
                 <Route path="/charts"><Charts/></Route>
+                <Route path="/forecast"><Forecast/></Route>
             </Switch>
         </Router>
     </div>

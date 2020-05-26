@@ -30,7 +30,7 @@ const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
                 <OptionTitle>Time</OptionTitle>
                 {
                     SURFACE_OPTIONS.timeOfDay.map(t => {
-                        return <div>
+                        return <div key={t}>
                             <input onChange={handleSelect('timeOfDay', t)} checked={selectedOptions.timeOfDay === t} type="radio" name={t} value={t} />
                             <OptionLabel>{t}</OptionLabel>
                         </div>
@@ -40,10 +40,10 @@ const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
             <div>
                 <OptionTitle>Show Sfc Obs?</OptionTitle>
 
-                    <input onChange={handleSelect('surfaceObservations', true)} checked={selectedOptions.surfaceObservations === true} type="radio" name={'Yes'} value={'Yes'} />
-                    <OptionLabel>{'Yes'}</OptionLabel>
-                    <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
-                    <OptionLabel>{'No'}</OptionLabel>
+                <input onChange={handleSelect('surfaceObservations', true)} checked={selectedOptions.surfaceObservations === true} type="radio" name={'Yes'} value={'Yes'} />
+                <OptionLabel>{'Yes'}</OptionLabel>
+                <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
+                <OptionLabel>{'No'}</OptionLabel>
             </div>
         </OptionContainer>
     )
@@ -59,7 +59,7 @@ const SkewTOptions = ({ handleSelect, selectedOptions }: any) => {
                 <OptionTitle>Time</OptionTitle>
                 {
                     SKEW_T_OPTIONS.timeOfDay.map(t => {
-                        return <div>
+                        return <div key={t}>
                             <input onChange={handleSelect('timeOfDay', t)} checked={selectedOptions.timeOfDay === t} type="radio" name={t} value={t} />
                             <OptionLabel>{t}</OptionLabel>
                         </div>
@@ -81,7 +81,7 @@ const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
                 <OptionTitle>Isobar</OptionTitle>
                 {
                     UPPER_AIR_OPTIONS.isobar.map(i => {
-                        return <div>
+                        return <div key={i}>
                             <input onChange={handleSelect('isobar', i)} checked={selectedOptions.isobar === i} type="radio" name={i} value={i} />
                             <OptionLabel>{i}mb</OptionLabel>
                         </div>
@@ -92,7 +92,7 @@ const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
                 <OptionTitle>Time</OptionTitle>
                 {
                     UPPER_AIR_OPTIONS.timeOfDay.map(t => {
-                        return <div>
+                        return <div key={t}>
                             <input onChange={handleSelect('timeOfDay', t)} checked={selectedOptions.timeOfDay === t} type="radio" name={t} value={t} />
                             <OptionLabel>{t}</OptionLabel>
                         </div>
@@ -108,7 +108,7 @@ type OptionsProps = {
     selectedOptions: any,
 }
 type CH_OPTIONS = {
-    skewT: ( p: OptionsProps ) => ReactElement
+    skewT: (p: OptionsProps) => ReactElement
     upperAir: (p: OptionsProps) => ReactElement
     surface: (p: OptionsProps) => ReactElement
 }

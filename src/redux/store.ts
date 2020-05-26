@@ -4,6 +4,7 @@ import locationReducer from './slice/location'
 import mapReducer from './slice/map'
 import weatherReducer from './slice/weather'
 import chartReducer from './slice/chart'
+import forecastReducer from './slice/forecast'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
       map: mapReducer,
       weather: weatherReducer,
       chart: chartReducer,
+      forecast: forecastReducer,
   },
 });
 
