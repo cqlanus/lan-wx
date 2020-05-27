@@ -15,7 +15,7 @@ const DEFAULT_UNITS: { [key: string]: [ string, string ] } = {
 export const parseNwsValue = ({ value, unitCode }: NWSValue, key: string) => {
     const [_, unit] = split(':', unitCode)
     const convertableValue  = DEFAULT_UNITS[key]
-    if (convertableValue) {
+    if (convertableValue && value) {
         const [ toUnit, fromUnit ] = convertableValue
         const convertedValue = convertUnits(fromUnit, toUnit, value)
         const rounded = parseFloat(convertedValue.toNumber(toUnit).toFixed(3))

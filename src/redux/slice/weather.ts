@@ -33,7 +33,8 @@ export const { setCurrentWeather, setDailyForecast } = weather.actions
 // THUNKS
 export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
     try {
-        const coords = selectCoords(getState())
+        const state = getState()
+        const coords = selectCoords(state)
         if (!coords) { return }
         const currentWeather = await api.weather.getCurrentConditions(coords)
         dispatch(setCurrentWeather(currentWeather))

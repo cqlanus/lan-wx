@@ -10,15 +10,15 @@ const FORECAST_OPTIONS = {
     discussion: { display: 'Discussion' },
 }
 
-const Forecast = ({ match }: any) => {
+const Forecast = () => {
     const { forecastType } = useParams()
     return (
         <div>
             <Switch>
-                <Route path={ `${match.path}discussion` }>
+                <Route exact path={'/forecast/discussion'}>
                     <ForecastDiscussion/>
                 </Route>
-                <Route path={ `${match.path}details` }>
+                <Route exact path={'/forecast/details'}>
                     <DetailedForecast/>
                 </Route>
             </Switch>

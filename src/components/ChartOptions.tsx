@@ -19,6 +19,8 @@ const OptionLabel = styled.label`
     margin-left: 0.5rem;
 `
 
+// TODO: clean up / refactor options markup - most info can be collected in config object
+
 const SURFACE_OPTIONS = {
     timeOfDay: ['00', '03', '06', '09', '12', '15', '18', '21'],
     surfaceObservations: ['Include surface analysis', 'Fronts only']
@@ -115,6 +117,6 @@ type CH_OPTIONS = {
 
 export const CHART_OPTIONS: CH_OPTIONS = {
     skewt: SkewTOptions,
-    upperAir: UpperAirOptions,
+    upperair: UpperAirOptions,
     surface: SurfaceOptions,
 }
