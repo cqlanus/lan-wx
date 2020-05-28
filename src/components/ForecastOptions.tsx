@@ -7,7 +7,7 @@ import OptionContainer from './OptionsContainer'
 import { setDaysAhead } from './../redux/slice/forecast'
 import { selectDaysAhead } from './../redux/selectors'
 
-const daysAheadOptions = Array.from({ length: 8 }, (_, idx: number) => idx + 1)
+const daysAheadOptions = Array.from({ length: 7 }, (_, idx: number) => idx + 1)
 const DetailsOptions = () => {
     const dispatch = useDispatch()
     const daysAhead = useSelector(selectDaysAhead)
@@ -17,7 +17,7 @@ const DetailsOptions = () => {
             <Select onChange={handleSelect} value={daysAhead} >
                 {
                     daysAheadOptions.map(d => {
-                        const display = d === 0 ? `${d} day forecast` : `${d} days forecast`
+                        const display = `${d} day forecast`
                         return (
                             <option key={d} value={d}>{display}</option>
                         )
