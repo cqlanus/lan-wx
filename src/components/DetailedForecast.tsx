@@ -1,37 +1,74 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 import styled from 'styled-components'
 import {
     ComposedChart,
     Line,
     XAxis,
     YAxis,
+    Legend,
     ResponsiveContainer
 } from 'recharts'
 
 import { getDetailedForecast } from '../redux/slice/forecast'
-import { selectDetailedForecast, selectCoords } from '../redux/selectors'
+import { selectDetailedForecast, selectCoords, selectDaysAhead } from '../redux/selectors'
+
+const dataFor = (key: string) => (d: any) => d[key] && d[key].value
+
+const PageContainer = styled.div`
+    margin-bottom: 8rem;
+`
 
 const Container = styled.div`
     width: 100%;
     height: 25vh;
     margin-bottom: 1rem;
 `
+
 const Title = styled.h3``
+
 const Subtitle = styled.h4``
 
-const CHARTS = {
+type CHART_CONFIG = {
+    [key: string]: {
+        title: string,
+        keys: Array<string>,
+        axes: (num: number, length: number) => Array<{ type: any, dataKey?: any, style?: object }>
+    }
+}
+const BASE_AXIS = { style: { fontSize: '0.6rem' } }
+const formatTime = (daysAhead: number, d: string) => {
+    const timeString = moment(d).format(daysAhead < 4 ? 'ha' : 'M/D')
+    return timeString
+}
+const formatInterval = (daysAhead: number, length: number) => {
+    return daysAhead < 4 ? (4 * daysAhead) : Math.round(length/daysAhead)
+}
+const BASE_X_AXIS = (daysAhead: number, length: number) => ({ ...BASE_AXIS, dataKey: 'time', tickFormatter: (d: string) => formatTime(daysAhead, d), interval: formatInterval(daysAhead, length) })
+const DASH_PATTERNS = ['', '2 2', '5 5']
+const baseElement = (key: string, idx: number) => ({ name: key, type: Line, dataKey: dataFor(key), stroke: 'rgba(0,0,0,0.7)', strokeWidth: '1.5', strokeDasharray: DASH_PATTERNS[idx] })
+
+const CHARTS: CHART_CONFIG = {
     temp: {
         title: "Temperature",
-        keys: [{ name: 'temperature', type: Line }, { name: 'dewpoint', type: Line }]
+        keys: ['temperature', 'dewpoint'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     },
     percentages: {
         title: "Percentages",
-        keys: [{ name: 'relativeHumidity', type: Line }, { name: 'skyCover', type: Line }, { name: 'probabilityOfPrecipitation', type: Line }]
+        keys: ['relativeHumidity', 'skyCover', 'probabilityOfPrecipitation'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     },
     wind: {
         title: "Wind",
-        keys: [{ name: 'windSpeed', type: Line }, { name: 'windGust', type: Line }]
+        keys: ['windSpeed', 'windGust'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
+    },
+    quants: {
+        title: "Quants",
+        keys: ['quantitativePrecipitation'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     }
 }
 
@@ -39,15 +76,16 @@ const DetailedForecast = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const detailedForecast = useSelector(selectDetailedForecast)
+    const daysAhead = useSelector(selectDaysAhead)
     useEffect(() => {
         dispatch(getDetailedForecast())
     }, [coords, dispatch])
 
     if (!detailedForecast) { return null }
+    const { length } = detailedForecast
 
-    const dataFor = (key: string) => (d: any) => d[key] && d[key].value
     return (
-        <div>
+        <PageContainer>
             <Title>Forecast Charts</Title>
             {
                 Object.entries(CHARTS).map(([k, val]) => {
@@ -56,21 +94,24 @@ const DetailedForecast = () => {
                             <Subtitle>{val.title}</Subtitle>
                             <ResponsiveContainer height="90%" width="100%">
                                 <ComposedChart data={detailedForecast}>
-                                    <XAxis />
-                                    <YAxis />
                                     {
-                                        val.keys.map(k => {
-                                            const Element = k.type
-                                            return <Element dot={false} connectNulls dataKey={dataFor(k.name)}/>
+                                        val.axes(daysAhead, length).map(({ type: Axis, ...rest }, idx) => {
+                                            return (<Axis key={idx} {...rest} />)
                                         })
                                     }
+                                    {
+                                        val.keys.map(baseElement)
+                                            .map(({ type: ChartElement, name, ...rest }) =>
+                                                <ChartElement key={name} dot={false} connectNulls dataKey={dataFor(name)} name={name} {...rest} />)
+                                    }
+                                    <Legend iconType="line" verticalAlign="top" />
                                 </ComposedChart>
                             </ResponsiveContainer>
                         </Container>
                     )
                 })
             }
-        </div>
+        </PageContainer>
 
     )
 }

@@ -1,6 +1,6 @@
 import { has, split } from 'ramda'
 import { convertUnits } from './units'
-import type { NWSValue, CurrentWeatherResponse, CurrentWeather } from '../types/weather'
+import type { NWSValue, CurrentWeatherResponse } from '../types/weather'
 
 const DEFAULT_UNITS: { [key: string]: [ string, string ] } = {
     elevation: ['ft', 'm'],

@@ -8,12 +8,13 @@ import type { Discussion } from '../../types/forecast'
 interface ForecastState {
     discussion?: Discussion,
     detailed?: any,
-    grid?: any,
+    daysAhead: number
 }
 
 const initialState: ForecastState = {
     discussion: undefined,
     detailed: undefined,
+    daysAhead: 3
 }
 
 export const forecast = createSlice({
@@ -25,11 +26,14 @@ export const forecast = createSlice({
         },
         setDetailedForecast: (state, action: PayloadAction<any>) => {
             state.detailed = action.payload
+        },
+        setDaysAhead: (state, action: PayloadAction<number>) => {
+            state.daysAhead = action.payload
         }
     }
 })
 
-export const { setDiscussion, setDetailedForecast } = forecast.actions
+export const { setDiscussion, setDetailedForecast, setDaysAhead } = forecast.actions
 
 export const getForecastDiscussion = (): AppThunk => async (dispatch, getState) => {
     try {

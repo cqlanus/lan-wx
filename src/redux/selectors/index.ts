@@ -13,7 +13,8 @@ export const selectCurrentWeather = (state: RootState) => state.weather.current
 export const selectDailyForecast = (state: RootState): DailyForecast | undefined => state.weather.dailyForecast
 export const selectCurrentChart = (chart: keyof CH_TYPES) => (state: RootState): string | undefined => state.chart[chart]
 export const selectForecastDiscussion = (state: RootState): Discussion | undefined => state.forecast.discussion
-export const selectDetailedForecast = (state: RootState): any | undefined => {
+export const selectDaysAhead = (state: RootState): number => state.forecast.daysAhead
+export const selectDetailed = (state: RootState): any | undefined => {
     if (state.forecast.detailed) {
         return Object.values(state.forecast.detailed)
     }
@@ -38,6 +39,17 @@ export const selectThreeDayForecast = createSelector(
             const startDate = moment(p.startTime).dayOfYear()
             const isBefore = startDate < maxDate
             return isBefore
+        })
+    }
+)
+
+export const selectDetailedForecast = createSelector(
+    [selectDetailed, selectDaysAhead],
+    (detailed, daysAhead) => {
+        if (!daysAhead) { return detailed }
+        return detailed.filter((d: any) => {
+            const maxDate = moment().add(daysAhead, 'days')
+            return moment(d.time).isSameOrBefore(maxDate, 'day')
         })
     }
 )

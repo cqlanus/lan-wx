@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { withRouter, useParams, Route, Switch } from 'react-router'
 
 import BottomNav from '../BottomNav'
 import ForecastDiscussion from '../ForecastDiscussion'
 import DetailedForecast from '../DetailedForecast'
 
-const FORECAST_OPTIONS = {
+import { FORECAST_OPTIONS } from '../ForecastOptions'
+import type { FO_OPTIONS } from '../ForecastOptions'
+
+const FORECAST_TYPES = {
     details: { display: 'Details' },
     discussion: { display: 'Discussion' },
 }
-
 const Forecast = () => {
-    const { forecastType } = useParams()
+    const params: { forecastType: keyof FO_OPTIONS } = useParams()
+    const { forecastType } = params
+    const Options = FORECAST_OPTIONS[forecastType]
     return (
         <div>
             <Switch>
@@ -22,7 +26,9 @@ const Forecast = () => {
                     <DetailedForecast/>
                 </Route>
             </Switch>
-            <BottomNav root="forecast" options={FORECAST_OPTIONS} selected={(k: string) => k === forecastType}/>
+            <BottomNav root="forecast" options={FORECAST_TYPES} selected={(k: string) => k === forecastType}>
+                { Options && <Options /> }
+            </BottomNav>
         </div>
     )
 }

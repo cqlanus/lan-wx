@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { selectCoords, selectCurrentWeather } from '../redux/selectors'
-import type { WeatherValue, CurrentWeather } from '../types/weather'
+import type { WeatherValue } from '../types/weather'
 
 const Container = styled(Card)`
     display: flex;
