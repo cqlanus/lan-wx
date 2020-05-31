@@ -7,11 +7,20 @@ import { DailyForecast } from '../../types/weather'
 import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
 
+// MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
+
+// LOCATION
 export const selectCoords = (state: RootState) => state.location.coords
+
+// WEATHER
 export const selectCurrentWeather = (state: RootState) => state.weather.current
 export const selectDailyForecast = (state: RootState): DailyForecast | undefined => state.weather.dailyForecast
+
+// CHARTS
 export const selectCurrentChart = (chart: keyof CH_TYPES) => (state: RootState): string | undefined => state.chart[chart]
+
+// FORECAST
 export const selectForecastDiscussion = (state: RootState): Discussion | undefined => state.forecast.discussion
 export const selectDaysAhead = (state: RootState): number => state.forecast.daysAhead
 export const selectDetailed = (state: RootState): any | undefined => {
@@ -20,6 +29,9 @@ export const selectDetailed = (state: RootState): any | undefined => {
     }
     return []
 }
+
+// CLIMATE
+export const selectNorms = (state: RootState): any | undefined => state.climate.norms
 
 export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {

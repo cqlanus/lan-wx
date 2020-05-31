@@ -11,7 +11,6 @@ import {
     ResponsiveContainer,
     CartesianGrid,
     Tooltip,
-    Rectangle
 } from 'recharts'
 
 import { getDetailedForecast } from '../redux/slice/forecast'
