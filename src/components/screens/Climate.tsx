@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter, useParams, Route, Switch } from 'react-router'
 
 import Norms from '../Norms'
+import Almanac from '../Almanac'
 import BottomNav from '../BottomNav'
 
 
@@ -18,10 +19,10 @@ const Climate = () => {
         <div>
             <Switch>
                 <Route exact path={'/climate/norms'} ><Norms /></Route>
-                <Route exact path={'/climate/almanac'} ><div /></Route>
+                <Route exact path={'/climate/almanac'} ><Almanac /></Route>
                 <Route exact path={'/climate/astronomy'} ><div /></Route>
             </Switch>
-            <BottomNav root="climate" options={CLIMATE_TYPES} selected={(k: string) => k === 'norms'}></BottomNav>
+            <BottomNav root="climate" options={CLIMATE_TYPES} selected={(k: string) => k === climateType}></BottomNav>
         </div>
     )
 }

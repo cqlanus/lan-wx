@@ -26,11 +26,14 @@ export const climate = createSlice({
             const { data, types } = action.payload
             state.norms = data
             state.normsTypes = types
+        },
+        setAlmanac: (state, action: PayloadAction<any>) => {
+            state.almanac = action.payload
         }
     }
 })
 
-export const { setNorms } = climate.actions
+export const { setNorms, setAlmanac } = climate.actions
 
 export const getNorms = (): AppThunk => async (dispatch, getState) => {
     try {
@@ -41,7 +44,19 @@ export const getNorms = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setNorms(undefined))
-    } 
+    }
+}
+
+export const getAlmanac = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const almanac = await api.climate.getAlmanac(coords)
+        dispatch(setAlmanac(almanac))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setAlmanac(undefined))
+    }
 }
 
 export default climate.reducer

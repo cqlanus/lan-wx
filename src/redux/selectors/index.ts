@@ -32,6 +32,7 @@ export const selectDetailed = (state: RootState): any | undefined => {
 
 // CLIMATE
 export const selectNorms = (state: RootState): any | undefined => state.climate.norms
+export const selectAlmanac = (state: RootState): any | undefined => state.climate.almanac
 
 export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {
