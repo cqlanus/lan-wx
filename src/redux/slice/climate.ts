@@ -29,11 +29,14 @@ export const climate = createSlice({
         },
         setAlmanac: (state, action: PayloadAction<any>) => {
             state.almanac = action.payload
+        },
+        setAstronomy: (state, action: PayloadAction<any>) => {
+            state.astronomy = action.payload
         }
     }
 })
 
-export const { setNorms, setAlmanac } = climate.actions
+export const { setNorms, setAlmanac, setAstronomy } = climate.actions
 
 export const getNorms = (): AppThunk => async (dispatch, getState) => {
     try {
@@ -56,6 +59,18 @@ export const getAlmanac = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setAlmanac(undefined))
+    }
+}
+
+export const getAstronomy = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const astronomy = await api.climate.getAstronomy(coords)
+        dispatch(setAstronomy(astronomy))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setAstronomy(undefined))
     }
 }
 

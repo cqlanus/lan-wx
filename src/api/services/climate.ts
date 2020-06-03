@@ -17,4 +17,11 @@ export default class Climate {
         const data = await resp.json()
         return data
     }
+
+    getAstronomy = async ({ latitude, longitude }: Coords): Promise<any> => {
+        const url = `${this.BASE}/astronomy/${latitude}/${longitude}`
+        const resp = await fetch(url)
+        const data = await resp.json()
+        return data
+    }
 }
