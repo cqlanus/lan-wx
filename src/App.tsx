@@ -10,6 +10,7 @@ import Home from './components/screens/Home'
 import Charts from './components/screens/Charts'
 import Forecast from './components/screens/Forecast'
 import Climate from './components/screens/Climate'
+import MapScreen from './components/screens/Map'
 import NavDrawer from './components/NavDrawer'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
@@ -34,6 +35,8 @@ function App() {
 
                 <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
                 <Route path="/climate/:climateType"><Climate/></Route>
+
+                <Route exact path="/map"><MapScreen /></Route>
             </Switch>
         </Router>
     </div>

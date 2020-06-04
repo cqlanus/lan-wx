@@ -32,7 +32,12 @@ const MapCard = () => {
             const { latitude = 41, longitude = -87 } = coords
             return (
                 // eslint-disable-next-line
-                <MapBox center={[longitude, latitude]} style={defaultStyle} containerStyle={{ height: '40vh', width: '100%' }} >
+                <MapBox
+                    center={[longitude, latitude]}
+                    style={defaultStyle}
+                    containerStyle={{ height: '40vh', width: '100%' }}
+                    zoom={[7]}
+                >
                     <Source id="source_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
                     <Layer paint={{ 'raster-opacity': 0.7 }} type="raster" id="layer_id" sourceId="source_id" />
                     <ZoomControl />

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import moment from 'moment'
 
 import { AppThunk } from '../store'
 import api from '../../api'
@@ -52,7 +53,8 @@ export const getSkewT = ({ timeOfDay }: SkewTArgs): AppThunk => async (dispatch,
     try {
         const coords = selectCoords(getState())
         if (!coords) { return }
-        const skewTUrl = await api.weather.getSkewTChart(coords, timeOfDay)
+        const today = moment().format('YYYY-MM-DD')
+        const skewTUrl = await api.weather.getSkewTChart(coords, today, timeOfDay)
         dispatch(setSkewT(skewTUrl))
     } catch (err) {
         console.log({ err })

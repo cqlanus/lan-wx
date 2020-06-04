@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import BottomNav from '../BottomNav'
 import { getChart } from '../../redux/slice/chart'
-import { selectCurrentChart } from '../../redux/selectors'
+import { selectCurrentChart, selectCoords } from '../../redux/selectors'
 
 import { CHART_OPTIONS } from '../ChartOptions'
 
@@ -47,10 +47,12 @@ const Charts = (p: any) => {
     const { chartType } = params
 
     const initialChartOptions = { isobar: '500', timeOfDay: 'morning' }
-    const initalSurfaceOptions = { timeOfDay: '00', surfaceObservations: true }
+    const initalSurfaceOptions = { timeOfDay: '03', surfaceObservations: true }
     const [upperAirOptions, setUpperAirOptions] = useState(initialChartOptions)
     const [skewTOptions, setSkewTOptions] = useState(initialChartOptions)
     const [surfaceOptions, setSurfaceOptions] = useState(initalSurfaceOptions)
+
+    const coords = useSelector(selectCoords)
 
     const OPTIONS_STATE: any = {
         upperair: upperAirOptions,
@@ -64,7 +66,9 @@ const Charts = (p: any) => {
     }
 
     const options = OPTIONS_STATE[chartType]
+    console.log({ options })
     const handleSelectOptions = (key: string, value: string | boolean) => () => {
+        console.log({ key, value })
         OPTIONS_SELECT[chartType]({
             ...options,
             [key]: value
@@ -76,7 +80,7 @@ const Charts = (p: any) => {
 
     useEffect(() => {
         dispatch(getChart(chartType, options))
-    }, [OPTIONS_STATE, chartType, dispatch, options])
+    }, [OPTIONS_STATE, chartType, dispatch, options, coords])
 
     const Options = CHART_OPTIONS[chartType]
     return (

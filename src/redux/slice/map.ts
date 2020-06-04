@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import moment from 'moment'
 
 import { AppThunk } from '../store'
 import api from '../../api'
@@ -6,14 +7,18 @@ import LAYERS from '../../data/layers'
 
 interface MapState {
     layerUrl: string,
+    layerTypeId: string,
+    layerId: string,
+    time: string,
     error?: string
 }
 
 const { radar } = LAYERS
-const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id }
+const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id, time: moment().toISOString() }
 const initLayer = api.map.selectLayerUrl(initArgs)
 const initialState: MapState = {
-    layerUrl: initLayer
+    layerUrl: initLayer,
+    ...initArgs
 }
 
 export const mapSlice = createSlice({
@@ -21,7 +26,11 @@ export const mapSlice = createSlice({
     initialState,
     reducers: {
         setLayerUrl: (state, action) => {
-            state.layerUrl = action.payload
+            const { url, time, layerTypeId, layerId } = action.payload
+            state.layerUrl = url
+            state.time = time
+            state.layerTypeId = layerTypeId
+            state.layerId = layerId
             state.error = undefined
         },
         setMapError: (state, action) => {
@@ -34,10 +43,13 @@ export const { setLayerUrl, setMapError } = mapSlice.actions
 
 
 // THUNKS
-export const getLayer = ({layerTypeId, layerId}: any): AppThunk => dispatch => {
+export const getLayer = ({layerTypeId, layerId, timeOffset}: any): AppThunk => dispatch => {
     try {
-        const url = api.map.selectLayerUrl({ layerTypeId, layerId })
-        dispatch(setLayerUrl(url))
+        // console.log({ layerTypeId, layerId })
+        const diff = timeOffset * 30
+        const time = moment().startOf('minute').subtract(diff, 'minutes').toISOString()
+        const url = api.map.selectLayerUrl({ layerTypeId, layerId, time })
+        dispatch(setLayerUrl({ url, time, layerTypeId, layerId }))
     } catch (err) {
         dispatch(setMapError(err.message))
     }

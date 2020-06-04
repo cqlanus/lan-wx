@@ -2,7 +2,7 @@ import qs from 'query-string'
 import LAYERS from '../../data/layers'
 
 export default class MapService {
-    selectLayerUrl = ({ layerTypeId, layerId }: any): string => {
+    selectLayerUrl = ({ layerTypeId, layerId, time }: any): string => {
         const layer = LAYERS[layerTypeId]
         if (!layer) { return '' }
         const foundLayer = layer.layers.find(({ id: layId }) => layId === layerId)
@@ -17,6 +17,7 @@ export default class MapService {
             width: '256',
             height: '256',
             styles: '',
+            time,
             bbox: '{bbox-epsg-3857}',
         }
         const queryString = qs.stringify(queryParams)

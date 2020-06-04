@@ -105,7 +105,7 @@ const Almanac = () => {
         dispatch(getAlmanac())
     }, [dispatch, coords])
 
-    const { sun, meta } = almanac || {}
+    const { meta } = almanac || {}
     const data = React.useMemo(() => {
         if (almanac) {
             const { sun, meta, ...alm } = almanac

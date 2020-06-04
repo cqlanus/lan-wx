@@ -14,7 +14,7 @@ const OptionLabel = styled.label`
 // TODO: clean up / refactor options markup - most info can be collected in config object
 
 const SURFACE_OPTIONS = {
-    timeOfDay: ['00', '03', '06', '09', '12', '15', '18', '21'],
+    timeOfDay: ['03', '06', '09', '12', '15', '18', '21', '00', ],
     surfaceObservations: ['Include surface analysis', 'Fronts only']
 }
 const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {

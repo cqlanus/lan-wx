@@ -10,6 +10,9 @@ import Emoji from '../../data/emoji'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
+export const selectLayerTypeId = (state: RootState) => state.map.layerTypeId
+export const selectLayerId = (state: RootState) => state.map.layerId
+export const selectMapData = (state: RootState) => state.map
 
 // LOCATION
 export const selectCoords = (state: RootState) => state.location.coords
@@ -46,7 +49,7 @@ export const selectDayLengths = createSelector(
             const length = moment(sunset).diff(sunrise)
             const lengthDuration = moment.duration(length)
             const lengthOfDay = `${lengthDuration.hours()}h ${lengthDuration.minutes()}m`
-            return [ visibleLight, lengthOfDay ]
+            return [visibleLight, lengthOfDay]
         }
         return []
     }
@@ -73,38 +76,38 @@ export const selectTomorrowLength = createSelector(
 )
 
 const MOON_PHASES: any = {
-  'new': {
-      name: 'New Moon',
-      icon: Emoji.moonPhases.newMoon
-  },
-  waxingCrescent: {
-      name: 'Waxing Crescent',
-      icon: Emoji.moonPhases.waxingCrescent,
-  },
-  firstQuarter: {
-      name: 'First Quarter',
-      icon: Emoji.moonPhases.firstQuarter,
-  },
-  waxingGibbous: {
-      name: 'Waxing Gibbous',
-      icon: Emoji.moonPhases.waxingGibbous
-  },
-  full: {
-      name: 'Full Moon',
-      icon: Emoji.moonPhases.fullMoon,
-  },
-  waningGibbous: {
-      name: 'Waning Gibbous',
-      icon: Emoji.moonPhases.waningGibbous,
-  },
-  lastQuarterr: {
-      name: 'Last Quarter',
-      icon: Emoji.moonPhases.lastQuarter,
-  },
-  waningCrescent: {
-      name: 'Waning Crescent',
-      icon: Emoji.moonPhases.waningCrescent,
-  },
+    'new': {
+        name: 'New Moon',
+        icon: Emoji.moonPhases.newMoon
+    },
+    waxingCrescent: {
+        name: 'Waxing Crescent',
+        icon: Emoji.moonPhases.waxingCrescent,
+    },
+    firstQuarter: {
+        name: 'First Quarter',
+        icon: Emoji.moonPhases.firstQuarter,
+    },
+    waxingGibbous: {
+        name: 'Waxing Gibbous',
+        icon: Emoji.moonPhases.waxingGibbous
+    },
+    full: {
+        name: 'Full Moon',
+        icon: Emoji.moonPhases.fullMoon,
+    },
+    waningGibbous: {
+        name: 'Waning Gibbous',
+        icon: Emoji.moonPhases.waningGibbous,
+    },
+    lastQuarterr: {
+        name: 'Last Quarter',
+        icon: Emoji.moonPhases.lastQuarter,
+    },
+    waningCrescent: {
+        name: 'Waning Crescent',
+        icon: Emoji.moonPhases.waningCrescent,
+    },
 }
 
 export const selectMoonPhase = createSelector(
@@ -114,12 +117,17 @@ export const selectMoonPhase = createSelector(
             const { fraction, phaseName } = astronomy.moonphase
             const fractionIlluminated = `${(fraction * 100).toFixed(2)}%`
             const phase = MOON_PHASES[phaseName]
-            return [ fractionIlluminated, phase ]
+            return [fractionIlluminated, phase]
         }
         return []
     }
 )
 
+export const selectInitialLayer = () => {
+    const { radar } = LAYERS
+    const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id, time: moment().toISOString() }
+    return initArgs
+}
 export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {
         const layerName = layerType.name === name ? name : `${layerType.name}: ${name}`

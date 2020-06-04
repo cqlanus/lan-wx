@@ -1,22 +1,24 @@
 import React, { useMemo } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getLayer } from '../redux/slice/map'
-import { selectAllLayers } from '../redux/selectors'
+import { selectAllLayers, selectMapData } from '../redux/selectors'
 import Select from './Select'
 
 type LayerListItem = { layerTypeId: string, layerId: string, key: string, name: string }
 const LayerDropdown = () => {
     const dispatch = useDispatch()
+    const { layerId, layerTypeId } = useSelector(selectMapData)
     const handleSelect = (e: any) => {
         const { value } = e.target
-        const { layerTypeId, layerId } = JSON.parse(value)
+        const [ layerTypeId, layerId ] = value.split('_')
         dispatch(getLayer({ layerTypeId, layerId }))
     }
     const layers: Array<LayerListItem> = useMemo(selectAllLayers, [])
+    const value = `${layerTypeId}_${layerId}`
     return (
-        <Select id="" name="" onChange={handleSelect}>
+        <Select id="" name="" value={value} onChange={handleSelect}>
             {layers.map((l: any) => (
-                <option key={l.key} value={JSON.stringify(l)} >{l.name}</option>
+                <option key={l.key} value={l.key} >{l.name}</option>
             ))}
         </Select>
     )

@@ -9,6 +9,7 @@ interface LocationState {
 }
 
 const initialState: LocationState = {
+    /* coords: { latitude: 41, longitude: -87 } */
     coords: undefined
 }
 
@@ -16,7 +17,7 @@ export const location = createSlice({
     name: 'location',
     initialState,
     reducers: {
-        setLocation: (state, action: PayloadAction<Coords | undefined>) => {
+        setLocation: (state, action: PayloadAction<Coords>) => {
             state.coords = action.payload
         }
     }
@@ -32,7 +33,6 @@ export const getCurrentLocation = (): AppThunk => async dispatch => {
         dispatch(setLocation({ latitude, longitude }))
     } catch (err) {
         console.log(err)
-        dispatch(setLocation())
     }
 }
 

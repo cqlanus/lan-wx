@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import moment from 'moment'
 import styled from 'styled-components'
 import {
     ComposedChart,
@@ -10,7 +9,6 @@ import {
     Legend,
     ResponsiveContainer,
     CartesianGrid,
-    Tooltip,
 } from 'recharts'
 import { getNorms } from '../redux/slice/climate'
 import { selectCoords, selectNorms } from '../redux/selectors'
