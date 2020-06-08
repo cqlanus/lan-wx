@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { getConfigVar } from '../../utils'
 import { parseCurrentWeather } from '../../utils/weather'
 import type { CurrentWeather } from '../../types/weather'
@@ -27,7 +28,8 @@ export default class Weather {
     }
 
     getSkewTChart = async ({ latitude, longitude }: any, timeOfDay = 'morning'): Promise<any> => {
-        const url = `${this.BASE}/charts/sounding/${latitude}/${longitude}/${timeOfDay}`
+        const today = moment().format('YYYY-MM-DD')
+        const url = `${this.BASE}/charts/sounding/${latitude}/${longitude}/${today}/${timeOfDay}`
         const resp = await fetch(url)
         return await resp.json()
     }

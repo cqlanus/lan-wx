@@ -4,7 +4,8 @@ type VAR_CONFIG = {
 }
 const vars: VAR_CONFIG = {
     dev: {
-        LAN_WX_API: 'https://localhost:9001',
+        LAN_WX_API: 'https://lan-wx-api.chrislanus.com',
+        // LAN_WX_API: 'https://localhost:9001',
     },
     prod: {
         LAN_WX_API: 'https://localhost:9001'
