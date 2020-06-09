@@ -126,7 +126,7 @@ const DetailedForecast = () => {
                                     {
                                         val.keys.map(baseElement)
                                            .map(({ type: ChartElement, name, ...rest }) =>
-                                               <ChartElement key={name} dot={false} connectNulls dataKey={dataFor(name)} name={name} {...rest} />)
+                                               <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />)
                                     }
                                     <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
                                 </ComposedChart>

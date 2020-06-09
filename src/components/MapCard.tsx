@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable */
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Layer, Source, ZoomControl, ScaleControl } from 'react-mapbox-gl'
@@ -16,9 +17,20 @@ const Container = styled(Card)`
 // * Create a settings screen that facilitates unit selection
 
 const MapCard = () => {
+    const initialZoom: [number] = [7]
+    const [zoom] = useState(initialZoom)
+    const initialCenter: any = undefined
+    const [ center, setCenter ] = useState(initialCenter)
     const coords = useSelector(selectCoords)
     const layerUrl = useSelector(selectLayerUrl)
 
+    useEffect(() => {
+        if (!center && coords) {
+            const { longitude, latitude } = coords
+            setCenter([longitude, latitude])
+        }
+    })
+    
     const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {
         "type": "raster",
@@ -28,15 +40,13 @@ const MapCard = () => {
         "tileSize": 512
     }
     const renderMap = () => {
-        if (coords) {
-            const { latitude = 41, longitude = -87 } = coords
+        if (center) {
             return (
-                // eslint-disable-next-line
                 <MapBox
-                    center={[longitude, latitude]}
+                    center={center}
                     style={defaultStyle}
                     containerStyle={{ height: '40vh', width: '100%' }}
-                    zoom={[7]}
+                    zoom={zoom}
                 >
                     <Source id="source_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
                     <Layer paint={{ 'raster-opacity': 0.7 }} type="raster" id="layer_id" sourceId="source_id" />
@@ -47,10 +57,12 @@ const MapCard = () => {
         }
     }
 
+    const MapEl = renderMap()
+    console.log({ MapEl })
     return (
         <Container>
             <LayerDropdown />
-            {renderMap()}
+            { MapEl }
         </Container>
     )
 }

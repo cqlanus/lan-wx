@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { getConfigVar } from '../../utils'
 import { parseCurrentWeather } from '../../utils/weather'
 import type { CurrentWeather } from '../../types/weather'

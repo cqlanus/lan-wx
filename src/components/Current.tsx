@@ -64,7 +64,7 @@ const getDisplayUnit = ({ value, unit }: WeatherValue, key?: string) => {
 const CURRENT_WX_STRUCTURE = {
     main: { textDescription: { unit: false }, temperature: { unit: true } },
     secondary: {
-        wind: [{ display: 'Wind', key: 'windSpeed', unit: true }, { key: 'windDirection', unit: true, display: null }],
+        wind: [{ display: 'Wind', key: 'windSpeed', unit: true }, { display: '', key: 'windDirection', unit: true  }],
         air: [{ display: 'DP', key: 'dewpoint', unit: true }, { display: 'RH', key: 'relativeHumidity', unit: true }],
         pressure: [{ display: 'Pressure', key: 'barometricPressure', unit: true }],
         visibility: [{ display: 'Visibility', key: 'visibility', unit: true }]
@@ -96,7 +96,7 @@ const Current = (p: any) => {
     const renderSecondary = () => Object.entries(secondary).map(([ key, cat ]) => (
         <div key={key}>
             {
-                cat.reduce((acc, { display, key }) => {
+                cat.reduce((acc: any, { display, key }: any) => {
                     const label = display ? `${display}: ` : ''
                     const displayVal = `${label}${getDisplayUnit(currentWeather[key], key)}`
                     const initial = acc ? `${acc} | ` : ''

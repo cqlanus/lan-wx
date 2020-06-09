@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-lanwx-dev-94634-authRole",
+            "UnauthRoleArn": "arn:aws:iam::400081491947:role/amplify-lanwx-dev-94634-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::400081491947:role/amplify-lanwx-dev-94634-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-lanwx-dev-94634-deployment",
+            "UnauthRoleName": "amplify-lanwx-dev-94634-unauthRole",
+            "StackName": "amplify-lanwx-dev-94634",
+            "StackId": "arn:aws:cloudformation:us-east-2:400081491947:stack/amplify-lanwx-dev-94634/05788bf0-aa60-11ea-a52e-0a76b6c12f42",
+            "AmplifyAppId": "d3t3k0lmolod0y"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3t3k0lmolod0y",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
+}
