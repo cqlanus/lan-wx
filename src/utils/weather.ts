@@ -15,7 +15,6 @@ const DEFAULT_UNITS: { [key: string]: [ string, string ] } = {
 export const parseNwsValue = ({ value, unitCode }: NWSValue, key: string) => {
     // tslint:disable-next-line no-unused-vars
     const [_, unit] = split(':', unitCode)
-    console.log({ test: _ })
     const convertableValue  = DEFAULT_UNITS[key]
     if (convertableValue && value) {
         const [ toUnit, fromUnit ] = convertableValue

@@ -31,6 +31,7 @@ const MapCard = () => {
     const renderMap = () => {
         if (coords) {
             const { latitude = 41, longitude = -87 } = coords
+            console.log({ MapBox })
             return (
                 // eslint-disable-next-line
                 <MapBox

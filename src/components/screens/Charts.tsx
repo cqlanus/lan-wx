@@ -66,9 +66,7 @@ const Charts = (p: any) => {
     }
 
     const options = OPTIONS_STATE[chartType]
-    console.log({ options })
     const handleSelectOptions = (key: string, value: string | boolean) => () => {
-        console.log({ key, value })
         OPTIONS_SELECT[chartType]({
             ...options,
             [key]: value
