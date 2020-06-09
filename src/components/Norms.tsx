@@ -116,7 +116,7 @@ const Norms = () => {
                                     {
                                         val.keys.map(baseElement)
                                             .map(({ type: ChartElement, name, ...rest }) =>
-                                                <ChartElement key={name} dot={false} connectNulls dataKey={dataFor(name)} name={name} {...rest} />
+                                                <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
                                             )
                                     }
 
