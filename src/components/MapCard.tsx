@@ -58,7 +58,6 @@ const MapCard = () => {
     }
 
     const MapEl = renderMap()
-    console.log({ MapEl })
     return (
         <Container>
             <LayerDropdown />

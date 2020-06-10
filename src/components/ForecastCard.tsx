@@ -19,6 +19,17 @@ const Period = styled.div`
     padding-bottom: 1rem;
     text-align: left;
     border-bottom: 1px solid black;
+    display: flex;
+`
+
+const ConditionIcon = styled.img`
+    border-radius: 50%;
+    margin-right: 1rem;
+    transform: scale(0.8);
+`
+
+const DetailsContainer = styled.div`
+    flex: 1;
 `
 
 const PeriodTitle = styled.span`
@@ -100,11 +111,14 @@ const ForecastCard = () => {
                 periods.map((p: any) => {
                     return (
                         <Period key={p.number}>
-                            <PeriodTitle>
-                                {p.name}
-                            </PeriodTitle>
-                            { renderStatLine(p) }
-                            { renderDescription(p) }
+                            <ConditionIcon src={p.icon} alt="icon" />
+                            <DetailsContainer>
+                                <PeriodTitle>
+                                    {p.name}
+                                </PeriodTitle>
+                                {renderStatLine(p)}
+                                {renderDescription(p)}
+                            </DetailsContainer>
                         </Period>
                     )
                 })

@@ -7,6 +7,7 @@ import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { selectCoords, selectCurrentWeather } from '../redux/selectors'
 import type { WeatherValue } from '../types/weather'
+import emoji from '../data/emoji'
 
 const Container = styled(Card)`
     display: flex;
@@ -14,6 +15,21 @@ const Container = styled(Card)`
     justify-content: center;
     align-items: center;
     height: 40vh;
+`
+
+const ConditionIcon = styled.img`
+    border-radius: 50%;
+    margin-right: 1rem;
+`
+
+const Flex = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+const CurrentContainer = styled.div`
+    flex: 1;
+    text-align: left;
 `
 
 const Title = styled.h3``
@@ -31,8 +47,8 @@ const DISPLAY_UNIT_MAP: any = {
 }
 
 const DISPLAY_LABEL_MAP: any = {
-    textDescription: 'Currently',
-    temperature: 'Temperature',
+    textDescription: 'Now',
+    temperature: emoji.temperature,
     dewpoint: 'Dewpoint',
     relativeHumidity: 'Humidity',
     visibility: 'Visibility',
@@ -46,15 +62,25 @@ const getDisplayLabel = (key: string) => {
     return displayLabel || key
 }
 const degreesToCompass = (value: number) => {
-    const val = Math.round(value/22.5)
+    const val = Math.round(value / 22.5)
     const compassVals = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
     const index = val % 16
     return (compassVals[index])
 }
 
+const degreesToCompassSimple = (value: number) => {
+    const val = Math.round(value / 45)
+    const compassVals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW',]
+    const index = val % 8
+    return (compassVals[index])
+}
+
 const getDisplayUnit = ({ value, unit }: WeatherValue, key?: string) => {
     if (key === 'windDirection') {
-        return degreesToCompass(value)
+        const simple = degreesToCompassSimple(value)
+        const arrow: { [key: string]: string } = emoji.arrow
+        const icon = arrow[simple.toLowerCase()]
+        return `${degreesToCompass(value)} ${icon}`
     }
 
     const displayUnit = DISPLAY_UNIT_MAP[unit]
@@ -64,10 +90,10 @@ const getDisplayUnit = ({ value, unit }: WeatherValue, key?: string) => {
 const CURRENT_WX_STRUCTURE = {
     main: { textDescription: { unit: false }, temperature: { unit: true } },
     secondary: {
-        wind: [{ display: 'Wind', key: 'windSpeed', unit: true }, { display: '', key: 'windDirection', unit: true  }],
+        wind: [{ display: emoji.wind, key: 'windSpeed', unit: true }, { display: '', key: 'windDirection', unit: true }],
         air: [{ display: 'DP', key: 'dewpoint', unit: true }, { display: 'RH', key: 'relativeHumidity', unit: true }],
         pressure: [{ display: 'Pressure', key: 'barometricPressure', unit: true }],
-        visibility: [{ display: 'Visibility', key: 'visibility', unit: true }]
+        /* visibility: [{ display: 'Visibility', key: 'visibility', unit: true }] */
     },
 }
 
@@ -83,17 +109,23 @@ const Current = (p: any) => {
     if (!currentWeather) { return null }
 
     const { main, secondary } = CURRENT_WX_STRUCTURE
-    const { timestamp } = currentWeather
+    const { timestamp, icon } = currentWeather
     const renderMain = () => {
-        return Object.entries(main).map(([k, { unit }]) => {
-            const data = currentWeather[k]
-            const display = unit ? `${getDisplayUnit(data)}` : data
-            const label = getDisplayLabel(k)
-            return <div key={k}>{label}: {display} </div>
-        })
+        return (<Flex>
+            <ConditionIcon src={icon} alt="icon" />
+            <CurrentContainer>
+                {Object.entries(main).map(([k, { unit }]) => {
+                    const data = currentWeather[k]
+                    const display = unit ? `${getDisplayUnit(data)}` : data
+                    const label = getDisplayLabel(k)
+                    return <div key={k}>{label}: {display} </div>
+                })}
+
+            </CurrentContainer>
+        </Flex>)
     }
 
-    const renderSecondary = () => Object.entries(secondary).map(([ key, cat ]) => (
+    const renderSecondary = () => Object.entries(secondary).map(([key, cat]) => (
         <div key={key}>
             {
                 cat.reduce((acc: any, { display, key }: any) => {

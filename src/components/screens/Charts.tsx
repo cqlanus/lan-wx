@@ -29,7 +29,8 @@ const CHART_TYPES: CH_TYPES = {
 }
 
 const Container = styled.div`
-    height: 90vh;
+    min-height: 90vh;
+    margin-bottom: 200px;
 `
 
 const ImgContainer = styled.div`
@@ -40,7 +41,7 @@ const ImgContainer = styled.div`
 `
 
 const ChartImage = styled.img`
-    width: 100%;
+    flex-basis: 1024px;
 `
 const Charts = (p: any) => {
     const params: { chartType: keyof CH_TYPES } = useParams()
