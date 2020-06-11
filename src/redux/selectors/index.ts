@@ -3,10 +3,11 @@ import moment from 'moment'
 
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
-import { DailyForecast } from '../../types/weather'
+import { DailyForecast, CurrentWeatherResponse } from '../../types/weather'
 import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
 import Emoji from '../../data/emoji'
+import { normalizeForecastUnits } from '../../utils/weather'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -29,7 +30,9 @@ export const selectForecastDiscussion = (state: RootState): Discussion | undefin
 export const selectDaysAhead = (state: RootState): number => state.forecast.daysAhead
 export const selectDetailed = (state: RootState): any | undefined => {
     if (state.forecast.detailed) {
-        return Object.values(state.forecast.detailed)
+        const forecastItems: Array<CurrentWeatherResponse>  = Object.values(state.forecast.detailed)
+        const normalized = normalizeForecastUnits(forecastItems)
+        return normalized
     }
     return []
 }

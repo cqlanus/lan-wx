@@ -9,6 +9,7 @@ const DEFAULT_UNITS: { [key: string]: [ string, string ] } = {
     barometricPressure: ['mb', 'Pa'],
     seaLevelPressure: ['mb', 'Pa'],
     windSpeed: ['mi/h', 'm/s'],
+    windGust: ['mi/h', 'm/s'],
     visibility: ['mi', 'm'],
 }
 
@@ -35,4 +36,8 @@ export const parseCurrentWeather = (current: CurrentWeatherResponse): any => {
         }
     }, {})
     return parsed
+}
+
+export const normalizeForecastUnits = (forecastItems: Array<CurrentWeatherResponse>) => {
+    return forecastItems.map(parseCurrentWeather)
 }
