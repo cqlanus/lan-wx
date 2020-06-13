@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
-import { DailyForecast, CurrentWeatherResponse } from '../../types/weather'
+import { DailyForecast, CurrentWeatherResponse, CurrentWeather } from '../../types/weather'
 import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
 import Emoji from '../../data/emoji'
@@ -21,6 +21,17 @@ export const selectCoords = (state: RootState) => state.location.coords
 // WEATHER
 export const selectCurrentWeather = (state: RootState) => state.weather.current
 export const selectDailyForecast = (state: RootState): DailyForecast | undefined => state.weather.dailyForecast
+export const selectRecentWeather = (state: RootState) => state.weather.recent
+export const selectRecentTemps = createSelector(
+    [selectRecentWeather],
+    (recent: CurrentWeather[] | undefined) => {
+        if (!recent) { return [] }
+        return recent.map(({ temperature, timestamp }) => ({
+            temperature,
+            timestamp
+        }))
+    }
+)
 
 // CHARTS
 export const selectCurrentChart = (chart: keyof CH_TYPES) => (state: RootState): string | undefined => state.chart[chart]
@@ -125,6 +136,22 @@ export const selectMoonPhase = createSelector(
         return []
     }
 )
+
+// export const selectTemperatureDeparture = createSelector(
+//     [selectNorms, selectRecentTemps],
+//     (norms, recent) => {
+//         if (!recent) { return [] }
+//         const departure = recent.map(day => {
+//             const { temperature, timestamp } = day
+//             const date = moment(timestamp).format('MM-DD')
+//             const foundNorm = norms.find(norm => norm.date === date)
+//             if (foundNorm) {
+//                 const diff = temperature.value - foundNorm
+
+//             }
+//         })
+//     }
+// )
 
 export const selectInitialLayer = () => {
     const { radar } = LAYERS

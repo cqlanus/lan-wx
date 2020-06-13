@@ -7,6 +7,7 @@ import { CurrentWeather, DailyForecast } from '../../types/weather'
 
 interface WeatherState {
     current?: CurrentWeather,
+    recent?: CurrentWeather[],
     dailyForecast?: DailyForecast
 }
 
@@ -24,11 +25,14 @@ export const weather = createSlice({
         },
         setDailyForecast: (state, action: PayloadAction<DailyForecast | undefined>) => {
             state.dailyForecast = action.payload
+        },
+        setRecentWeather: (state, action: PayloadAction<CurrentWeather[] | undefined>) => {
+            state.recent = action.payload
         }
     }
 })
 
-export const { setCurrentWeather, setDailyForecast } = weather.actions
+export const { setCurrentWeather, setDailyForecast, setRecentWeather } = weather.actions
 
 // THUNKS
 export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
@@ -42,6 +46,19 @@ export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
         console.log({ err })
         dispatch(setCurrentWeather(undefined))
     }
+}
+
+export const getRecentWeather = (limit?: number): AppThunk => async (dispatch, getState) => {
+    try {
+        const state = getState()
+        const coords = selectCoords(state)
+        if (!coords) { return }
+        const recentWeather = await api.weather.getRecentConditions(coords, limit)
+        dispatch(setRecentWeather(recentWeather))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setRecentWeather(undefined))
+    } 
 }
 
 export const getDailyForecast = (): AppThunk => async(dispatch, getState) => {

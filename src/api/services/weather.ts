@@ -5,11 +5,20 @@ import type { Coords } from '../../types/location'
 
 export default class Weather {
     BASE = getConfigVar('LAN_WX_API')
-    getCurrentConditions = async ({ latitude, longitude }: any): Promise<CurrentWeather> => {
+    getCurrentConditions = async ({ latitude, longitude }: Coords): Promise<CurrentWeather> => {
         const url = `${this.BASE}/current/${latitude}/${longitude}`
         const resp = await fetch(url)
         const data = await resp.json()
         const parsed = parseCurrentWeather(data)
+        return parsed
+    }
+
+    getRecentConditions = async({ latitude, longitude }: Coords, limit: number | undefined): Promise<any[]> => {
+        const url = `${this.BASE}/recent/${latitude}/${longitude}`
+        const finalUrl = limit ? `${url}?limit=${limit}` : url
+        const resp = await fetch(finalUrl)
+        const data = await resp.json()
+        const parsed = data.map((d: any) => d.properties).map(parseCurrentWeather)
         return parsed
     }
 

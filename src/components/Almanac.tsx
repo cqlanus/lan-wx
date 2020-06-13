@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { getRecentWeather } from '../redux/slice/weather'
 import { getAlmanac } from '../redux/slice/climate'
-import { selectAlmanac, selectCoords } from '../redux/selectors'
+import { selectAlmanac, selectCoords, } from '../redux/selectors'
 
 type Alm = {
     [key: string]: {
@@ -102,6 +103,7 @@ const Almanac = () => {
     const coords = useSelector(selectCoords)
     const almanac: Alm = useSelector(selectAlmanac)
     useEffect(() => {
+        dispatch(getRecentWeather())
         dispatch(getAlmanac())
     }, [dispatch, coords])
 

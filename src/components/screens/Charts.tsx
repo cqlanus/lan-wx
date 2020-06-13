@@ -35,13 +35,12 @@ const Container = styled.div`
 
 const ImgContainer = styled.div`
     height: 100%;
+    overflow-x: scroll;
     display: flex;
-    justify-content: center;
-    align-items: center;
 `
 
 const ChartImage = styled.img`
-    flex-basis: 1024px;
+    max-width: 1024px;
 `
 const Charts = (p: any) => {
     const params: { chartType: keyof CH_TYPES } = useParams()

@@ -8,7 +8,8 @@ const vars: VAR_CONFIG = {
         LAN_WX_API: 'https://localhost:9001',
     },
     dev: {
-        LAN_WX_API: 'https://lan-wx-api.chrislanus.com',
+        // LAN_WX_API: 'https://lan-wx-api.chrislanus.com',
+        LAN_WX_API: '',
     },
     prod: {
         LAN_WX_API: 'https://lan-wx-api.chrislanus.com',

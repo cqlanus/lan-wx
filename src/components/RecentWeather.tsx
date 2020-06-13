@@ -1,94 +1,83 @@
 import React, { useEffect } from 'react'
+import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
-import {
-    Line,
-    XAxis,
-    YAxis,
-    Legend,
-    Tooltip
-} from 'recharts'
+import { XAxis, YAxis, Legend, Tooltip, } from 'recharts'
 
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
-import { getNorms } from '../redux/slice/climate'
-import { selectCoords, selectNorms } from '../redux/selectors'
+import { getRecentWeather } from '../redux/slice/weather'
+import { selectCoords, selectRecentWeather } from '../redux/selectors'
 import type { CHART_CONFIG } from '../types/chart'
 
-const dataFor = (key: string) => (d: any) => {
-    if (d[key]) {
-        const { value } = d[key]
-        return value < -100 ? null : value
-    }
+const dataFor = (key: string) => (d: any) => d[key] && d[key].value
+
+const formatTime = (d: string) => {
+    const timeString = moment(d).format('ha')
+    return timeString
 }
 
-// STYLED COMPONENTS
-const PageContainer = styled.div`
-    margin-bottom: 8rem;
-`
 
-const Title = styled.h3``
-
-const BASE_X_AXIS = { ...BASE_AXIS, dataKey: 'date', mirror: false }
+const BASE_X_AXIS = { 
+    ...BASE_AXIS, 
+    reversed: true,
+    dataKey: 'timestamp',
+    tickFormatter: (d: string) => formatTime(d),
+}
 const baseElement = getBaseElement(dataFor)
 
 const CHARTS: CHART_CONFIG = {
     temp: {
-        title: 'Temperature Norms',
-        keys: ['DLY-TMAX-NORMAL', 'DLY-TMIN-NORMAL', 'DLY-DUTR-NORMAL'],
+        title: "Temperature",
+        keys: ['temperature', 'dewpoint'],
+        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
+    },
+    percentages: {
+        title: "Percentages",
+        keys: ['relativeHumidity',],
+        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
+    },
+    pressure: {
+        title: 'Pressure',
+        keys: ['barometricPressure', 'seaLevelPressure'],
+        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis, domain: ['dataMin - 10', 'auto'] }]
+    },
+    wind: {
+        title: "Wind",
+        keys: ['windSpeed', 'windGust'],
         axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     },
     precip: {
-        title: 'Precipitation Norms',
-        keys: ['DLY-PRCP-25PCTL', 'DLY-PRCP-50PCTL', 'DLY-PRCP-75PCTL'],
-        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
-    },
-    degreeDay: {
-        title: 'Degree Days',
-        keys: ['DLY-GRDD-TB5086', 'DLY-HTDD-NORMAL', 'DLY-CLDD-NORMAL'],
-        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
-    },
-    snow: {
-        title: 'Snow Norms',
-        keys: ['DLY-SNOW-25PCTL', 'DLY-SNOW-50PCTL', 'DLY-SNOW-75PCTL'],
-        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
-    },
-    precipProbs: {
-        title: 'Precip Probabilities',
-        keys: ['DLY-PRCP-PCTALL-GE001HI', 'DLY-PRCP-PCTALL-GE050HI', 'DLY-PRCP-PCTALL-GE100HI'],
-        axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
-    },
-    snowProbs: {
-        title: 'Snow Probabilities',
-        keys: ['DLY-SNOW-PCTALL-GE001TI', 'DLY-SNOW-PCTALL-GE010TI', 'DLY-SNOW-PCTALL-GE100TI'],
+        title: "Precipitation",
+        keys: ['precipitationLastHour', ],
         axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     }
 }
-
-const Norms = () => {
+const RecentWeather = () => {
     const dispatch = useDispatch()
+    const recent = useSelector(selectRecentWeather)
     const coords = useSelector(selectCoords)
-    const norms = useSelector(selectNorms)
 
     useEffect(() => {
-        dispatch(getNorms())
-    }, [dispatch, coords,])
+        dispatch(getRecentWeather())
+    }, [dispatch, coords])
+
+    if (!recent) { return null }
+
     return (
-        <PageContainer>
-            <Title>Climate Norms</Title>
+        <div>
             {
                 Object.entries(CHARTS).map(([k, val]) => {
                     return (
                         <ChartContainer
                             key={k}
                             title={val.title}
-                            data={norms}
+                            data={recent}
                         >
                             <Tooltip {...TooltipProps} />
                             {
                                 val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                    return <Axis key={idx} {...rest} mirror />
+                                    return <Axis key={idx} {...rest} />
                                 })
                             }
                             {
@@ -102,8 +91,8 @@ const Norms = () => {
                     )
                 })
             }
-        </PageContainer >
+        </div>
     )
 }
 
-export default Norms
+export default RecentWeather

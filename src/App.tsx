@@ -25,7 +25,8 @@ function App() {
         <Router>
             <NavDrawer/>
             <Switch>
-                <Route exact path="/"><Home/></Route>
+                <Route exact path="/"><Redirect to="/home/current"/></Route>
+                <Route exact path="/home/:type"><Home/></Route>
 
                 <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
                 <Route path="/charts/:chartType"><Charts/></Route>

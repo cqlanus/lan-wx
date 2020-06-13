@@ -13,6 +13,10 @@ const Container = styled(Card)`
     margin: 2rem 0;
 `
 
+const BottomButton = styled(Button)`
+    margin-bottom: 2rem;
+`
+
 const Period = styled.div`
     margin-bottom: 1rem;
     padding-left: 1rem;
@@ -23,6 +27,8 @@ const Period = styled.div`
 `
 
 const ConditionIcon = styled.img`
+    height: 4.5rem;
+    width: 4.5rem;
     border-radius: 50%;
     margin-right: 1rem;
     transform: scale(0.8);
@@ -123,7 +129,7 @@ const ForecastCard = () => {
                     )
                 })
             }
-            <Button onClick={() => setFullForecast(!isShowingFull)}>{isShowingFull ? 'Less' : 'More'}</Button>
+            <BottomButton onClick={() => setFullForecast(!isShowingFull)}>{isShowingFull ? 'Less' : 'More'}</BottomButton>
         </Container>
     )
 }
