@@ -58,6 +58,14 @@ const StatContainer = styled.div`
     padding-right: 1rem;
 `
 
+const inferChanceOfPrecip = (forecast: string) => {
+    const precipRegex = /\d{1,3}%/g
+    const chance = forecast.match(precipRegex)
+    if (chance) {
+        return chance[0]
+    }
+}
+
 const ForecastCard = () => {
     const initialDetails: any = {}
     const [isShowingFull, setFullForecast] = useState(false)
@@ -90,7 +98,9 @@ const ForecastCard = () => {
         const { temperature, temperatureUnit: unit, windSpeed, windDirection } = p
         const tempString = `${emoji.temperature}: ${temperature} ${unit}`
         const windString = `${emoji.wind}: ${windSpeed} ${windDirection}`
-        const statString = `${tempString} | ${windString}`
+        const chance = inferChanceOfPrecip(p.detailedForecast)
+        const chanceString = chance ? ` | ${emoji.rainDrop}: ${chance}` : ''
+        const statString = `${tempString} | ${windString}${chanceString}`
         const isShowing = isPeriodDetailed(p)
         return (
             <StatContainer>
