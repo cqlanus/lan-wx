@@ -36,4 +36,19 @@ export const getCurrentLocation = (): AppThunk => async dispatch => {
     }
 }
 
+export const getLocation = (location: string) => async (dispatch: any) => {
+    try {
+        const coords = await api.location.geocode(location)
+        const { latitude } = coords
+        console.log({ coords })
+        if (!latitude) {
+            throw coords
+        }
+        dispatch(setLocation(coords))
+        
+    } catch (err) {
+        console.log({err})
+    } 
+}
+
 export default location.reducer

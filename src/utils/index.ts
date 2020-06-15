@@ -7,3 +7,13 @@ export const getConfigVar = (configVar: string) => {
         : 'dev'
     return CONFIG[env][configVar]
 }
+
+export const request = async (url: string, options?: any) => {
+    const response = await fetch(url, options)
+    const json = await response.json()
+    if (response.ok) {
+        return json
+    } else {
+        throw json
+    }
+}

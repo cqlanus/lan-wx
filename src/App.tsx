@@ -12,6 +12,7 @@ import Forecast from './components/screens/Forecast'
 import Climate from './components/screens/Climate'
 import MapScreen from './components/screens/Map'
 import NavDrawer from './components/NavDrawer'
+import LocationSearch from './components/LocationSearch'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
 
@@ -21,26 +22,27 @@ function App() {
         dispatch(getCurrentLocation())
     }, [dispatch])
   return (
-    <div className="App">
-        <Router>
-            <NavDrawer/>
-            <Switch>
-                <Route exact path="/"><Redirect to="/home/current"/></Route>
-                <Route exact path="/home/:type"><Home/></Route>
+      <div className="App">
+          <Router>
+              <NavDrawer/>
+              <LocationSearch/>
+              <Switch>
+                  <Route exact path="/"><Redirect to="/home/current"/></Route>
+                  <Route exact path="/home/:type"><Home/></Route>
 
-                <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
-                <Route path="/charts/:chartType"><Charts/></Route>
+                  <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
+                  <Route path="/charts/:chartType"><Charts/></Route>
 
-                <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
-                <Route path="/forecast/:forecastType"><Forecast/></Route>
+                  <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
+                  <Route path="/forecast/:forecastType"><Forecast/></Route>
 
-                <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
-                <Route path="/climate/:climateType"><Climate/></Route>
+                  <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
+                  <Route path="/climate/:climateType"><Climate/></Route>
 
-                <Route exact path="/map"><MapScreen /></Route>
-            </Switch>
-        </Router>
-    </div>
+                  <Route exact path="/map"><MapScreen /></Route>
+              </Switch>
+          </Router>
+      </div>
   );
 }
 

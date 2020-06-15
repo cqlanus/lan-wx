@@ -25,11 +25,11 @@ const MapCard = () => {
     const layerUrl = useSelector(selectLayerUrl)
 
     useEffect(() => {
-        if (!center && coords) {
+        if (coords) {
             const { longitude, latitude } = coords
             setCenter([longitude, latitude])
         }
-    })
+    }, [coords])
     
     const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {

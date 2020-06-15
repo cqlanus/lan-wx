@@ -1,4 +1,4 @@
-import { getConfigVar } from '../../utils'
+import { getConfigVar, request } from '../../utils'
 import type { Coords } from '../../types/location'
 
 export default class Climate {
@@ -6,22 +6,16 @@ export default class Climate {
 
     getNorms = async ({ latitude, longitude }: Coords): Promise<any> => {
         const url = `${this.BASE}/norms/${latitude}/${longitude}`
-        const resp = await fetch(url)
-        const data = await resp.json()
-        return data
+        return await request(url)
     }
 
     getAlmanac = async ({ latitude, longitude }: Coords): Promise<any> => {
         const url = `${this.BASE}/almanac/${latitude}/${longitude}`
-        const resp = await fetch(url)
-        const data = await resp.json()
-        return data
+        return await request(url)
     }
 
     getAstronomy = async ({ latitude, longitude }: Coords): Promise<any> => {
         const url = `${this.BASE}/astronomy/${latitude}/${longitude}`
-        const resp = await fetch(url)
-        const data = await resp.json()
-        return data
+        return await request(url)
     }
 }
