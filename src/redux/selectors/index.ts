@@ -190,3 +190,35 @@ export const selectDetailedForecast = createSelector(
         })
     }
 )
+
+export const selectDepartures = createSelector(
+    [selectDailyForecast, selectNorms],
+    (daily, norms) => {
+        if (!daily || !norms) { return [] }
+        const { periods } = daily
+        const matchingDays = periods.map((p: any) => {
+            const { isDaytime, startTime, temperature } = p
+            const date = moment(startTime).format('MM-DD')
+            const found = norms.find((norm: any) => norm.DATE === date)
+            const k = isDaytime ? 'HI' : 'LO'
+            const tmax = found ? found['DLY-TMAX-NORMAL'] : null
+            const tmin = found ? found['DLY-TMIN-NORMAL'] : null
+            const val = isDaytime ? tmax.value : tmin.value
+            const departure = Number((temperature - val).toFixed(2))
+            return {
+                date,
+                [`forecast${k}`]: temperature,
+                [`departure${k}`]: departure,
+                [`normal${k}`]: val,
+            }
+        }).reduce((acc: { [key: string]: any }, curr) => {
+            const { date } = curr
+            const existing = acc[date] || {}
+            return {
+                ...acc,
+                [date]: { ...existing, ...curr },
+            }
+        }, {})
+        return Object.values(matchingDays)
+    }
+)
