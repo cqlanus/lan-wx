@@ -15,6 +15,7 @@ import NavDrawer from './components/NavDrawer'
 import LocationSearch from './components/LocationSearch'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
+import 'toastr/build/toastr.css'
 
 function App() {
     const dispatch = useDispatch()

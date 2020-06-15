@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import toastr from 'toastr'
 
 import { AppThunk } from '../store'
 import { selectCoords } from '../selectors'
@@ -44,7 +45,7 @@ export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
         dispatch(setCurrentWeather(currentWeather))
     } catch (err) {
         console.log({ err })
-        dispatch(setCurrentWeather(undefined))
+        toastr.error('Could not get current weather')
     }
 }
 
@@ -57,11 +58,11 @@ export const getRecentWeather = (limit?: number): AppThunk => async (dispatch, g
         dispatch(setRecentWeather(recentWeather))
     } catch (err) {
         console.log({ err })
-        dispatch(setRecentWeather(undefined))
-    } 
+        toastr.error('Could not get recent weather')
+    }
 }
 
-export const getDailyForecast = (): AppThunk => async(dispatch, getState) => {
+export const getDailyForecast = (): AppThunk => async (dispatch, getState) => {
     try {
         const coords = selectCoords(getState())
         if (!coords) { return }
@@ -69,7 +70,8 @@ export const getDailyForecast = (): AppThunk => async(dispatch, getState) => {
         dispatch(setDailyForecast(dailyForecast))
     } catch (err) {
         console.log({ err })
-        dispatch(setDailyForecast(undefined))
+        toastr.error('Could not get daily forecast')
+
     }
 }
 

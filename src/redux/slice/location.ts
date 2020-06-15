@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import toastr from 'toastr'
 
 import { AppThunk } from '../store'
 import type { Coords } from '../../types/location'
@@ -40,7 +41,6 @@ export const getLocation = (location: string) => async (dispatch: any) => {
     try {
         const coords = await api.location.geocode(location)
         const { latitude } = coords
-        console.log({ coords })
         if (!latitude) {
             throw coords
         }
@@ -48,6 +48,7 @@ export const getLocation = (location: string) => async (dispatch: any) => {
         
     } catch (err) {
         console.log({err})
+        toastr.warning('testing')
     } 
 }
 

@@ -32,7 +32,9 @@ const CurrentContainer = styled.div`
     text-align: left;
 `
 
-const Title = styled.h3``
+const Title = styled.h3`
+    margin-bottom: 0.5rem;
+`
 
 const Spacer = styled.div`
   margin-bottom: 1rem;
@@ -45,6 +47,10 @@ const DISPLAY_UNIT_MAP: any = {
     percent: '%',
     'm_s-1': 'm/s'
 }
+
+const Info = styled.span`
+    font-size: 0.7rem;
+`
 
 const DISPLAY_LABEL_MAP: any = {
     textDescription: 'Now',
@@ -109,7 +115,7 @@ const Current = (p: any) => {
     if (!currentWeather) { return null }
 
     const { main, secondary } = CURRENT_WX_STRUCTURE
-    const { timestamp, icon } = currentWeather
+    const { timestamp, icon, station } = currentWeather
     const renderMain = () => {
         return (<Flex>
             <ConditionIcon src={icon} alt="icon" />
@@ -138,16 +144,24 @@ const Current = (p: any) => {
         </div>
     ))
 
+    const renderStation = () => {
+       const { name, stationIdentifier } = station
+        return (
+            <Info>{name} | {stationIdentifier}</Info>
+        )
+    }
+
     const renderTime = () => {
         const formatted = moment(timestamp).format('D MMM HH:mma')
         return (
-            <em>as of {formatted} </em>
+            <Info>as of {formatted} </Info>
         )
     }
 
     return (
         <Container>
             <Title>Current Conditions</Title>
+            {renderStation()}
             <Spacer>
                 {renderTime()}
             </Spacer>

@@ -39,6 +39,5 @@ export const parseCurrentWeather = (current: CurrentWeatherResponse): any => {
 }
 
 export const normalizeForecastUnits = (forecastItems: Array<CurrentWeatherResponse>) => {
-    console.log({ here: 1 })
     return forecastItems.map(parseCurrentWeather)
 }

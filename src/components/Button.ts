@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Button = styled.button`
+export const buttonStyle = css`
     font-family: monospace;
     font-size: 1rem;
     padding: 0.5rem 1rem;
@@ -11,5 +11,9 @@ const Button = styled.button`
     &:hover {
       font-weight: bold;
     }
+`
+
+const Button = styled.button`
+    ${buttonStyle}
 `
 export default Button

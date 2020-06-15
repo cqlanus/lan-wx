@@ -9,7 +9,6 @@ export default class Weather {
         const url = `${this.BASE}/current/${latitude}/${longitude}`
         const data = await request(url)
         const parsed = parseCurrentWeather(data)
-        console.log({ parsed, data })
         return parsed
     }
 
