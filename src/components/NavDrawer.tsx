@@ -10,7 +10,13 @@ const PAGES = {
     map: { path: '/map', display: 'Map' }
 }
 
-const Trigger = styled(Button)``
+const Trigger = styled(Button)`
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+`
 
 type DrawerProps = { isOpen: boolean }
 const Drawer = styled.div`

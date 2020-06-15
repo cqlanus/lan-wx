@@ -52,6 +52,11 @@ const Info = styled.span`
     font-size: 0.7rem;
 `
 
+const Reload = styled.span`
+    cursor: pointer;
+    margin-left: 0.5rem;
+`
+
 const DISPLAY_LABEL_MAP: any = {
     textDescription: 'Now',
     temperature: emoji.temperature,
@@ -107,9 +112,12 @@ const Current = (p: any) => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const currentWeather: any = useSelector(selectCurrentWeather)
+    const handleGetWeather = () => {
+        dispatch(getCurrentWeather())
+    }
 
     useEffect(() => {
-        dispatch(getCurrentWeather())
+        handleGetWeather()
     }, [dispatch, coords])
 
     if (!currentWeather) { return null }
@@ -160,7 +168,7 @@ const Current = (p: any) => {
 
     return (
         <Container>
-            <Title>Current Conditions</Title>
+            <Title>Current Conditions<Reload onClick={handleGetWeather}>{emoji.reload}</Reload></Title>
             {renderStation()}
             <Spacer>
                 {renderTime()}

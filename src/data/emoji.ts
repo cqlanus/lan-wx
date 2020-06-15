@@ -37,5 +37,6 @@ export default {
         nw: '↖️',
         se: '↘️',
         sw: '↙️',
-    }
+    },
+    reload: '🔃',
 }

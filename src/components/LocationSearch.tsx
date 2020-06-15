@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 
-import Button, { buttonStyle } from './Button'
+import { buttonStyle } from './Button'
 import { getLocation } from '../redux/slice/location'
 
 const Container = styled.form`
     display: flex;
     margin-right: 1px;
+    margin-top: 2rem;
 `
 const SearchBar = styled.input`
     flex: 1;
