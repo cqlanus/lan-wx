@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import moment from 'moment'
 
 import { AppThunk } from '../store'
 import api from '../../api'
@@ -9,13 +10,18 @@ interface ClimateState {
     normsTypes?: any,
     almanac?: any,
     astronomy?: any,
+    month?: number,
 }
 
+const getInitialMonth = () => {
+    return moment().month()
+}
 const initialState: ClimateState = {
     norms: undefined,
     normsTypes: undefined,
     almanac: undefined,
-    astronomy: undefined
+    astronomy: undefined,
+    month: getInitialMonth(),
 }
 
 export const climate = createSlice({
@@ -32,11 +38,14 @@ export const climate = createSlice({
         },
         setAstronomy: (state, action: PayloadAction<any>) => {
             state.astronomy = action.payload
+        },
+        setMonth: (state, action: PayloadAction<number | undefined>) => {
+            state.month = action.payload
         }
     }
 })
 
-export const { setNorms, setAlmanac, setAstronomy } = climate.actions
+export const { setNorms, setAlmanac, setAstronomy, setMonth } = climate.actions
 
 export const getNorms = (): AppThunk => async (dispatch, getState) => {
     try {

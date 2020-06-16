@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
+import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
-    Line,
     XAxis,
     YAxis,
     Legend,
@@ -13,7 +13,7 @@ import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
 import { getNorms } from '../redux/slice/climate'
-import { selectCoords, selectNorms } from '../redux/selectors'
+import { selectCoords, selectNormsByMonth } from '../redux/selectors'
 import type { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => {
@@ -23,6 +23,24 @@ const dataFor = (key: string) => (d: any) => {
     }
 }
 
+const formatTime = (d: string) => {
+    const timeString = moment(d).format('MM-DD')
+    return timeString
+}
+
+const formatDate = (d: string) => `${d}-2020`.replace(/-/g, '/')
+
+const BASE_X_AXIS = { 
+    ...BASE_AXIS, 
+    dataKey: (d: any) => {
+        const dateStr = formatDate(d.DATE)
+        const date = moment(dateStr).format('MM/DD/YYYY')
+        return date
+    },
+    tickFormatter: (d: string) => formatTime(d),
+    mirror: false,
+}
+
 // STYLED COMPONENTS
 const PageContainer = styled.div`
     margin-bottom: 8rem;
@@ -30,7 +48,6 @@ const PageContainer = styled.div`
 
 const Title = styled.h3``
 
-const BASE_X_AXIS = { ...BASE_AXIS, dataKey: 'date', mirror: false }
 const baseElement = getBaseElement(dataFor)
 
 const CHARTS: CHART_CONFIG = {
@@ -69,7 +86,7 @@ const CHARTS: CHART_CONFIG = {
 const Norms = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
-    const norms = useSelector(selectNorms)
+    const norms = useSelector(selectNormsByMonth)
 
     useEffect(() => {
         dispatch(getNorms())
@@ -88,7 +105,7 @@ const Norms = () => {
                             <Tooltip {...TooltipProps} />
                             {
                                 val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                    return <Axis key={idx} {...rest} mirror />
+                                    return <Axis key={idx} {...rest} />
                                 })
                             }
                             {

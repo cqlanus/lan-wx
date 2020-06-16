@@ -6,6 +6,8 @@ import Almanac from '../Almanac'
 import Astronomy from '../Astronomy'
 import BottomNav from '../BottomNav'
 
+import { CLIMATE_OPTIONS } from '../ClimateOptions'
+import type { CLIM_OPTIONS } from '../ClimateOptions'
 
 const CLIMATE_TYPES = {
     norms: { display: 'Norms' },
@@ -14,8 +16,9 @@ const CLIMATE_TYPES = {
 }
 
 const Climate = () => {
-    const params: { climateType: any } = useParams()
+    const params: { climateType: keyof CLIM_OPTIONS } = useParams()
     const { climateType } = params
+    const Options = CLIMATE_OPTIONS[climateType]
     return (
         <div>
             <Switch>
@@ -23,7 +26,9 @@ const Climate = () => {
                 <Route exact path={'/climate/almanac'} ><Almanac /></Route>
                 <Route exact path={'/climate/astronomy'} ><Astronomy /></Route>
             </Switch>
-            <BottomNav root="climate" options={CLIMATE_TYPES} selected={(k: string) => k === climateType}></BottomNav>
+            <BottomNav root="climate" options={CLIMATE_TYPES} selected={(k: string) => k === climateType}>
+                {Options && <Options />}
+            </BottomNav>
         </div>
     )
 }
