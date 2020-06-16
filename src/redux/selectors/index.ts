@@ -41,7 +41,7 @@ export const selectForecastDiscussion = (state: RootState): Discussion | undefin
 export const selectDaysAhead = (state: RootState): number => state.forecast.daysAhead
 export const selectDetailed = (state: RootState): any | undefined => {
     if (state.forecast.detailed) {
-        const forecastItems: Array<CurrentWeatherResponse>  = Object.values(state.forecast.detailed)
+        const forecastItems: Array<CurrentWeatherResponse> = Object.values(state.forecast.detailed)
         const normalized = normalizeForecastUnits(forecastItems)
         return normalized
     }
@@ -52,6 +52,22 @@ export const selectDetailed = (state: RootState): any | undefined => {
 export const selectNorms = (state: RootState): any | undefined => state.climate.norms
 export const selectAlmanac = (state: RootState): any | undefined => state.climate.almanac
 export const selectAstronomy = (state: RootState): any | undefined => state.climate.astronomy
+export const selectNormMonth = (state: RootState): number | undefined => state.climate.month
+export const selectNormsByMonth = createSelector(
+    [selectNorms, selectNormMonth],
+    (norms = [], normMonth) => {
+        if (normMonth !== undefined && normMonth >= 0) {
+            return norms.filter((n: any, ) => {
+                const { DATE } = n
+                const dateStr = `${DATE}-2020`.replace(/-/g, '/')
+                const month = moment(dateStr).month()
+                const sameMonth = month === normMonth
+                return sameMonth
+            })
+        }
+        return norms
+    }
+)
 export const selectDayLengths = createSelector(
     [selectAstronomy],
     (astronomy) => {
