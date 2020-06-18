@@ -117,7 +117,7 @@ const Current = (p: any) => {
     }
 
     useEffect(() => {
-        handleGetWeather()
+        dispatch(getCurrentWeather())
     }, [dispatch, coords])
 
     if (!currentWeather) { return null }

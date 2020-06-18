@@ -19,11 +19,12 @@ export const parseNwsValue = ({ value, unitCode }: NWSValue, key: string) => {
     const convertableValue  = DEFAULT_UNITS[key]
     if (convertableValue && value) {
         const [ toUnit, fromUnit ] = convertableValue
-        const convertedValue = convertUnits(fromUnit, toUnit, value)
-        const rounded = parseFloat(convertedValue.toNumber(toUnit).toFixed(3))
+        const convertedValue = convertUnits(fromUnit, toUnit, +value)
+        const num = convertedValue.toNumber(toUnit)
+        const rounded = parseFloat(num.toFixed(3))
         return { value: rounded, unit: toUnit }
     }
-    value = value ? parseFloat(value.toFixed(3)) : value
+    value = value ? parseFloat(Number(value).toFixed(3)) : value
     return { value, unit }
 }
 
