@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { selectCoords, selectCurrentWeather } from '../redux/selectors'
-import type { WeatherValue } from '../types/weather'
 import emoji from '../data/emoji'
+import { getDisplayUnit } from '../utils/units'
 
 const Container = styled(Card)`
     display: flex;
@@ -37,16 +37,8 @@ const Title = styled.h3`
 `
 
 const Spacer = styled.div`
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 `
-
-const DISPLAY_UNIT_MAP: any = {
-    degF: '°F',
-    degC: '°C',
-    'degree_(angle)': '°',
-    percent: '%',
-    'm_s-1': 'm/s'
-}
 
 const Info = styled.span`
     font-size: 0.7rem;
@@ -72,31 +64,6 @@ const getDisplayLabel = (key: string) => {
     const displayLabel = DISPLAY_LABEL_MAP[key]
     return displayLabel || key
 }
-const degreesToCompass = (value: number) => {
-    const val = Math.round(value / 22.5)
-    const compassVals = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-    const index = val % 16
-    return (compassVals[index])
-}
-
-const degreesToCompassSimple = (value: number) => {
-    const val = Math.round(value / 45)
-    const compassVals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW',]
-    const index = val % 8
-    return (compassVals[index])
-}
-
-const getDisplayUnit = ({ value, unit }: WeatherValue, key?: string) => {
-    if (key === 'windDirection') {
-        const simple = degreesToCompassSimple(value)
-        const arrow: { [key: string]: string } = emoji.arrow
-        const icon = arrow[simple.toLowerCase()]
-        return `${degreesToCompass(value)} ${icon}`
-    }
-
-    const displayUnit = DISPLAY_UNIT_MAP[unit]
-    return `${value} ${displayUnit || unit}`
-}
 
 const CURRENT_WX_STRUCTURE = {
     main: { textDescription: { unit: false }, temperature: { unit: true } },
@@ -108,7 +75,7 @@ const CURRENT_WX_STRUCTURE = {
     },
 }
 
-const Current = (p: any) => {
+const Current = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const currentWeather: any = useSelector(selectCurrentWeather)

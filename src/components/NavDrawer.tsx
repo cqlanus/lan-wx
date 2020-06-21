@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Button from './Button'
+
+import { selectHasDevices } from '../redux/selectors'
 
 const PAGES = {
     home: { path: '/', display: 'Home' },
     forecast: { path: '/forecast', display: 'Forecast' },
     charts: { path: '/charts', display: 'Charts' },
     climate: { path: '/climate', display: 'Climate' },
-    map: { path: '/map', display: 'Map' }
+    map: { path: '/map', display: 'Map' },
+    pws: { path: '/pws', display: 'PWS' },
 }
 
 const Trigger = styled(Button)`
@@ -55,17 +59,35 @@ const Dismiss = styled(Link)`
     border-bottom: none;
 `
 
+const Settings = styled(Link)`
+    cursor: pointer;
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    border-bottom: none;
+`
+
 const NavDrawer = () => {
     const [isOpen, setOpen] = useState(false)
+    const hasDevices = useSelector(selectHasDevices)
     const toggleOpen = () => setOpen(!isOpen)
+    const pages = useMemo(() => {
+        if (hasDevices) {
+            return PAGES
+        } else {
+            const { pws, ...updatedPages } = PAGES
+            return updatedPages
+        }
+    }, [hasDevices])
     return (
         <div>
             <Trigger onClick={toggleOpen}>Menu</Trigger>
             <Drawer isOpen={isOpen}>
                 <Dismiss onClick={toggleOpen}>✕</Dismiss>
                 {
-                    Object.entries(PAGES).map(([k, p]) => <Link key={k} onClick={toggleOpen} href={`#${p.path}`}>{p.display}</Link>)
+                    Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} href={`#${p.path}`}>{p.display}</Link>)
                 }
+                <Settings onClick={toggleOpen} href="#/settings">Settings</Settings>
             </Drawer>
         </div>
     )

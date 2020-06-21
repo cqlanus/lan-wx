@@ -13,6 +13,8 @@ import Climate from './components/screens/Climate'
 import MapScreen from './components/screens/Map'
 import NavDrawer from './components/NavDrawer'
 import LocationSearch from './components/LocationSearch'
+import Settings from './components/screens/Settings'
+import PWS from './components/screens/PWS'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
 import 'toastr/build/toastr.css'
@@ -41,6 +43,10 @@ function App() {
                   <Route path="/climate/:climateType"><Climate/></Route>
 
                   <Route exact path="/map"><MapScreen /></Route>
+                  <Route exact path="/settings"><Settings /></Route>
+
+                  <Route exact path="/pws"><Redirect to="/pws/current"/></Route>
+                  <Route path="/pws/:pwsType"><PWS /></Route>
               </Switch>
           </Router>
       </div>

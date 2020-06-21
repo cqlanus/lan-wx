@@ -3,18 +3,13 @@ import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 
 import { buttonStyle } from './Button'
+import Input from './Input'
 import { getLocation } from '../redux/slice/location'
 
 const Container = styled.form`
     display: flex;
     margin-right: 1px;
     margin-top: 2rem;
-`
-const SearchBar = styled.input`
-    flex: 1;
-    font-family: monospace;
-    font-size: 1rem;
-    padding: 0 0.5rem;
 `
 
 const Submit = styled.input`
@@ -32,7 +27,7 @@ const LocationSearch = () => {
 
     return (
         <Container onSubmit={handleSearch}>
-            <SearchBar
+            <Input
                 placeholder="current location"
                 onChange={handleChange}
                 onSubmit={handleSearch} />

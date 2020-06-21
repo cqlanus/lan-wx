@@ -4,10 +4,11 @@ import moment from 'moment'
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
 import { DailyForecast, CurrentWeatherResponse, CurrentWeather } from '../../types/weather'
+import { Device } from '../../types/pws'
 import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
 import Emoji from '../../data/emoji'
-import { normalizeForecastUnits } from '../../utils/weather'
+import { normalizeForecastUnits, parseDeviceWeather } from '../../utils/weather'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -236,5 +237,23 @@ export const selectDepartures = createSelector(
             }
         }, {})
         return Object.values(matchingDays)
+    }
+)
+
+// PWS
+export const selectPwsDevices = (state: RootState): Device[] => state.pws.devices
+export const selectHasDevices = createSelector(
+    [selectPwsDevices],
+    (devices) => devices.length > 0
+)
+export const selectDeviceWeather = (state: RootState) => state.pws.weather
+export const selectCurrentDeviceWeather = createSelector(
+    [selectDeviceWeather],
+    (deviceWeather) => {
+        const currentDeviceWeather = deviceWeather[0]
+        if (currentDeviceWeather) {
+            const parsed = parseDeviceWeather(currentDeviceWeather)
+            return parsed
+        }
     }
 )

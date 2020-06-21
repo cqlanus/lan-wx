@@ -54,12 +54,12 @@ const baseElement = getBaseElement(dataFor)
 const CHARTS: CHART_CONFIG = {
     temp: {
         title: "Temperature",
-        keys: ['temperature', 'dewpoint'],
-        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
+        keys: ['temperature', 'dewpoint', 'apparentTemperature'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis, domain: ['dataMin - 10', 'auto'] }]
     },
     percentages: {
         title: "Percentages",
-        keys: ['relativeHumidity', 'skyCover', 'probabilityOfPrecipitation'],
+        keys: ['probabilityOfPrecipitation', 'relativeHumidity', 'skyCover'],
         axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     },
     wind: {
