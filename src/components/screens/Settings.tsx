@@ -6,10 +6,15 @@ import Input from '../Input'
 import { buttonStyle } from '../Button'
 
 import { addDevice, getDevices, } from '../../redux/slice/pws'
+import { selectPwsDevices } from '../../redux/selectors'
 
 const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
+`
+
+const SubContainer = styled.div`
+    margin-bottom: 2rem;
 `
 
 const Form = styled.form`
@@ -41,6 +46,7 @@ const Submit = styled.input`
 `
 const Settings = () => {
     const dispatch = useDispatch()
+    const devices = useSelector(selectPwsDevices)
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
     useEffect(() => {
@@ -55,6 +61,18 @@ const Settings = () => {
     }
     return (
         <Container>
+            <SubContainer>
+                <h4>Existing devices</h4>
+                {
+                    devices.map(dev => {
+                        return (
+                            <div key={dev.macAddress}>
+                                {`MAC Address: ${dev.macAddress}`}
+                            </div>
+                        )
+                    })
+                }
+            </SubContainer>
             <Title>Add a PWS</Title>
             <Form onSubmit={handleSearch}>
                 <InputGroup>
@@ -67,6 +85,7 @@ const Settings = () => {
                 </InputGroup>
                 <Submit type="submit" />
             </Form>
+            
         </Container>
     )
 }
