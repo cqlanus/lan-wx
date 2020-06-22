@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
@@ -6,7 +7,9 @@ import { selectCurrentDeviceWeather } from '../redux/selectors'
 import { getDisplayUnit } from '../utils/units'
 import emoji from '../data/emoji'
 
-const Title = styled.h3``
+const Title = styled.h3`
+    margin-bottom: 0.5rem;
+`
 
 const CatTitle = styled.h4`
     margin-bottom: 0.5rem;
@@ -14,6 +17,11 @@ const CatTitle = styled.h4`
 const Data = styled.span`
     margin-bottom: 0.5rem;
 `
+
+const Info = styled.span`
+    font-size: 0.7rem;
+`
+
 
 type DEV_WX_DATA = { display: string, key: string, unit: boolean }
 type DEV_WX_STRUCT = {
@@ -71,9 +79,11 @@ const CurrentDeviceWeather = () => {
         )
     })
 
+    const date = moment(currentWeather.date).format('D MMM HH:mma')
     return (
         <div>
             <Title>PWS Current Conditions</Title>
+            <Info>{`as of ${date}`}</Info>
             {renderCurrent(DEVICE_WEATHER_STRUCTURE)}
         </div>
     )

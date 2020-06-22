@@ -7,6 +7,7 @@ export const buttonStyle = css`
     background-color: white;
     border: 1px dashed black;
     cursor: pointer;
+    border-radius: 0;
 
     &:hover {
       font-weight: bold;

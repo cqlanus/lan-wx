@@ -9,11 +9,12 @@ import { getLocation } from '../redux/slice/location'
 const Container = styled.form`
     display: flex;
     margin-right: 1px;
-    margin-top: 2rem;
+    margin-top: 2.2rem;
 `
 
 const Submit = styled.input`
-    ${buttonStyle}
+    ${buttonStyle};
+    border-top: none;
 `
 
 const LocationSearch = () => {

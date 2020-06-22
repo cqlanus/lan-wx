@@ -24,6 +24,7 @@ const Period = styled.div`
     text-align: left;
     border-bottom: 1px solid black;
     display: flex;
+    cursor: pointer;
 `
 
 const ConditionIcon = styled.img`
@@ -48,13 +49,16 @@ const StatLine = styled.div`
     font-weight: bold;
 `
 
-const MoreButton = styled.span`
-    cursor: pointer;
-`
+const MoreButton = styled.span``
+
 const StatContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 1rem;
+`
+
+const Description = styled.div`
     padding-right: 1rem;
 `
 
@@ -105,7 +109,7 @@ const ForecastCard = () => {
         return (
             <StatContainer>
                 <StatLine>{statString} </StatLine>
-                <MoreButton onClick={handleToggleDetails(p)}>{isShowing ? emoji.less : emoji.more}</MoreButton>
+                <MoreButton >{isShowing ? emoji.less : emoji.more}</MoreButton>
             </StatContainer>
         )
     }
@@ -113,9 +117,9 @@ const ForecastCard = () => {
     const renderDescription = (p: any) => {
         const isShowing = isPeriodDetailed(p)
         return (
-            <div>
+            <Description>
                 {isShowing ? p.detailedForecast : p.shortForecast}
-            </div>
+            </Description>
         )
     }
 
@@ -126,7 +130,7 @@ const ForecastCard = () => {
             {
                 periods.map((p: any) => {
                     return (
-                        <Period key={p.number}>
+                        <Period key={p.number} onClick={handleToggleDetails(p)}>
                             <ConditionIcon src={p.icon} alt="icon" />
                             <DetailsContainer>
                                 <PeriodTitle>

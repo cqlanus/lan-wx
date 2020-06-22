@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useMemo, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Button from './Button'
 
+import { getDevices } from '../redux/slice/pws'
 import { selectHasDevices } from '../redux/selectors'
+import emoji from '../data/emoji'
 
 const PAGES = {
     home: { path: '/', display: 'Home' },
@@ -62,14 +64,21 @@ const Dismiss = styled(Link)`
 const Settings = styled(Link)`
     cursor: pointer;
     position: absolute;
-    bottom: 1rem;
-    right: 2rem;
+    top: 0;
+    left: 1rem;
     border-bottom: none;
+    font-size: 1.3rem;
 `
 
 const NavDrawer = () => {
     const [isOpen, setOpen] = useState(false)
     const hasDevices = useSelector(selectHasDevices)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getDevices())
+    }, [])
+
     const toggleOpen = () => setOpen(!isOpen)
     const pages = useMemo(() => {
         if (hasDevices) {
@@ -87,7 +96,7 @@ const NavDrawer = () => {
                 {
                     Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} href={`#${p.path}`}>{p.display}</Link>)
                 }
-                <Settings onClick={toggleOpen} href="#/settings">Settings</Settings>
+                <Settings onClick={toggleOpen} href="#/settings">{ emoji.gear }</Settings>
             </Drawer>
         </div>
     )

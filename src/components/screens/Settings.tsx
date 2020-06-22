@@ -64,28 +64,30 @@ const Settings = () => {
             <SubContainer>
                 <h4>Existing devices</h4>
                 {
-                    devices.map(dev => {
-                        return (
-                            <div key={dev.macAddress}>
-                                {`MAC Address: ${dev.macAddress}`}
-                            </div>
-                        )
-                    })
+                    devices.length > 0
+                        ? devices.map(dev => {
+                            return (
+                                <div key={dev.macAddress}>
+                                    {`MAC Address: ${dev.macAddress}`}
+                                </div>
+                            )
+                        })
+                        : <em>None</em>
                 }
             </SubContainer>
             <Title>Add a PWS</Title>
             <Form onSubmit={handleSearch}>
                 <InputGroup>
-                    <Label>MAC Address</Label>
+                    <Label>MAC Address:</Label>
                     <StyledInput value={macAddress} onChange={handleMacAddress} />
                 </InputGroup>
                 <InputGroup>
-                    <Label>API Key</Label>
+                    <Label>API Key:</Label>
                     <StyledInput value={apiKey} onChange={handleApiKey} />
                 </InputGroup>
                 <Submit type="submit" />
             </Form>
-            
+
         </Container>
     )
 }

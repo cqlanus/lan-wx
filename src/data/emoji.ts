@@ -39,4 +39,5 @@ export default {
         sw: '↙️',
     },
     reload: '🔃',
+    gear: '⚙️',
 }
