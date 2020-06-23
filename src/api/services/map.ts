@@ -42,7 +42,6 @@ export default class MapService {
         const url = `${this.LEGEND_BASE}?${queryString}`
         const resp = await fetch(url)
         const data = await resp.json()
-        console.log({ data })
         return data[0]
     }
 }

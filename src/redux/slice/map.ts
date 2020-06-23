@@ -17,8 +17,10 @@ interface MapState {
 const { radar } = LAYERS
 const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id, time: moment().toISOString() }
 const initLayer = api.map.selectLayerUrl(initArgs)
+const initLegend =  'https://nowcoast.noaa.gov/images/legends/radar.png'
 const initialState: MapState = {
     layerUrl: initLayer,
+    legendUrl: initLegend,
     ...initArgs
 }
 
@@ -58,7 +60,7 @@ export const getLayer = ({layerTypeId, layerId, timeOffset}: any): AppThunk => a
 
         dispatch(setLayerUrl({ url, time, layerTypeId, layerId }))
         
-        dispatch(setLegendUrl(legendUrl))
+        dispatch(setLegendUrl(legendUrl.replace('http', 'https')))
     } catch (err) {
         dispatch(setMapError(err.message))
     }
