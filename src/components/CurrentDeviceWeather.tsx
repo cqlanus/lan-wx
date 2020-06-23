@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { selectCurrentDeviceWeather } from '../redux/selectors'
+import { getDeviceInfo } from '../redux/slice/pws'
+import { selectPwsDevices, selectCurrentDeviceWeather } from '../redux/selectors'
 import { getDisplayUnit } from '../utils/units'
 import emoji from '../data/emoji'
+
+const Container = styled.div`
+  padding: 0 1rem;
+`
 
 const Title = styled.h3`
     margin-bottom: 0.5rem;
@@ -18,10 +23,14 @@ const Data = styled.span`
     margin-bottom: 0.5rem;
 `
 
-const Info = styled.span`
+const Info = styled.div`
     font-size: 0.7rem;
 `
 
+const Reload = styled.span`
+    cursor: pointer;
+    margin-left: 0.5rem;
+`
 
 type DEV_WX_DATA = { display: string, key: string, unit: boolean }
 type DEV_WX_STRUCT = {
@@ -44,9 +53,11 @@ const DEVICE_WEATHER_STRUCTURE: DEV_WX_STRUCT = {
         { display: 'Pressure', key: 'baromrelin', unit: true },
     ],
     'Rain': [
-        { display: `${emoji.rainDrop}rate`, key: 'hourlyrainin', unit: true },
+        { display: `${emoji.rainDrop}Rate`, key: 'hourlyrainin', unit: true },
         { display: `Day${emoji.rainDrop}`, key: 'dailyrainin', unit: true },
         { display: `Event${emoji.rainDrop}`, key: 'eventrainin', unit: true },
+        { display: `Week${emoji.rainDrop}`, key: 'weeklyrainin', unit: true },
+        { display: `Month${emoji.rainDrop}`, key: 'monthlyrainin', unit: true },
     ],
     'Temp Inside': [
         { display: emoji.temperature, key: 'tempinf', unit: true },
@@ -59,8 +70,38 @@ const DEVICE_WEATHER_STRUCTURE: DEV_WX_STRUCT = {
 }
 
 const CurrentDeviceWeather = () => {
-    const currentWeather: any = useSelector(selectCurrentDeviceWeather)
+    const dispatch = useDispatch()
+    const devices = useSelector(selectPwsDevices)
+
+    const handleGetWeather = () => {
+        if (devices.length > 0) {
+            const [device] = devices
+            const { macAddress, apiKey } = device
+            dispatch(getDeviceInfo(macAddress, apiKey))
+        }
+    }
+
+    useEffect(() => {
+        handleGetWeather()
+    }, [dispatch, devices])
+
+
+    const currentWeather: { data: any, info: any } | undefined = useSelector(selectCurrentDeviceWeather)
+
     if (!currentWeather) { return null }
+
+    const { data, info } = currentWeather
+
+    const renderInfo = () => {
+        return (
+            <div>
+                <Title>{info.name} Current Conditions<Reload onClick={handleGetWeather}>{emoji.reload}</Reload></Title>
+                <Info>{`as of ${date}`}</Info>
+                <Info>{info.coords.address}</Info>
+            </div>
+        )
+    }
+
     const renderCurrent = (structure: DEV_WX_STRUCT) => Object.entries(structure).map(([key, cat]) => {
         return (
             <div key={key}>
@@ -69,7 +110,7 @@ const CurrentDeviceWeather = () => {
                     {
                         cat.reduce((acc: any, { display, key }: any) => {
                             const label = display ? `${display}: ` : ''
-                            const displayVal = `${label}${getDisplayUnit(currentWeather[key], key)}`
+                            const displayVal = `${label}${getDisplayUnit(data[key], key)}`
                             const initial = acc ? `${acc} | ` : ''
                             return `${initial}${displayVal}`
                         }, '')
@@ -79,13 +120,12 @@ const CurrentDeviceWeather = () => {
         )
     })
 
-    const date = moment(currentWeather.date).format('D MMM HH:mma')
+    const date = moment(data.date).format('D MMM HH:mma')
     return (
-        <div>
-            <Title>PWS Current Conditions</Title>
-            <Info>{`as of ${date}`}</Info>
+        <Container>
+            {renderInfo()}
             {renderCurrent(DEVICE_WEATHER_STRUCTURE)}
-        </div>
+        </Container>
     )
 }
 

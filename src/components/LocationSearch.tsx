@@ -15,6 +15,7 @@ const Container = styled.form`
 const Submit = styled.input`
     ${buttonStyle};
     border-top: none;
+    border-radius: 0;
 `
 
 const LocationSearch = () => {

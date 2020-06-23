@@ -53,7 +53,7 @@ const Departures = () => {
     useEffect(() => {
         dispatch(getDailyForecast())
         dispatch(getNorms())
-    }, [coords])
+    }, [dispatch, coords])
     return (
         <div>
             {

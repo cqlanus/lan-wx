@@ -3,3 +3,9 @@ export type Device = {
     apiKey: string,
 }
 
+export type DeviceInfo = {
+    macAddress: string,
+    lastData: any,
+    info: any,
+}
+

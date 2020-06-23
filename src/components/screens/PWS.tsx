@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { useParams, Route, Switch } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, } from 'react-redux'
 
 import BottomNav from '../BottomNav'
 import CurrentDeviceWeather from '../CurrentDeviceWeather'
 import RecentDeviceWeather from '../RecentDeviceWeather'
 
-import { getDeviceWeather, getDevices } from '../../redux/slice/pws'
-import { selectPwsDevices } from '../../redux/selectors'
+import { getDevices, } from '../../redux/slice/pws'
 
 const PWS_TYPES = {
     current: { display: 'Current' },
@@ -18,22 +17,10 @@ const PWS = () => {
     const { pwsType } = params
 
     const dispatch = useDispatch()
-    const devices = useSelector(selectPwsDevices)
 
-    const handleGetWeather = () => {
-        if (devices.length > 0) {
-            const [ device ] = devices
-            const { macAddress, apiKey } = device
-            dispatch(getDeviceWeather(macAddress, apiKey))
-        }
-    }
     useEffect(() => {
         dispatch(getDevices())
-    }, [])
-
-    useEffect(() => {
-        handleGetWeather()
-    }, [ dispatch, devices ])
+    }, [ dispatch ])
 
     return (
         <div>

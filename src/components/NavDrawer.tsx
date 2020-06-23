@@ -77,7 +77,7 @@ const NavDrawer = () => {
 
     useEffect(() => {
         dispatch(getDevices())
-    }, [])
+    }, [ dispatch, ])
 
     const toggleOpen = () => setOpen(!isOpen)
     const pages = useMemo(() => {

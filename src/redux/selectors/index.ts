@@ -247,13 +247,19 @@ export const selectHasDevices = createSelector(
     (devices) => devices.length > 0
 )
 export const selectDeviceWeather = (state: RootState) => state.pws.weather
+/* export const selectDeviceWeather = createSelector(
+ *     [selectDevWeather],
+ *     (deviceWeather) => deviceWeather.map(parseDeviceWeather)
+ * ) */
+export const selectDeviceInfo = (state: RootState) => state.pws.deviceInfo
 export const selectCurrentDeviceWeather = createSelector(
-    [selectDeviceWeather],
-    (deviceWeather) => {
-        const currentDeviceWeather = deviceWeather[0]
-        if (currentDeviceWeather) {
-            const parsed = parseDeviceWeather(currentDeviceWeather)
-            return parsed
+    [selectDeviceInfo],
+    (deviceInfo) => {
+        if (!deviceInfo) { return }
+        const { lastData, info } = deviceInfo
+        if (lastData) {
+            const parsed = parseDeviceWeather(lastData)
+            return { data: parsed, info  }
         }
     }
 )

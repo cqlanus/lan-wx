@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import moment from 'moment'
 import {
     XAxis,
@@ -6,12 +6,13 @@ import {
     Legend,
     Tooltip
 } from 'recharts'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
-import { selectDeviceWeather } from '../redux/selectors'
+import { getDeviceWeather } from '../redux/slice/pws'
+import { selectDeviceWeather, selectPwsDevices } from '../redux/selectors'
 import { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => d[key]
@@ -47,7 +48,7 @@ const PWS_CHARTS: CHART_CONFIG = {
     },
     pressure: {
         title: 'Pressure',
-        keys: ['baromrelin', 'baromabsin'],
+        keys: ['baromrelin', /* 'baromabsin' */],
         axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis, domain: ['dataMin - 0.1', 'auto'] }]
     },
     windSpeed: {
@@ -69,6 +70,21 @@ const PWS_CHARTS: CHART_CONFIG = {
 
 
 const RecentDeviceWeather = () => {
+    const dispatch = useDispatch()
+    const devices = useSelector(selectPwsDevices)
+
+    const handleGetWeather = () => {
+        if (devices.length > 0) {
+            const [device] = devices
+            const { macAddress, apiKey } = device
+            dispatch(getDeviceWeather(macAddress, apiKey))
+        }
+    }
+
+    useEffect(() => {
+        handleGetWeather()
+    }, [dispatch, devices])
+
     const deviceWeather = useSelector(selectDeviceWeather)
 
     return (

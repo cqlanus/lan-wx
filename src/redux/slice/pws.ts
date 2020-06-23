@@ -3,16 +3,18 @@ import toastr from 'toastr'
 
 import api from '../../api'
 import { selectPwsDevices } from '../selectors'
-import { Device } from '../../types/pws'
+import { Device, DeviceInfo } from '../../types/pws'
 
 interface PWSState {
     devices: Device[],
-    weather: any[]
+    weather: any[],
+    deviceInfo: DeviceInfo | undefined,
 }
 
 const initialState: PWSState = {
     devices: [],
-    weather: []
+    weather: [],
+    deviceInfo: undefined
 }
 
 export const pws = createSlice({
@@ -24,11 +26,14 @@ export const pws = createSlice({
         },
         setPwsWeather: (state, action: PayloadAction<any[]>) => {
             state.weather = action.payload
+        },
+        setDeviceInfo: (state, action: PayloadAction<DeviceInfo>) => {
+            state.deviceInfo = action.payload
         }
     }
 })
 
-export const { setDevices, setPwsWeather } = pws.actions
+export const { setDevices, setPwsWeather, setDeviceInfo } = pws.actions
 
 // THUNKS
 const STORAGE_KEY = 'LAN_WX_DEVICES'
@@ -98,5 +103,16 @@ export const getDeviceWeather = (macAddress: string, apiKey: string) => async (d
         toastr.error(`Could not get device weather for device ${macAddress}`)
     } 
 }
+
+export const getDeviceInfo = (macAddress: string, apiKey: string) => async (dispatch: any) => {
+    try {
+        const deviceInfo = await api.pws.getDeviceInfo(macAddress, apiKey)
+        dispatch(setDeviceInfo(deviceInfo))
+    } catch (err) {
+        console.log({ err })
+        toastr.error(`Could not get device info for device ${macAddress}`)
+    } 
+}
+
 
 export default pws.reducer

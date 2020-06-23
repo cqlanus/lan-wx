@@ -51,7 +51,7 @@ const Settings = () => {
     const [apiKey, setApiKey] = useState('')
     useEffect(() => {
         dispatch(getDevices())
-    }, [])
+    }, [ dispatch ])
     const handleMacAddress = (e: any) => setMacAddress(e.target.value)
     const handleApiKey = (e: any) => setApiKey(e.target.value)
     const handleSearch = () => {
