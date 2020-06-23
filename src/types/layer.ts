@@ -1,5 +1,6 @@
 export type Layer = {
     name: string,
+    arcgisId?: string, 
     id: string
 }
 

@@ -7,6 +7,7 @@ import LAYERS from '../../data/layers'
 
 interface MapState {
     layerUrl: string,
+    legendUrl?: string,
     layerTypeId: string,
     layerId: string,
     time: string,
@@ -35,21 +36,29 @@ export const mapSlice = createSlice({
         },
         setMapError: (state, action) => {
             state.error = action.payload
+        },
+        setLegendUrl: (state, action) => {
+            state.legendUrl = action.payload
         }
     }
 })
 
-export const { setLayerUrl, setMapError } = mapSlice.actions
+export const { setLayerUrl, setMapError, setLegendUrl } = mapSlice.actions
 
 
 // THUNKS
-export const getLayer = ({layerTypeId, layerId, timeOffset}: any): AppThunk => dispatch => {
+export const getLayer = ({layerTypeId, layerId, timeOffset}: any): AppThunk => async dispatch => {
     try {
         // console.log({ layerTypeId, layerId })
         const diff = timeOffset * 30
         const time = moment().startOf('minute').subtract(diff, 'minutes').toISOString()
         const url = api.map.selectLayerUrl({ layerTypeId, layerId, time })
+        const legend = await api.map.buildLegendUrl({ layerTypeId, layerId })
+        const { url: legendUrl } = legend || {}
+
         dispatch(setLayerUrl({ url, time, layerTypeId, layerId }))
+        
+        dispatch(setLegendUrl(legendUrl))
     } catch (err) {
         dispatch(setMapError(err.message))
     }

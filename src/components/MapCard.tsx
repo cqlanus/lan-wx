@@ -7,14 +7,11 @@ import { Layer, Source, ZoomControl, ScaleControl } from 'react-mapbox-gl'
 import MapBox from './Map'
 import Card from './Card'
 import LayerDropdown from './LayerDropdown'
-import { selectCoords, selectLayerUrl } from '../redux/selectors'
+import { selectCoords, selectLayerUrl, selectLegendUrl } from '../redux/selectors'
 
 const Container = styled(Card)`
     background-color: white;
 `
-
-// TODO:
-// * Create a settings screen that facilitates unit selection
 
 const MapCard = () => {
     const initialZoom: [number] = [7]
@@ -23,6 +20,7 @@ const MapCard = () => {
     const [ center, setCenter ] = useState(initialCenter)
     const coords = useSelector(selectCoords)
     const layerUrl = useSelector(selectLayerUrl)
+    const legendUrl = useSelector(selectLegendUrl)
 
     useEffect(() => {
         if (coords) {
@@ -62,6 +60,7 @@ const MapCard = () => {
         <Container>
             <LayerDropdown />
             { MapEl }
+            { legendUrl && <img src={legendUrl} alt="" /> }
         </Container>
     )
 }

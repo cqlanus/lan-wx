@@ -15,6 +15,7 @@ export const selectLayerUrl = (state: RootState) => state.map.layerUrl
 export const selectLayerTypeId = (state: RootState) => state.map.layerTypeId
 export const selectLayerId = (state: RootState) => state.map.layerId
 export const selectMapData = (state: RootState) => state.map
+export const selectLegendUrl = (state: RootState) => state.map.legendUrl
 
 // LOCATION
 export const selectCoords = (state: RootState) => state.location.coords

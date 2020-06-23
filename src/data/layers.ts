@@ -7,6 +7,7 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 id: '1',
+                arcgisId: '3',
                 name: 'Radar'
             }
         ],
@@ -51,24 +52,34 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 name: 'Temperature',
+                arcgisId: '11',
                 id: '17'
             },
             {
                 name: 'Wind Speed',
-                id: '9'
-            },
-            {
-                name: 'Wind Gusts',
-                id: '5'
+                id: '9',
+                arcgisId: '19',
             },
             {
                 name: 'Dew Point',
+                arcgisId: '15',
                 id: '13'
             },
             {
                 name: 'Precip',
+                arcgisId: '7',
                 id: '21'
             },
+            {
+                name: 'Wind Velo',
+                arcgisId: '3',
+                id: '25'
+            },
+            {
+                name: 'Visibility',
+                arcgisId: '27',
+                id: '1'
+            }
         ],
         name: 'Current',
         id: 'rtma'
@@ -79,30 +90,37 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 name: 'Temperature',
+                arcgisId: '31',
                 id: '25'
             },
             {
                 name: 'Feels Like',
+                arcgisId: '39',
                 id: '17'
             },
             {
                 name: 'Dew Point',
+                arcgisId: '35',
                 id: '21'
             },
             {
                 name: 'Humidity',
+                arcgisId: '43',
                 id: '13'
             },
             {
                 name: 'Chance Precip',
+                arcgisId: '23',
                 id: '33'
             },
             {
                 name: 'Wind Speed',
+                arcgisId: '47',
                 id: '9'
             },
             {
                 name: 'Wind Gusts',
+                arcgisId: '51',
                 id: '5'
             },
         ],
@@ -122,6 +140,7 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 id: '9',
+                arcgisId: '3',
                 name: 'Severe Outlook'
             }
         ],
