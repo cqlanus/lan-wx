@@ -8,7 +8,7 @@ import Button, { buttonStyle } from '../Button'
 
 import { addDevice, getDevices, } from '../../redux/slice/pws'
 import { getAuthUser, logout } from '../../redux/slice/auth'
-import { selectPwsDevices } from '../../redux/selectors'
+import { selectPwsDevices, selectUser } from '../../redux/selectors'
 
 const Container = styled.div`
     box-sizing: border-box;
@@ -51,13 +51,13 @@ const Submit = styled.input`
 const Settings = () => {
     const dispatch = useDispatch()
     const devices = useSelector(selectPwsDevices)
+    const user = useSelector(selectUser)
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
     const handleGetUser = async () => {
         dispatch(getAuthUser())
     }
     useEffect(() => {
-        console.log({ here: 1 })
         dispatch(getDevices())
         handleGetUser()
     }, [ dispatch ])

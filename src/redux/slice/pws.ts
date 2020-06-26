@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import toastr from 'toastr'
 
 import api from '../../api'
-import { selectPwsDevices } from '../selectors'
-import { Device, DeviceInfo } from '../../types/pws'
+import { selectPwsDevices, selectUser } from '../selectors'
+import { Device, DeviceInfo, DeviceArgs } from '../../types/pws'
+import { getUser } from './user';
+import { getAuthUser } from './auth';
 
 interface PWSState {
     devices: Device[],
@@ -37,26 +39,20 @@ export const { setDevices, setPwsWeather, setDeviceInfo } = pws.actions
 
 // THUNKS
 const STORAGE_KEY = 'LAN_WX_DEVICES'
-export const addDevice = (device: Device) => async (dispatch: any, getState: any) => {
-    const { macAddress, } = device
+export const addDevice = (device: DeviceArgs) => async (dispatch: any, getState: any) => {
+    const { macAddress, apiKey } = device
     try {
         const currentDevices = selectPwsDevices(getState())
+        const user = selectUser(getState())
+        if (!user) { return }
         const exists = currentDevices.find(({ macAddress: d }: Device) => d === macAddress)
         if (exists) {
             toastr.warning(`MAC Address ${exists} already exists`)
             return
         }
-        const storage = window.localStorage
-        const devicesStr = storage.getItem(STORAGE_KEY)
-        if (devicesStr) {
-            const devices = JSON.parse(devicesStr) || []
-            const updatedDevices = [...devices, device]
-            storage.setItem(STORAGE_KEY, JSON.stringify(updatedDevices))
-            dispatch(setDevices(updatedDevices))
-        } else {
-            const devices = [device]
-            storage.setItem(STORAGE_KEY, JSON.stringify(devices))
-            dispatch(setDevices(devices))
+        const created = await api.pws.addDevice(macAddress, apiKey, user.id)
+        if (created) {
+            dispatch(getAuthUser())
         }
     } catch (err) {
         console.log({ err })
@@ -101,7 +97,7 @@ export const getDeviceWeather = (macAddress: string, apiKey: string) => async (d
     } catch (err) {
         console.log({ err })
         toastr.error(`Could not get device weather for device ${macAddress}`)
-    } 
+    }
 }
 
 export const getDeviceInfo = (macAddress: string, apiKey: string) => async (dispatch: any) => {
@@ -111,7 +107,7 @@ export const getDeviceInfo = (macAddress: string, apiKey: string) => async (disp
     } catch (err) {
         console.log({ err })
         toastr.error(`Could not get device info for device ${macAddress}`)
-    } 
+    }
 }
 
 

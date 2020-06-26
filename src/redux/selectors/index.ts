@@ -242,16 +242,6 @@ export const selectDepartures = createSelector(
 )
 
 // PWS
-export const selectPwsDevices = (state: RootState): Device[] => state.pws.devices
-export const selectHasDevices = createSelector(
-    [selectPwsDevices],
-    (devices) => devices.length > 0
-)
-export const selectDeviceWeather = (state: RootState) => state.pws.weather
-/* export const selectDeviceWeather = createSelector(
- *     [selectDevWeather],
- *     (deviceWeather) => deviceWeather.map(parseDeviceWeather)
- * ) */
 export const selectDeviceInfo = (state: RootState) => state.pws.deviceInfo
 export const selectCurrentDeviceWeather = createSelector(
     [selectDeviceInfo],
@@ -264,3 +254,22 @@ export const selectCurrentDeviceWeather = createSelector(
         }
     }
 )
+
+// USER
+export const selectUser = (state: RootState) => state.user.current
+export const selectPwsDevices = createSelector<RootState, any, Device[]>(
+    [selectUser],
+    (user) => {
+        if (!user) { return [] }
+        return user.pws
+    }
+)
+export const selectHasDevices = createSelector<RootState, any, boolean>(
+    [selectPwsDevices],
+    (devices) => devices.length > 0
+)
+export const selectDeviceWeather = (state: RootState) => state.pws.weather
+/* export const selectDeviceWeather = createSelector(
+ *     [selectDevWeather],
+ *     (deviceWeather) => deviceWeather.map(parseDeviceWeather)
+ * ) */
