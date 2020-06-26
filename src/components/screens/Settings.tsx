@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { withAuthenticator } from '@aws-amplify/ui-react'
 import styled from 'styled-components'
 
 import Input from '../Input'
-import { buttonStyle } from '../Button'
+import Button, { buttonStyle } from '../Button'
 
 import { addDevice, getDevices, } from '../../redux/slice/pws'
+import { getAuthUser, logout } from '../../redux/slice/auth'
 import { selectPwsDevices } from '../../redux/selectors'
 
 const Container = styled.div`
@@ -41,6 +43,8 @@ const Title = styled.h4`
     margin-bottom: 0;
 `
 
+const Logout = styled(Button)``
+
 const Submit = styled.input`
     ${buttonStyle}
 `
@@ -49,8 +53,13 @@ const Settings = () => {
     const devices = useSelector(selectPwsDevices)
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
+    const handleGetUser = async () => {
+        dispatch(getAuthUser())
+    }
     useEffect(() => {
+        console.log({ here: 1 })
         dispatch(getDevices())
+        handleGetUser()
     }, [ dispatch ])
     const handleMacAddress = (e: any) => setMacAddress(e.target.value)
     const handleApiKey = (e: any) => setApiKey(e.target.value)
@@ -59,6 +68,11 @@ const Settings = () => {
             dispatch(addDevice({ macAddress, apiKey }))
         }
     }
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     return (
         <Container>
             <SubContainer>
@@ -88,8 +102,9 @@ const Settings = () => {
                 <Submit type="submit" />
             </Form>
 
+            <Logout onClick={handleLogout}>Logout</Logout>
         </Container>
     )
 }
 
-export default Settings
+export default withAuthenticator(Settings)

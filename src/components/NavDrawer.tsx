@@ -88,6 +88,7 @@ const NavDrawer = () => {
             return updatedPages
         }
     }, [hasDevices])
+
     return (
         <div>
             <Trigger onClick={toggleOpen}>Menu</Trigger>

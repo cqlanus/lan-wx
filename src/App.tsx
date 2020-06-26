@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import Amplify from "aws-amplify"
+import { withAuthenticator } from '@aws-amplify/ui-react'
 import { useDispatch } from 'react-redux'
 import {
     HashRouter as Router,
@@ -18,6 +20,9 @@ import PWS from './components/screens/PWS'
 import { getCurrentLocation } from './redux/slice/location'
 import './App.css';
 import 'toastr/build/toastr.css'
+
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
 
 function App() {
     const dispatch = useDispatch()
@@ -53,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

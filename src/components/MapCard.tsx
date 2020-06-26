@@ -60,7 +60,7 @@ const MapCard = () => {
         <Container>
             <LayerDropdown />
             { MapEl }
-            { legendUrl && <img src={legendUrl} alt="" /> }
+            { legendUrl && center && <img src={legendUrl} alt="" /> }
         </Container>
     )
 }

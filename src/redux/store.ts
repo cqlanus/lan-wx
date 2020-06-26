@@ -7,6 +7,8 @@ import chartReducer from './slice/chart'
 import forecastReducer from './slice/forecast'
 import climateReducer from './slice/climate'
 import pwsReducer from './slice/pws'
+import userReducer from './slice/user'
+import authReducer from './slice/auth'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
       forecast: forecastReducer,
       climate: climateReducer,
       pws: pwsReducer,
+      user: userReducer,
+      auth: authReducer,
   },
 });
 
