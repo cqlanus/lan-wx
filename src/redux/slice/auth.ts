@@ -32,7 +32,6 @@ export const getAuthUser = () => async ( dispatch: any ) => {
         dispatch(getUser(username))
     } catch (err) {
         console.log({ err })
-        toastr.error('Could not get auth user')
     }
 }
 

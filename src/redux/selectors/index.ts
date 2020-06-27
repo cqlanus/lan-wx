@@ -257,6 +257,7 @@ export const selectCurrentDeviceWeather = createSelector(
 
 // USER
 export const selectUser = (state: RootState) => state.user.current
+export const selectAuthUser = (state: RootState) => state.auth.authUser
 export const selectPwsDevices = createSelector<RootState, any, Device[]>(
     [selectUser],
     (user) => {

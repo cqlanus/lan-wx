@@ -8,6 +8,8 @@ export const buttonStyle = css`
     border: 1px dashed black;
     cursor: pointer;
     border-radius: 0;
+    color: black;
+    text-decoration: none;
 
     &:hover {
       font-weight: bold;
