@@ -262,7 +262,7 @@ export const selectPwsDevices = createSelector<RootState, any, Device[]>(
     [selectUser],
     (user) => {
         if (!user) { return [] }
-        return user.pws
+        return user.pws || []
     }
 )
 export const selectHasDevices = createSelector<RootState, any, boolean>(

@@ -7,7 +7,7 @@ import Input from '../Input'
 import { buttonStyle } from '../Button'
 
 import { addDevice, getDevices, } from '../../redux/slice/pws'
-import { getAuthUser, logout } from '../../redux/slice/auth'
+import { logout } from '../../redux/slice/auth'
 import { selectPwsDevices, } from '../../redux/selectors'
 import { Link } from 'react-router-dom'
 
@@ -61,7 +61,6 @@ const Settings = () => {
     const [apiKey, setApiKey] = useState('')
     useEffect(() => {
         dispatch(getDevices())
-        dispatch(getAuthUser())
     }, [dispatch])
     const handleMacAddress = (e: any) => setMacAddress(e.target.value)
     const handleApiKey = (e: any) => setApiKey(e.target.value)

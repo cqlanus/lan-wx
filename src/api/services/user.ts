@@ -7,7 +7,8 @@ export default class User {
         const url = `${this.BASE}/user`
         const created = await request(url, {
             method: 'POST',
-            body: JSON.stringify({ username })
+            body: JSON.stringify({ username }),
+            headers: { 'Content-type': 'application/json' }
         })
         return created
     }

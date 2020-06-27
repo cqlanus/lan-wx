@@ -4,7 +4,6 @@ import toastr from 'toastr'
 import api from '../../api'
 import { selectPwsDevices, selectUser } from '../selectors'
 import { Device, DeviceInfo, DeviceArgs } from '../../types/pws'
-import { getUser } from './user';
 import { getAuthUser } from './auth';
 
 interface PWSState {

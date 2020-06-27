@@ -1,11 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Button from './Button'
 
 import { selectHasDevices } from '../redux/selectors'
 import emoji from '../data/emoji'
-import { getAuthUser } from '../redux/slice/auth'
 
 const PAGES = {
     home: { path: '/', display: 'Home' },
@@ -73,11 +72,6 @@ const Settings = styled(Link)`
 const NavDrawer = () => {
     const [isOpen, setOpen] = useState(false)
     const hasDevices = useSelector(selectHasDevices)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(getAuthUser())
-    }, [ dispatch, ])
 
     const toggleOpen = () => setOpen(!isOpen)
     const pages = useMemo(() => {
