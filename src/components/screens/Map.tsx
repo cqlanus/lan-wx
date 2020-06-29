@@ -11,7 +11,7 @@ import LayerDropdown from '../LayerDropdown'
 import Button from '../Button'
 import { getLayer } from '../../redux/slice/map'
 import { getCurrentLocation } from '../../redux/slice/location'
-import { selectCoords, selectMapData } from '../../redux/selectors'
+import { selectCoords, selectMapData, selectLegendUrl } from '../../redux/selectors'
 
 type ButtonType = { disabled?: boolean }
 
@@ -51,6 +51,7 @@ const MapScreen = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const { layerUrl, layerTypeId, layerId, time } = useSelector(selectMapData)
+    const legendUrl = useSelector(selectLegendUrl)
     const initialCenter: any = undefined
     const [ center, setCenter ] = useState(initialCenter)
     const [timeOffset, setTimeOffset] = useState(0)
@@ -105,6 +106,7 @@ const MapScreen = () => {
     return (
         <Container>
             <InfoSection>{moment(time).format('MM.DD|hh:mma')}</InfoSection>
+            { legendUrl && center && <img src={legendUrl} alt="" /> }
             <LayerDropdown />
             <ButtonGroup>
                 <BottomButton onClick={dec}>{'<'}</BottomButton>
