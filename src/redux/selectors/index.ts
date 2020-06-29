@@ -274,3 +274,21 @@ export const selectDeviceWeather = (state: RootState) => state.pws.weather
  *     [selectDevWeather],
  *     (deviceWeather) => deviceWeather.map(parseDeviceWeather)
  * ) */
+export const selectFavoriteStations = createSelector(
+    [selectUser],
+    (user) => {
+        if (!user) { return [] }
+        const { stations } = user
+        return stations
+    }
+)
+
+export const selectIsStationFavorite = createSelector(
+    [selectUser, selectCurrentWeather],
+    (user, weather) => {
+        if (!weather || !user) { return false }
+        const { station: s } = weather
+        const { stations } = user
+        return stations.some((station: any) => station.icao === s.stationIdentifier)
+    }
+)

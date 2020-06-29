@@ -1,6 +1,11 @@
 export type NWSValue = { value: number | string, unitCode: string }
 export type WeatherValue = { value: number, unit: string }
 
+export type NWSStation = {
+    stationIdentifier: string,
+    name: string,
+}
+
 export type CurrentWeatherResponse = {
     elevation: NWSValue,
     temperature: NWSValue,
@@ -10,7 +15,7 @@ export type CurrentWeatherResponse = {
     seaLevelPressure: NWSValue,
     visibility: NWSValue,
     relativeHumidity: NWSValue,
-    station: string,
+    station: NWSStation,
     textDescription: string,
     cloudLayers: any,
     icon: string,
@@ -26,7 +31,7 @@ export type CurrentWeather = {
     seaLevelPressure: WeatherValue,
     visibility: WeatherValue,
     relativeHumidity: WeatherValue,
-    station: string,
+    station: NWSStation,
     textDescription: string,
     cloudLayers: any,
     icon: string,

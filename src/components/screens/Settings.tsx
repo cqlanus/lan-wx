@@ -7,9 +7,13 @@ import Input from '../Input'
 import { buttonStyle } from '../Button'
 
 import { addDevice, getDevices, } from '../../redux/slice/pws'
+import { setLocation } from '../../redux/slice/location'
+import { removeFavorite } from '../../redux/slice/user'
 import { logout } from '../../redux/slice/auth'
-import { selectPwsDevices, } from '../../redux/selectors'
+import { selectPwsDevices, selectFavoriteStations } from '../../redux/selectors'
 import { Link } from 'react-router-dom'
+import { divide } from 'ramda'
+import emoji from '../../data/emoji'
 
 const Container = styled.div`
     box-sizing: border-box;
@@ -51,12 +55,27 @@ const LogoutContainer = styled.div`
     margin-top: 1rem;
 `
 
+const Remove = styled.span`
+    cursor: pointer;
+    margin-left: 0.5rem;
+`
+
+const Select = styled(Link)`
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+        font-weight: bold;
+    }
+`
+
 const Submit = styled.input`
     ${buttonStyle}
 `
 const Settings = () => {
     const dispatch = useDispatch()
     const devices = useSelector(selectPwsDevices)
+    const stations: any[] = useSelector(selectFavoriteStations)
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
     useEffect(() => {
@@ -74,8 +93,39 @@ const Settings = () => {
         dispatch(logout())
     }
 
-    return (
-        <Container>
+    const handleRemoveFavorite = (station: any) => () => {
+        dispatch(removeFavorite(station))
+    }
+
+    const handleSelectStation = (station: any) => () => {
+        const { lat_prp, lon_prp } = station
+        dispatch(setLocation({ latitude: lat_prp, longitude: lon_prp }))
+    }
+
+    const renderFavorites = () => {
+        return (
+            <SubContainer>
+                <h4>Favorite Stations</h4>
+                {
+                    stations.map(station => {
+                        console.log({ station })
+                        return (
+                            <div key={station.id}>
+                                <Select
+                                    to="/home/current"
+                                    onClick={handleSelectStation(station)}
+                                >{`${station.station_name_current} | ${station.icao}`}</Select>
+                                <Remove onClick={handleRemoveFavorite(station)}>{emoji.x}</Remove>
+                            </div>
+                        )
+                    })
+                }
+            </SubContainer>
+        )
+    }
+
+    const renderDevices = () => {
+        return (
             <SubContainer>
                 <h4>Existing devices</h4>
                 {
@@ -90,19 +140,34 @@ const Settings = () => {
                         : <em>None</em>
                 }
             </SubContainer>
-            <Title>Add a PWS</Title>
-            <Form onSubmit={handleSearch}>
-                <InputGroup>
-                    <Label>MAC Address:</Label>
-                    <StyledInput value={macAddress} onChange={handleMacAddress} />
-                </InputGroup>
-                <InputGroup>
-                    <Label>API Key:</Label>
-                    <StyledInput value={apiKey} onChange={handleApiKey} />
-                </InputGroup>
-                <Submit type="submit" />
-            </Form>
+        )
+    }
 
+    const renderAddDevice = () => {
+
+        return (
+            <SubContainer>
+                <Title>Add a PWS</Title>
+                <Form onSubmit={handleSearch}>
+                    <InputGroup>
+                        <Label>MAC Address:</Label>
+                        <StyledInput value={macAddress} onChange={handleMacAddress} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label>API Key:</Label>
+                        <StyledInput value={apiKey} onChange={handleApiKey} />
+                    </InputGroup>
+                    <Submit type="submit" />
+                </Form>
+            </SubContainer>
+        )
+    }
+
+    return (
+        <Container>
+            {renderDevices()}
+            {renderAddDevice()}
+            {renderFavorites()}
             <LogoutContainer>
                 <Logout to="/home/current" onClick={handleLogout}>Logout</Logout>
             </LogoutContainer>

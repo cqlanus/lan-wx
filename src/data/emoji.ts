@@ -40,4 +40,6 @@ export default {
     },
     reload: '🔃',
     gear: '⚙️',
+    star: '⭐',
+    x: '✖️',
 }

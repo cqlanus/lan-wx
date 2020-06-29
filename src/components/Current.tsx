@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
-import { selectCoords, selectCurrentWeather } from '../redux/selectors'
+import { favoriteStation } from '../redux/slice/user'
+import { selectCoords, selectCurrentWeather, selectIsStationFavorite } from '../redux/selectors'
 import emoji from '../data/emoji'
 import { getDisplayUnit } from '../utils/units'
+import { isStationFavorited } from '../utils/user'
 
 const Container = styled(Card)`
     display: flex;
@@ -49,6 +51,12 @@ const Reload = styled.span`
     margin-left: 0.5rem;
 `
 
+const FavoriteBtn = styled.span`
+cursor: pointer;
+    border: 1px dashed black;
+    padding: 0 0.5rem;
+`
+
 const DISPLAY_LABEL_MAP: any = {
     textDescription: 'Now',
     temperature: emoji.temperature,
@@ -79,8 +87,13 @@ const Current = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const currentWeather: any = useSelector(selectCurrentWeather)
+    const isFavorite = useSelector(selectIsStationFavorite)
     const handleGetWeather = () => {
         dispatch(getCurrentWeather())
+    }
+
+    const handleSave = (icao: string) => () => {
+        dispatch(favoriteStation(icao))
     }
 
     useEffect(() => {
@@ -119,10 +132,22 @@ const Current = () => {
         </div>
     ))
 
-    const renderStation = () => {
-       const { name, stationIdentifier } = station
+    const renderFavoriteButton = () => {
+        const { stationIdentifier } = station
+        if (isFavorite) {
+            return (
+                <span>{emoji.star}</span>
+            )
+        }
         return (
-            <Info>{name} | {stationIdentifier}</Info>
+            <FavoriteBtn onClick={handleSave(stationIdentifier)}>save</FavoriteBtn>
+        )
+    }
+
+    const renderStation = () => {
+        const { name, stationIdentifier } = station
+        return (
+            <Info> {renderFavoriteButton()} {name} | {stationIdentifier}</Info>
         )
     }
 

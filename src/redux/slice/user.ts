@@ -62,4 +62,17 @@ export const favoriteStation = (icao: string) => async (dispatch: any, getState:
     }
 }
 
+export const removeFavorite = (station: any) => async (dispatch: any, getState: any) => {
+    try {
+        const user = selectUser(getState())
+        if (!user) { return }
+        const { UsersStation } = station
+        await api.user.removeFavorite(UsersStation.id, user.username)
+        dispatch(getAuthUser())
+    } catch (err) {
+        console.log({ err })
+        toastr.error(`Could not remove favorited station ${station.icao}`)
+    }
+}
+
 export default user.reducer

@@ -29,4 +29,15 @@ export default class User {
         })
         return resp
     }
+
+    removeFavorite = async (id: string, username: string) => {
+        const url = `${this.BASE}/user/${username}/favorites`
+        const body = { id }
+        const resp = await request(url, {
+            method: 'DELETE',
+            body: JSON.stringify(body),
+            headers: { 'Content-type': 'application/json' }
+        })
+        return resp
+    }
 }
