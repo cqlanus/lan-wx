@@ -19,7 +19,9 @@
                 }
             },
             "auth": {
-                "lanwx13a030ba": {}
+                "lanwx13a030ba": {
+                    "hostedUIProviderCreds": "[]"
+                }
             }
         }
     },
