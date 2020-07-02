@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, } from 'react-router'
@@ -8,6 +8,7 @@ import Button from '../Button'
 import Select from '../Select'
 
 import ModelGuidance from '../../data/modelGuidance'
+import type { ModelProduct } from '../../data/modelGuidance'
 import { getModelGuidance } from '../../redux/slice/model'
 import { selectModelImage } from '../../redux/selectors'
 
@@ -69,8 +70,9 @@ const Options = ({ model }: OptionsProps) => {
     const MAX_HOURS = 36
     const INIT_HOUR = 1
     const [forecastHour, setHour] = useState(INIT_HOUR)
-    const initialProd = modelObj ? Object.keys(modelObj.products)[0] : ''
+    const initialProd = Object.keys(modelObj.products)[0]
     const [product, setProduct] = useState(initialProd)
+    const [productObj, setProductObj] = useState( modelObj.products[initialProd] )
     const dispatch = useDispatch()
     const formatForecastHour = (hour: number) => {
         let forecastHour = `${hour}`
@@ -90,22 +92,28 @@ const Options = ({ model }: OptionsProps) => {
             dispatch(getModelGuidance(model, product, hour))
         }
     }, [product, model, forecastHour])
+
     if (!modelObj) { return null }
+
     const handleSelectProduct = (e: any) => {
-        const value: string = e.target.value
-        setHour(1)
+        const value = e.target.value
+        const pObj = modelObj.products[value]
+        setHour(pObj.start)
         setProduct(value)
+        setProductObj(pObj)
     }
 
     const inc = () => {
-        if (forecastHour < MAX_HOURS) {
-            setHour(forecastHour + 1)
+        const { max, interval } = productObj
+        if (forecastHour < max) {
+            setHour(forecastHour + interval)
         }
     }
 
     const dec = () => {
-        if (forecastHour > INIT_HOUR) {
-            setHour(forecastHour - 1)
+        const { start, interval } = productObj
+        if (forecastHour > start) {
+            setHour(forecastHour - interval)
         }
     }
     return (
@@ -113,14 +121,14 @@ const Options = ({ model }: OptionsProps) => {
             <Select value={product} onChange={handleSelectProduct} onSelect={handleSelectProduct}>
                 {Object.entries(modelObj.products).map(([k, v]) => {
                     return (
-                        <option key={k} value={k}>{v}</option>
+                        <option key={k} value={k}>{v.name}</option>
                     )
                 })}
             </Select>
             <ButtonGroup>
                 <BottomButton onClick={dec}>{'<'}</BottomButton>
                 <ForecastHour>
-                    {`Hour ${forecastHour}`}
+                    {`+${forecastHour}hrs`}
                 </ForecastHour>
                 <BottomButton onClick={inc}>{'>'}</BottomButton>
             </ButtonGroup>
