@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useParams, Route, Switch } from 'react-router'
 
 import BottomNav from '../BottomNav'

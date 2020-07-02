@@ -3,6 +3,7 @@ const MODEL_GUIDANCE = {
         name: 'GFS',
         products: {
             precip_p01: 'Hourly Accumulated Precipitation',
+            precip_ptot: 'Precipitation Total',
             sim_radar_comp: 'Simulated Radar Reflectivity',
             '850_temp_mslp_precip': '850mb Temperature, Pressure & Precip',
             '10m_wnd_precip': '10 Meter Wind & Precip',
@@ -22,6 +23,7 @@ const MODEL_GUIDANCE = {
         name: 'NAM',
         products: {
             precip_p01: 'Hourly Accumulated Precipitation',
+            precip_ptot: 'Precipitation Total',
             sim_radar_1km: 'Simulated Radar Reflectivity',
             '850_temp_mslp_precip': '850mb Temperature, Pressure & Precip',
             '10m_wnd_precip': '10 Meter Wind & Precip',
@@ -41,6 +43,8 @@ const MODEL_GUIDANCE = {
         name: 'HRRR',
         products: {
             precip_p01: 'Hourly Accumulated Precipitation',
+            precip_ptot: 'Precipitation Total',
+            precip_rate: 'Precipitation Rate',
             sim_radar_comp: 'Simulated Radar Reflectivity',
             sfc_cape_cin: 'Surface CAPE/CIN',
             ceiling: 'Cloud Ceiling',

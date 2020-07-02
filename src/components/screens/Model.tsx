@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Route, Switch } from 'react-router'
+import { useParams, } from 'react-router'
 
 import BottomNav from '../BottomNav'
 import Button from '../Button'
@@ -10,6 +10,15 @@ import Select from '../Select'
 import ModelGuidance from '../../data/modelGuidance'
 import { getModelGuidance } from '../../redux/slice/model'
 import { selectModelImage } from '../../redux/selectors'
+
+const Container = styled.div`
+    min-height: 90vh;
+    margin-bottom: 200px;
+`
+
+const OptionsContainer = styled.div`
+    background: white;
+`
 
 const ButtonGroup = styled.div`
     display: flex;
@@ -84,6 +93,7 @@ const Options = ({ model }: OptionsProps) => {
     if (!modelObj) { return null }
     const handleSelectProduct = (e: any) => {
         const value: string = e.target.value
+        setHour(1)
         setProduct(value)
     }
 
@@ -99,7 +109,7 @@ const Options = ({ model }: OptionsProps) => {
         }
     }
     return (
-        <div>
+        <OptionsContainer>
             <Select value={product} onChange={handleSelectProduct} onSelect={handleSelectProduct}>
                 {Object.entries(modelObj.products).map(([k, v]) => {
                     return (
@@ -115,7 +125,7 @@ const Options = ({ model }: OptionsProps) => {
                 <BottomButton onClick={inc}>{'>'}</BottomButton>
             </ButtonGroup>
             <Reset onClick={() => setHour(1)}>Reset Hour</Reset>
-        </div>
+        </OptionsContainer>
     )
 }
 
@@ -124,7 +134,7 @@ const Model = () => {
     const { modelType } = params
     const currentChart = useSelector(selectModelImage)
     return (
-        <>
+        <Container>
 
             <ImgContainer>
                 {currentChart && <ChartImage src={currentChart} alt="" />}
@@ -133,7 +143,7 @@ const Model = () => {
             <BottomNav root="model" options={MODEL_TYPES} selected={(k: string) => k === modelType}>
                 <Options model={modelType} />
             </BottomNav>
-        </>
+        </Container>
     )
 }
 

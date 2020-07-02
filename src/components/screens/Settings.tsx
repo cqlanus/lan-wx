@@ -12,7 +12,6 @@ import { removeFavorite } from '../../redux/slice/user'
 import { logout } from '../../redux/slice/auth'
 import { selectPwsDevices, selectFavoriteStations } from '../../redux/selectors'
 import { Link } from 'react-router-dom'
-import { divide } from 'ramda'
 import emoji from '../../data/emoji'
 
 const Container = styled.div`

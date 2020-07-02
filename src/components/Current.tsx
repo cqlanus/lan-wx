@@ -9,7 +9,6 @@ import { favoriteStation } from '../redux/slice/user'
 import { selectCoords, selectCurrentWeather, selectIsStationFavorite } from '../redux/selectors'
 import emoji from '../data/emoji'
 import { getDisplayUnit } from '../utils/units'
-import { isStationFavorited } from '../utils/user'
 
 const Container = styled(Card)`
     display: flex;
