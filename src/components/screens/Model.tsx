@@ -132,7 +132,7 @@ const Options = ({ model }: OptionsProps) => {
                 </ForecastHour>
                 <BottomButton onClick={inc}>{'>'}</BottomButton>
             </ButtonGroup>
-            <Reset onClick={() => setHour(1)}>Reset Hour</Reset>
+            <Reset onClick={() => setHour(productObj.start || 1)}>Reset Hour</Reset>
         </OptionsContainer>
     )
 }
