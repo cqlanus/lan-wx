@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Card from './Card'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { favoriteStation } from '../redux/slice/user'
-import { selectCoords, selectCurrentWeather, selectIsStationFavorite } from '../redux/selectors'
+import { selectCoords, selectCurrentWeather, selectIsStationFavorite, selectAuthUser } from '../redux/selectors'
 import emoji from '../data/emoji'
 import { getDisplayUnit } from '../utils/units'
 
@@ -87,6 +87,8 @@ const Current = () => {
     const coords = useSelector(selectCoords)
     const currentWeather: any = useSelector(selectCurrentWeather)
     const isFavorite = useSelector(selectIsStationFavorite)
+    const authUser = useSelector(selectAuthUser)
+
     const handleGetWeather = () => {
         dispatch(getCurrentWeather())
     }
@@ -133,6 +135,7 @@ const Current = () => {
 
     const renderFavoriteButton = () => {
         const { stationIdentifier } = station
+        if (!authUser) { return null }
         if (isFavorite) {
             return (
                 <span>{emoji.star}</span>
