@@ -9,6 +9,7 @@ import climateReducer from './slice/climate'
 import pwsReducer from './slice/pws'
 import userReducer from './slice/user'
 import authReducer from './slice/auth'
+import modelReducer from './slice/model'
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
       pws: pwsReducer,
       user: userReducer,
       auth: authReducer,
+      model: modelReducer,
   },
 });
 

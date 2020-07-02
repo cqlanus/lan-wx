@@ -17,6 +17,7 @@ import NavDrawer from './components/NavDrawer'
 import LocationSearch from './components/LocationSearch'
 import Settings from './components/screens/Settings'
 import PWS from './components/screens/PWS'
+import Model from './components/screens/Model'
 
 import { getAuthUser } from './redux/slice/auth'
 import { getCurrentLocation } from './redux/slice/location'
@@ -63,6 +64,10 @@ function App() {
 
                   <Route exact path="/pws"><Redirect to="/pws/current"/></Route>
                   <Route path="/pws/:pwsType"><PWS /></Route>
+
+                  <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
+                  <Route path="/model/:modelType"><Model /></Route>
+
               </Switch>
           </Router>
       </div>

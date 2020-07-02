@@ -9,7 +9,8 @@ import { getDisplayUnit } from '../utils/units'
 import emoji from '../data/emoji'
 
 const Container = styled.div`
-  padding: 0 1rem;
+    padding: 0 1rem;
+    margin-bottom: 4rem;
 `
 
 const Title = styled.h3`

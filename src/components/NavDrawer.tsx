@@ -9,10 +9,11 @@ import emoji from '../data/emoji'
 const PAGES = {
     home: { path: '/', display: 'Home' },
     forecast: { path: '/forecast', display: 'Forecast' },
+    pws: { path: '/pws', display: 'PWS' },
+    model: { path: '/model', display: 'Model Guidance' },
+    map: { path: '/map', display: 'Map' },
     charts: { path: '/charts', display: 'Charts' },
     climate: { path: '/climate', display: 'Climate' },
-    map: { path: '/map', display: 'Map' },
-    pws: { path: '/pws', display: 'PWS' },
 }
 
 const Trigger = styled(Button)`

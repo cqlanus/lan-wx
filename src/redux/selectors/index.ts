@@ -292,3 +292,5 @@ export const selectIsStationFavorite = createSelector(
         return stations.some((station: any) => station.icao === s.stationIdentifier)
     }
 )
+
+export const selectModelImage = (state: RootState) => state.model.current
