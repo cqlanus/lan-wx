@@ -107,13 +107,17 @@ const Options = ({ model }: OptionsProps) => {
         const { max, interval } = productObj
         if (forecastHour < max) {
             setHour(forecastHour + interval)
+        } else {
+            setHour(max)
         }
     }
 
     const dec = () => {
-        const { start, interval } = productObj
+        const { start, interval, max } = productObj
         if (forecastHour > start) {
             setHour(forecastHour - interval)
+        } else {
+            setHour(max)
         }
     }
     return (
