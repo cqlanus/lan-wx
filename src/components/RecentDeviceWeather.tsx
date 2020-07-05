@@ -17,7 +17,6 @@ import { selectDeviceWeather, selectPwsDevices, selectCurrentDevice } from '../r
 import { CHART_CONFIG } from '../types/chart'
 
 const Container = styled.div`
-    padding: 0 1rem;
     margin-bottom: 6rem;
 `
 

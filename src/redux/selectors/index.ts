@@ -98,8 +98,8 @@ export const selectTomorrowLength = createSelector(
             const diff = tomorrowLength - todayLength
             const duration = moment.duration(diff)
             const compareLabel = diff > 0 ? 'longer' : 'shorter'
-            const minutes = duration.minutes()
-            const seconds = duration.seconds()
+            const minutes = Math.abs(duration.minutes())
+            const seconds = Math.abs(duration.seconds())
             const minuteLabel = minutes === 1 ? 'minute' : 'minutes'
             const secondsLabel = seconds === 1 ? 'second' : 'seconds'
             return `Tomorrow will be ${minutes} ${minuteLabel} ${seconds} ${secondsLabel} ${compareLabel}`

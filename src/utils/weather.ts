@@ -10,9 +10,11 @@ const DEFAULT_UNITS: UNIT_STRUCTURE = {
     dewpoint: ['degF', 'degC'],
     barometricPressure: ['mb', 'Pa'],
     seaLevelPressure: ['mb', 'Pa'],
-    windSpeed: ['mi/h', 'm/s'],
-    windGust: ['mi/h', 'm/s'],
+    windSpeed: ['mi/h', 'km/h'],
+    windGust: ['mi/h', 'km/h'],
     visibility: ['mi', 'm'],
+    windChill: ['degF', 'degC'],
+    heatIndex: ['degF', 'degC'],
 }
 
 const DEFAULT_DEVICE_UNITS: UNIT_STRUCTURE = {

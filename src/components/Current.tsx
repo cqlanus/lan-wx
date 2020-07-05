@@ -59,6 +59,8 @@ cursor: pointer;
 const DISPLAY_LABEL_MAP: any = {
     textDescription: 'Now',
     temperature: emoji.temperature,
+    heatIndex: 'Feels like',
+    windChill: 'Feels like',
     dewpoint: 'Dewpoint',
     relativeHumidity: 'Humidity',
     visibility: 'Visibility',
@@ -73,7 +75,7 @@ const getDisplayLabel = (key: string) => {
 }
 
 const CURRENT_WX_STRUCTURE = {
-    main: { textDescription: { unit: false }, temperature: { unit: true } },
+    main: { textDescription: { unit: false }, temperature: { unit: true }, heatIndex: { unit: true }, windChill: { unit: true } },
     secondary: {
         wind: [{ display: emoji.wind, key: 'windSpeed', unit: true }, { display: '', key: 'windDirection', unit: true }],
         air: [{ display: 'DP', key: 'dewpoint', unit: true }, { display: 'RH', key: 'relativeHumidity', unit: true }],
@@ -112,6 +114,7 @@ const Current = () => {
                 {Object.entries(main).map(([k, { unit }]) => {
                     const data = currentWeather[k]
                     const display = unit ? `${getDisplayUnit(data)}` : data
+                    if (data.value === null) { return null }
                     const label = getDisplayLabel(k)
                     return <div key={k}>{label}: {display} </div>
                 })}

@@ -1,7 +1,13 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+
 import OptionContainer from './OptionsContainer'
+import Button from './Button'
+import Select from './Select'
+
+import { formatUtcHour } from '../utils'
 
 const OptionTitle = styled.div`
     text-decoration: underline;
@@ -11,6 +17,26 @@ const OptionTitle = styled.div`
 const OptionLabel = styled.label`
     margin-left: 0.5rem;
 `
+
+const Flex = styled.div`
+    flex: 1;
+`
+
+const ButtonGroup = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+`
+
+const BottomButton = styled(Button)`
+    color: black;
+    flex: 1;
+
+    &:hover: {
+         font-weight: bold;
+    }
+`
+
 const getDisplayTime = (hour: number) => moment.utc().hours(hour).local().format('ha')
 
 const isTooEarly = (hour: number) => {
@@ -50,17 +76,37 @@ const SURFACE_OPTIONS = {
     surfaceObservations: ['Include surface analysis', 'Fronts only']
 }
 const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
+    const time = selectedOptions.timeOfDay
+    const INCREMENT = 3
+    const MIN = 0
+    const MAX = 21
+    const dispatch = useDispatch()
+    const timeOfDay = useMemo(() => {
+        return SURFACE_OPTIONS.timeOfDay.find(t => t.value === time)
+    }, [time])
+    const inc = () => {
+        const newTime = +time + INCREMENT
+        if (newTime < MAX) {
+            const formattedHour = formatUtcHour(newTime, 2)
+            dispatch(handleSelect('timeOfDay', formattedHour))
+        } else {
+            const formattedHour = formatUtcHour(MIN, 2)
+            dispatch(handleSelect('timeOfDay', formattedHour))
+        }
+    }
+    const dec = () => {
+        const newTime = +time - INCREMENT
+        if (newTime >= MIN) {
+            const formattedHour = formatUtcHour(newTime, 2)
+            dispatch(handleSelect('timeOfDay', formattedHour))
+        } else {
+            const formattedHour = formatUtcHour(MAX, 2)
+            dispatch(handleSelect('timeOfDay', formattedHour))
+        }
+
+    }
     return (
-        <OptionContainer>
-            <div>
-                <OptionTitle>Time</OptionTitle>
-                {
-                    SURFACE_OPTIONS.timeOfDay.map(t => <TimeOfDay
-                        time={t}
-                        handleSelect={handleSelect}
-                        selectedOptions={selectedOptions} />)
-                }
-            </div>
+        <OptionContainer vertical>
             <div>
                 <OptionTitle>Show Sfc Obs?</OptionTitle>
 
@@ -68,6 +114,16 @@ const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
                 <OptionLabel>{'Yes'}</OptionLabel>
                 <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
                 <OptionLabel>{'No'}</OptionLabel>
+            </div>
+            <div>
+                <OptionTitle>Time</OptionTitle>
+                <ButtonGroup>
+                    <BottomButton onClick={dec}>{'<'}</BottomButton>
+                    <Flex>
+                        {timeOfDay && `${timeOfDay.time}|${timeOfDay.display}`}
+                    </Flex>
+                    <BottomButton onClick={inc}>{'>'}</BottomButton>
+                </ButtonGroup>
             </div>
         </OptionContainer>
     )
@@ -95,6 +151,7 @@ const SkewTOptions = ({ handleSelect, selectedOptions }: any) => {
                 {
                     SKEW_T_OPTIONS.timeOfDay.map(t => (
                         <TimeOfDay
+                            key={t.value}
                             time={t}
                             handleSelect={handleSelect}
                             selectedOptions={selectedOptions} />
@@ -120,24 +177,26 @@ const UPPER_AIR_OPTIONS = {
     }]
 }
 const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
+    const dispatch = useDispatch()
     return (
         <OptionContainer>
+            
             <div>
                 <OptionTitle>Isobar</OptionTitle>
-                {
-                    UPPER_AIR_OPTIONS.isobar.map(i => {
-                        return <div key={i}>
-                            <input onChange={handleSelect('isobar', i)} checked={selectedOptions.isobar === i} type="radio" name={i} value={i} />
-                            <OptionLabel>{i}mb</OptionLabel>
-                        </div>
-                    })
-                }
+                <Select value={selectedOptions.isobar} onChange={(e: any) => dispatch(handleSelect('isobar', e.target.value))} >
+                    {
+                        UPPER_AIR_OPTIONS.isobar.map(i => {
+                            return <option value={i}>{i}mb</option>
+                        })
+                    }
+                </Select>
             </div>
             <div>
                 <OptionTitle>Time</OptionTitle>
                 {
                     UPPER_AIR_OPTIONS.timeOfDay.map(t => (
                         <TimeOfDay
+                            key={t.value}
                             time={t}
                             handleSelect={handleSelect}
                             selectedOptions={selectedOptions} />
