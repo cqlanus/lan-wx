@@ -32,10 +32,10 @@ const DeviceOptions = () => {
 
 export type PwsOptions = {
     current: (p: any) => ReactElement,
-    recent: null
+    recent: (p: any) => ReactElement,
 }
 
 export const PWS_OPTIONS: PwsOptions = {
     current: DeviceOptions,
-    recent: null
+    recent: DeviceOptions
 }

@@ -10,7 +10,7 @@ import emoji from '../data/emoji'
 
 const Container = styled.div`
     padding: 0 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 6rem;
 `
 
 const Title = styled.h3`

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
+import styled from 'styled-components'
 import moment from 'moment'
 import {
     XAxis,
@@ -11,9 +12,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
-import { getDeviceWeather } from '../redux/slice/pws'
-import { selectDeviceWeather, selectPwsDevices } from '../redux/selectors'
+import { getDeviceWeather, setCurrentDevice } from '../redux/slice/pws'
+import { selectDeviceWeather, selectPwsDevices, selectCurrentDevice } from '../redux/selectors'
 import { CHART_CONFIG } from '../types/chart'
+
+const Container = styled.div`
+    padding: 0 1rem;
+    margin-bottom: 6rem;
+`
 
 const dataFor = (key: string) => (d: any) => d[key]
 
@@ -72,23 +78,33 @@ const PWS_CHARTS: CHART_CONFIG = {
 const RecentDeviceWeather = () => {
     const dispatch = useDispatch()
     const devices = useSelector(selectPwsDevices)
+    const currentDevice = useSelector(selectCurrentDevice)
+    const device = useMemo(() => {
+        if (devices.length > 0) {
+            return devices.find(dev => dev.macAddress === currentDevice)
+        }
+    }, [devices, currentDevice])
 
     const handleGetWeather = () => {
-        if (devices.length > 0) {
-            const [device] = devices
+        if (device) {
             const { macAddress, apiKey } = device
             dispatch(getDeviceWeather(macAddress, apiKey))
+        } else {
+            const macs = devices.map(d => d.macAddress).sort()
+            const macAddress = macs[0]
+            macAddress && dispatch(setCurrentDevice(macAddress))
         }
     }
 
+
     useEffect(() => {
         handleGetWeather()
-    }, [dispatch, devices])
+    }, [dispatch, device, devices])
 
     const deviceWeather = useSelector(selectDeviceWeather)
 
     return (
-        <div>
+        <Container>
             {
                 Object.entries(PWS_CHARTS).map(([k, val]) => {
                     return (
@@ -114,7 +130,7 @@ const RecentDeviceWeather = () => {
                     )
                 })
             }
-        </div>
+        </Container>
     )
 }
 
