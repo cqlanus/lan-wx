@@ -265,6 +265,7 @@ export const selectPwsDevices = createSelector<RootState, any, Device[]>(
         return user.pws || []
     }
 )
+export const selectCurrentDevice = (state: RootState) => state.pws.current
 export const selectHasDevices = createSelector<RootState, any, boolean>(
     [selectPwsDevices],
     (devices) => devices.length > 0

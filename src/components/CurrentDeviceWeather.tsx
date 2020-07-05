@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getDeviceInfo } from '../redux/slice/pws'
-import { selectPwsDevices, selectCurrentDeviceWeather } from '../redux/selectors'
+import { getDeviceInfo, setCurrentDevice } from '../redux/slice/pws'
+import { selectPwsDevices, selectCurrentDeviceWeather, selectCurrentDevice } from '../redux/selectors'
 import { getDisplayUnit } from '../utils/units'
 import emoji from '../data/emoji'
 
@@ -73,18 +73,27 @@ const DEVICE_WEATHER_STRUCTURE: DEV_WX_STRUCT = {
 const CurrentDeviceWeather = () => {
     const dispatch = useDispatch()
     const devices = useSelector(selectPwsDevices)
+    const currentDevice = useSelector(selectCurrentDevice)
+    const device = useMemo(() => {
+        if (devices.length > 0) {
+            return devices.find(dev => dev.macAddress === currentDevice)
+        }
+    }, [devices, currentDevice])
 
     const handleGetWeather = () => {
-        if (devices.length > 0) {
-            const [device] = devices
+        if (device) {
             const { macAddress, apiKey } = device
             dispatch(getDeviceInfo(macAddress, apiKey))
+        } else {
+            const macs = devices.map(d => d.macAddress).sort()
+            const macAddress = macs[0]
+            macAddress && dispatch(setCurrentDevice(macAddress))
         }
     }
 
     useEffect(() => {
         handleGetWeather()
-    }, [dispatch, devices])
+    }, [dispatch, device, devices])
 
 
     const currentWeather: { data: any, info: any } | undefined = useSelector(selectCurrentDeviceWeather)
@@ -98,7 +107,7 @@ const CurrentDeviceWeather = () => {
             <div>
                 <Title>{info.name} Current Conditions<Reload onClick={handleGetWeather}>{emoji.reload}</Reload></Title>
                 <Info>{`as of ${date}`}</Info>
-                <Info>{info.coords.address}</Info>
+                {info.coords && <Info>{info.coords.address}</Info>}
             </div>
         )
     }
@@ -111,7 +120,8 @@ const CurrentDeviceWeather = () => {
                     {
                         cat.reduce((acc: any, { display, key }: any) => {
                             const label = display ? `${display}: ` : ''
-                            const displayVal = `${label}${getDisplayUnit(data[key], key)}`
+                            const found = data[key]
+                            const displayVal = found ? `${label}${getDisplayUnit(found, key)}` : ''
                             const initial = acc ? `${acc} | ` : ''
                             return `${initial}${displayVal}`
                         }, '')

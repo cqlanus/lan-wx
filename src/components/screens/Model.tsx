@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, } from 'react-router'
@@ -8,7 +8,6 @@ import Button from '../Button'
 import Select from '../Select'
 
 import ModelGuidance from '../../data/modelGuidance'
-import type { ModelProduct } from '../../data/modelGuidance'
 import { getModelGuidance } from '../../redux/slice/model'
 import { selectModelImage } from '../../redux/selectors'
 
@@ -67,7 +66,6 @@ type OptionsProps = {
 }
 const Options = ({ model }: OptionsProps) => {
     const modelObj = ModelGuidance[model]
-    const MAX_HOURS = 36
     const INIT_HOUR = 1
     const [forecastHour, setHour] = useState(INIT_HOUR)
     const initialProd = Object.keys(modelObj.products)[0]

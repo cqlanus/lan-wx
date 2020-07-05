@@ -8,12 +8,14 @@ import { getAuthUser } from './auth';
 
 interface PWSState {
     devices: Device[],
+    current: string | undefined,
     weather: any[],
     deviceInfo: DeviceInfo | undefined,
 }
 
 const initialState: PWSState = {
     devices: [],
+    current: undefined,
     weather: [],
     deviceInfo: undefined
 }
@@ -30,11 +32,14 @@ export const pws = createSlice({
         },
         setDeviceInfo: (state, action: PayloadAction<DeviceInfo>) => {
             state.deviceInfo = action.payload
+        },
+        setCurrentDevice: (state, action: PayloadAction<string>) => {
+            state.current = action.payload
         }
     }
 })
 
-export const { setDevices, setPwsWeather, setDeviceInfo } = pws.actions
+export const { setDevices, setPwsWeather, setDeviceInfo, setCurrentDevice } = pws.actions
 
 // THUNKS
 const STORAGE_KEY = 'LAN_WX_DEVICES'
@@ -56,20 +61,6 @@ export const addDevice = (device: DeviceArgs) => async (dispatch: any, getState:
     } catch (err) {
         console.log({ err })
         toastr.error('Could not add device')
-    }
-}
-
-export const getDevices = () => async (dispatch: any) => {
-    try {
-        const storage = window.localStorage
-        const devicesStr = storage.getItem(STORAGE_KEY)
-        if (devicesStr) {
-            const devices = JSON.parse(devicesStr) || []
-            dispatch(setDevices(devices))
-        }
-    } catch (err) {
-        console.log({ err })
-        toastr.error('Could not get devices')
     }
 }
 

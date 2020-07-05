@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import styled from 'styled-components'
@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Input from '../Input'
 import { buttonStyle } from '../Button'
 
-import { addDevice, getDevices, } from '../../redux/slice/pws'
+import { addDevice } from '../../redux/slice/pws'
 import { setLocation } from '../../redux/slice/location'
 import { removeFavorite } from '../../redux/slice/user'
 import { logout } from '../../redux/slice/auth'
@@ -77,9 +77,7 @@ const Settings = () => {
     const stations: any[] = useSelector(selectFavoriteStations)
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
-    useEffect(() => {
-        dispatch(getDevices())
-    }, [dispatch])
+
     const handleMacAddress = (e: any) => setMacAddress(e.target.value)
     const handleApiKey = (e: any) => setApiKey(e.target.value)
     const handleSearch = () => {
