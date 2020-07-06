@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import OptionContainer from './OptionsContainer'
 import Button from './Button'
 import Select from './Select'
+import { UpperAirLegend, SurfaceLegend, SkewTLegend } from './UpperAirLegend'
 
 import { formatUtcHour } from '../utils'
 
@@ -25,7 +26,7 @@ const Flex = styled.div`
 const ButtonGroup = styled.div`
     display: flex;
     align-items: center;
-    padding: 0.5rem 0;
+    padding-top: 0.5rem;
 `
 
 const BottomButton = styled(Button)`
@@ -106,26 +107,30 @@ const SurfaceOptions = ({ handleSelect, selectedOptions }: any) => {
 
     }
     return (
-        <OptionContainer vertical>
-            <div>
-                <OptionTitle>Show Sfc Obs?</OptionTitle>
+        <div>
+            <OptionContainer vertical>
+                <SurfaceLegend />
+                <div>
+                    <OptionTitle>Show Sfc Obs?</OptionTitle>
 
-                <input onChange={handleSelect('surfaceObservations', true)} checked={selectedOptions.surfaceObservations === true} type="radio" name={'Yes'} value={'Yes'} />
-                <OptionLabel>{'Yes'}</OptionLabel>
-                <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
-                <OptionLabel>{'No'}</OptionLabel>
-            </div>
-            <div>
-                <OptionTitle>Time</OptionTitle>
-                <ButtonGroup>
-                    <BottomButton onClick={dec}>{'<'}</BottomButton>
-                    <Flex>
-                        {timeOfDay && `${timeOfDay.time}|${timeOfDay.display}`}
-                    </Flex>
-                    <BottomButton onClick={inc}>{'>'}</BottomButton>
-                </ButtonGroup>
-            </div>
-        </OptionContainer>
+                    <input onChange={handleSelect('surfaceObservations', true)} checked={selectedOptions.surfaceObservations === true} type="radio" name={'Yes'} value={'Yes'} />
+                    <OptionLabel>{'Yes'}</OptionLabel>
+                    <input onChange={handleSelect('surfaceObservations', false)} checked={selectedOptions.surfaceObservations === false} type="radio" name={'No'} value={'No'} />
+                    <OptionLabel>{'No'}</OptionLabel>
+                </div>
+                <div>
+                    <OptionTitle>Time</OptionTitle>
+                    <ButtonGroup>
+                        <BottomButton onClick={dec}>{'<'}</BottomButton>
+                        <Flex>
+                            {timeOfDay && `${timeOfDay.time}|${timeOfDay.display}`}
+                        </Flex>
+                        <BottomButton onClick={inc}>{'>'}</BottomButton>
+                    </ButtonGroup>
+                </div>
+            </OptionContainer>
+        </div>
+
     )
 }
 
@@ -145,7 +150,8 @@ const SKEW_T_OPTIONS = {
 }
 const SkewTOptions = ({ handleSelect, selectedOptions }: any) => {
     return (
-        <OptionContainer>
+        <OptionContainer vertical>
+            <SkewTLegend />
             <div>
                 <OptionTitle>Time</OptionTitle>
                 {
@@ -179,31 +185,35 @@ const UPPER_AIR_OPTIONS = {
 const UpperAirOptions = ({ handleSelect, selectedOptions }: any) => {
     const dispatch = useDispatch()
     return (
-        <OptionContainer>
-            
-            <div>
-                <OptionTitle>Isobar</OptionTitle>
-                <Select value={selectedOptions.isobar} onChange={(e: any) => dispatch(handleSelect('isobar', e.target.value))} >
+        <div>
+            <OptionContainer>
+
+                <div>
+                    <OptionTitle>Isobar</OptionTitle>
+                    <Select value={selectedOptions.isobar} onChange={(e: any) => dispatch(handleSelect('isobar', e.target.value))} >
+                        {
+                            UPPER_AIR_OPTIONS.isobar.map(i => {
+                                return <option key={i} value={i}>{i}mb</option>
+                            })
+                        }
+                    </Select>
+                </div>
+                <div>
+                    <OptionTitle>Time</OptionTitle>
                     {
-                        UPPER_AIR_OPTIONS.isobar.map(i => {
-                            return <option value={i}>{i}mb</option>
-                        })
+                        UPPER_AIR_OPTIONS.timeOfDay.map(t => (
+                            <TimeOfDay
+                                key={t.value}
+                                time={t}
+                                handleSelect={handleSelect}
+                                selectedOptions={selectedOptions} />
+                        ))
                     }
-                </Select>
-            </div>
-            <div>
-                <OptionTitle>Time</OptionTitle>
-                {
-                    UPPER_AIR_OPTIONS.timeOfDay.map(t => (
-                        <TimeOfDay
-                            key={t.value}
-                            time={t}
-                            handleSelect={handleSelect}
-                            selectedOptions={selectedOptions} />
-                    ))
-                }
-            </div>
-        </OptionContainer>
+                </div>
+            </OptionContainer>
+            <UpperAirLegend isobar={selectedOptions.isobar} />
+        </div>
+
     )
 }
 
