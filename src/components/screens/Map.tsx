@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -11,7 +11,7 @@ import LayerDropdown from '../LayerDropdown'
 import Button from '../Button'
 import { getLayer } from '../../redux/slice/map'
 import { getCurrentLocation } from '../../redux/slice/location'
-import { selectCoords, selectMapData, selectLegendUrl } from '../../redux/selectors'
+import { selectCoords, selectMapData, selectLegendUrl, selectCurrentLayer } from '../../redux/selectors'
 
 type ButtonType = { disabled?: boolean }
 
@@ -74,6 +74,14 @@ const MapScreen = () => {
     const initialZoom: [number] = [7]
     const [zoom] = useState(initialZoom)
 
+    const currentLayer = useMemo(selectCurrentLayer(layerTypeId, layerId), [layerTypeId, layerId])
+    const isDisabled = useMemo(() => {
+        if (currentLayer) {
+            const { max } = currentLayer
+            return (timeOffset >= max)
+        }
+    }, [timeOffset, currentLayer])
+
     useEffect(() => {
         if (!coords) {
             dispatch(getCurrentLocation())
@@ -85,12 +93,26 @@ const MapScreen = () => {
         }
     }, [center, coords, dispatch, layerId, layerTypeId, timeOffset])
 
-    const inc = () => {
-        setTimeOffset(timeOffset - 1)
+    const handleInc = () => {
+        if (currentLayer) {
+            const { interval, max } = currentLayer
+            if (timeOffset < max) {
+                setTimeOffset(timeOffset + interval)
+            } else {
+                setTimeOffset(max)
+            }
+        }
     }
 
-    const dec = () => {
-        setTimeOffset(timeOffset + 1)
+    const handleDec = () => {
+        if (currentLayer) {
+            const { interval, max, start } = currentLayer
+            if (layerTypeId !== 'forecast' || timeOffset > start) {
+                setTimeOffset(timeOffset - interval)
+            } else {
+                setTimeOffset(start)
+            }
+        }
     }
 
     const defaultStyle = "mapbox://styles/mapbox/light-v10"
@@ -127,9 +149,9 @@ const MapScreen = () => {
             <BottomContainer>
                 <LayerDropdown />
                 <ButtonGroup>
-                    <BottomButton onClick={dec}>{'<'}</BottomButton>
+                    <BottomButton onClick={handleDec}>{'<'}</BottomButton>
                     <BottomButton onClick={() => setTimeOffset(NOW_STEP)}>{'now'}</BottomButton>
-                    <BottomButton disabled={timeOffset === 0} onClick={inc}>{'>'}</BottomButton>
+                    <BottomButton disabled={isDisabled}  onClick={handleInc}>{'>'}</BottomButton>
                 </ButtonGroup>
             </BottomContainer>
         </Container>

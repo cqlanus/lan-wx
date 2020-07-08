@@ -4,6 +4,7 @@ import moment from 'moment'
 import { AppThunk } from '../store'
 import api from '../../api'
 import LAYERS from '../../data/layers'
+import { selectCurrentLayerType } from '../selectors';
 
 interface MapState {
     layerUrl: string,
@@ -17,7 +18,7 @@ interface MapState {
 const { radar } = LAYERS
 const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id, time: moment().toISOString() }
 const initLayer = api.map.selectLayerUrl(initArgs)
-const initLegend =  'https://nowcoast.noaa.gov/images/legends/radar.png'
+const initLegend = 'https://nowcoast.noaa.gov/images/legends/radar.png'
 const initialState: MapState = {
     layerUrl: initLayer,
     legendUrl: initLegend,
@@ -45,7 +46,7 @@ export const mapSlice = createSlice({
         setLayerType: (state, action) => {
             if (action.payload !== state.layerTypeId) {
                 const layerConfig = LAYERS[action.payload] || {}
-                const [ firstLayer ] = layerConfig.layers || []
+                const [firstLayer] = layerConfig.layers || []
                 state.layerId = firstLayer ? firstLayer.id : ''
             }
             state.layerTypeId = action.payload
@@ -60,17 +61,23 @@ export const { setLayerUrl, setMapError, setLegendUrl, setLayerType, setLayerId 
 
 
 // THUNKS
-export const getLayer = ({layerTypeId, layerId, timeOffset}: any): AppThunk => async dispatch => {
+export const getLayer = ({ layerTypeId, layerId, timeOffset }: any): AppThunk => async dispatch => {
     try {
-        // console.log({ layerTypeId, layerId })
-        const diff = timeOffset * 30
-        const time = moment().startOf('minute').subtract(diff, 'minutes').toISOString()
+        const layerType = selectCurrentLayerType(layerTypeId)()
+        let time
+        if (layerType.forecast) {
+            time = moment().startOf('minute').add(timeOffset, 'hours').toISOString()
+        } else {
+            const diff = timeOffset * 30
+            time = moment().startOf('minute').subtract(diff, 'minutes').toISOString()
+
+        }
         const url = api.map.selectLayerUrl({ layerTypeId, layerId, time })
         const legend = await api.map.buildLegendUrl({ layerTypeId, layerId })
         const { url: legendUrl } = legend || {}
 
         dispatch(setLayerUrl({ url, time, layerTypeId, layerId }))
-        
+
         dispatch(setLegendUrl(legendUrl.replace('http', 'https')))
     } catch (err) {
         dispatch(setMapError(err.message))

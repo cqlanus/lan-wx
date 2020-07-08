@@ -16,6 +16,14 @@ export const selectLayerTypeId = (state: RootState) => state.map.layerTypeId
 export const selectLayerId = (state: RootState) => state.map.layerId
 export const selectMapData = (state: RootState) => state.map
 export const selectLegendUrl = (state: RootState) => state.map.legendUrl
+export const selectCurrentLayerType = (layerTypeId: string) => () => LAYERS[layerTypeId]
+export const selectCurrentLayer = (layerTypeId: string, layerId: string) => () => {
+    const layerType = selectCurrentLayerType(layerTypeId)()
+    if (layerType) {
+        const { layers } = layerType
+        return layers.find(({ id }) => layerId === id)
+    }
+}
 
 // LOCATION
 export const selectCoords = (state: RootState) => state.location.coords
