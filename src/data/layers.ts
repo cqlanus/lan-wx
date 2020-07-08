@@ -64,6 +64,13 @@ const LAYERS: LAYER_MAPPING = {
                 interval: 1,
                 start: 0,
             },
+            {
+                name: 'Water Vapor Imagery',
+                id: '21',
+                max: 0,
+                interval: 1,
+                start: 0,
+            }
         ],
         name: 'Satellite',
         id: 'satellite',

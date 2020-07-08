@@ -69,7 +69,7 @@ export const getLayer = ({ layerTypeId, layerId, timeOffset }: any): AppThunk =>
             time = moment().startOf('minute').add(timeOffset, 'hours').toISOString()
         } else {
             const diff = timeOffset * 30
-            time = moment().startOf('minute').subtract(diff, 'minutes').toISOString()
+            time = moment().startOf('minute').add(diff, 'minutes').toISOString()
 
         }
         const url = api.map.selectLayerUrl({ layerTypeId, layerId, time })

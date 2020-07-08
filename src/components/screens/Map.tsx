@@ -106,7 +106,7 @@ const MapScreen = () => {
 
     const handleDec = () => {
         if (currentLayer) {
-            const { interval, max, start } = currentLayer
+            const { interval, start } = currentLayer
             if (layerTypeId !== 'forecast' || timeOffset > start) {
                 setTimeOffset(timeOffset - interval)
             } else {
