@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Amplify, { Hub } from "aws-amplify"
 import { useDispatch, } from 'react-redux'
 import {
-    HashRouter as Router,
+    BrowserRouter as Router,
     Switch,
     Redirect,
     Route,

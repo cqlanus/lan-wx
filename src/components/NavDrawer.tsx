@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import { Link as L } from 'react-router-dom'
+import styled, { css } from 'styled-components'
 import Button from './Button'
 
 import { selectHasDevices } from '../redux/selectors'
@@ -42,18 +43,23 @@ const Drawer = styled.div`
     z-index: 100;
 `
 
-const Link = styled.a`
+const linkStyles = css`
     color: black;
     text-decoration: none;
     margin-top: 1rem;
     border-bottom: 1px dashed black;
 
     &:hover {
-    font-weight: bold;
+        font-weight: bold;
     }
 `
 
-const Dismiss = styled(Link)`
+const Link = styled(L)`
+    ${linkStyles}
+`
+
+const Dismiss = styled.a`
+    ${linkStyles}
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -90,9 +96,9 @@ const NavDrawer = () => {
             <Drawer isOpen={isOpen}>
                 <Dismiss onClick={toggleOpen}>✕</Dismiss>
                 {
-                    Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} href={`#${p.path}`}>{p.display}</Link>)
+                    Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} to={p.path}>{p.display}</Link>)
                 }
-                <Settings onClick={toggleOpen} href="#/settings">{ emoji.gear }</Settings>
+                <Settings onClick={toggleOpen} to="/settings">{ emoji.gear }</Settings>
             </Drawer>
         </div>
     )
