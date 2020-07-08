@@ -8,7 +8,7 @@ const LAYERS: LAYER_MAPPING = {
             {
                 id: '1',
                 arcgisId: '3',
-                name: 'Radar'
+                name: 'Base Reflectivity',
             }
         ],
         name: 'Radar',
@@ -127,13 +127,6 @@ const LAYERS: LAYER_MAPPING = {
         name: 'Forecast',
         id: 'forecast',
     },
-    // lightning: {
-    //     url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/sat_meteo_emulated_imagery_lightningstrikedensity_goes_time/MapServer/WMSServer',
-    // service: 'sat_meteo_emulated_imagery_lightningstrikedensity_goes_time',
-    //     layers: '1',
-    //     name: 'Lightning',
-    //     id: 'lightning'
-    // },
     severe: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/guidance_natlcenters_meteoceanhydro_outlooks_time/MapServer/WMSServer',
         service: 'guidance_natlcenters_meteoceanhydro_outlooks_time',
@@ -141,7 +134,7 @@ const LAYERS: LAYER_MAPPING = {
             {
                 id: '9',
                 arcgisId: '3',
-                name: 'Severe Outlook'
+                name: 'Severe Outlook .'
             }
         ],
         name: 'Severe Outlook',

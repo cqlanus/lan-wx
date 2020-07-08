@@ -39,13 +39,24 @@ export const mapSlice = createSlice({
         setMapError: (state, action) => {
             state.error = action.payload
         },
+        setLayerId: (state, action) => {
+            state.layerId = action.payload
+        },
+        setLayerType: (state, action) => {
+            if (action.payload !== state.layerTypeId) {
+                const layerConfig = LAYERS[action.payload] || {}
+                const [ firstLayer ] = layerConfig.layers || []
+                state.layerId = firstLayer ? firstLayer.id : ''
+            }
+            state.layerTypeId = action.payload
+        },
         setLegendUrl: (state, action) => {
             state.legendUrl = action.payload
         }
     }
 })
 
-export const { setLayerUrl, setMapError, setLegendUrl } = mapSlice.actions
+export const { setLayerUrl, setMapError, setLegendUrl, setLayerType, setLayerId } = mapSlice.actions
 
 
 // THUNKS

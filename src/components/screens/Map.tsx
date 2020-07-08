@@ -15,7 +15,7 @@ import { selectCoords, selectMapData, selectLegendUrl } from '../../redux/select
 
 type ButtonType = { disabled?: boolean }
 
-const getButtonColor = ({ disabled }: ButtonType) => ( disabled ? 'rgba(0,0,0,0.5)' : 'black' )
+const getButtonColor = ({ disabled }: ButtonType) => (disabled ? 'rgba(0,0,0,0.5)' : 'black')
 const getHoverState = ({ disabled }: ButtonType) => (
     !disabled ? '' : `
         cursor: not-allowed;
@@ -26,6 +26,22 @@ const getHoverState = ({ disabled }: ButtonType) => (
 )
 const Container = styled(Card)`
     background-color: white;
+    display: flex;
+    flex-direction: column;
+`
+
+const Legend = styled.img`
+    align-self: center;
+`
+
+const BottomContainer = styled.div`
+    padding-top: 0.5rem;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1111;
 `
 
 const ButtonGroup = styled.div`
@@ -39,7 +55,7 @@ const BottomButton = styled(Button)`
 `
 
 const InfoSection = styled.div`
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,7 +69,7 @@ const MapScreen = () => {
     const { layerUrl, layerTypeId, layerId, time } = useSelector(selectMapData)
     const legendUrl = useSelector(selectLegendUrl)
     const initialCenter: any = undefined
-    const [ center, setCenter ] = useState(initialCenter)
+    const [center, setCenter] = useState(initialCenter)
     const [timeOffset, setTimeOffset] = useState(0)
     const initialZoom: [number] = [7]
     const [zoom] = useState(initialZoom)
@@ -91,7 +107,7 @@ const MapScreen = () => {
                 <MapBox
                     center={center}
                     style={defaultStyle}
-                    containerStyle={{ height: '85vh', width: '100%' }}
+                    containerStyle={{ height: '80vh', width: '100%' }}
                     zoom={zoom}
                 >
                     <Source id="source_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
@@ -106,14 +122,16 @@ const MapScreen = () => {
     return (
         <Container>
             <InfoSection>{moment(time).format('MM.DD|hh:mma')}</InfoSection>
-            { legendUrl && center && <img src={legendUrl} alt="" /> }
-            <LayerDropdown />
-            <ButtonGroup>
-                <BottomButton onClick={dec}>{'<'}</BottomButton>
-                <BottomButton onClick={() => setTimeOffset(NOW_STEP)}>{'now'}</BottomButton>
-                <BottomButton disabled={timeOffset === 0} onClick={inc}>{'>'}</BottomButton>
-            </ButtonGroup>
+            {legendUrl && center && <Legend src={legendUrl} alt="" />}
             {renderMap()}
+            <BottomContainer>
+                <LayerDropdown />
+                <ButtonGroup>
+                    <BottomButton onClick={dec}>{'<'}</BottomButton>
+                    <BottomButton onClick={() => setTimeOffset(NOW_STEP)}>{'now'}</BottomButton>
+                    <BottomButton disabled={timeOffset === 0} onClick={inc}>{'>'}</BottomButton>
+                </ButtonGroup>
+            </BottomContainer>
         </Container>
     )
 }

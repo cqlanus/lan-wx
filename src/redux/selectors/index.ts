@@ -176,13 +176,32 @@ export const selectInitialLayer = () => {
     const initArgs = { layerTypeId: radar.id, layerId: radar.layers[0].id, time: moment().toISOString() }
     return initArgs
 }
-export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
+
+export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: any, layerType: any) => {
     const nextListChunk = layerType.layers.map(({ id, name }: any) => {
         const layerName = layerType.name === name ? name : `${layerType.name}: ${name}`
         return { layerTypeId: layerType.id, layerId: id, key: `${layerType.id}_${id}`, name: layerName }
     })
-    return [...fullList, ...nextListChunk]
-}, [])
+    return {
+        ...fullList,
+        [layerType.name]: nextListChunk,
+    }
+}, {})
+
+export const selectLayerTypes = () => Object.values(LAYERS)
+export const selectLayerIds = createSelector(
+    [selectLayerTypeId],
+    (layerType) => {
+        return LAYERS[layerType].layers
+    }
+)
+// export const selectAllLayers = () => Object.values(LAYERS).reduce((fullList: Array<any>, layerType: any) => {
+//     const nextListChunk = layerType.layers.map(({ id, name }: any) => {
+//         const layerName = layerType.name === name ? name : `${layerType.name}: ${name}`
+//         return { layerTypeId: layerType.id, layerId: id, key: `${layerType.id}_${id}`, name: layerName }
+//     })
+//     return [...fullList, ...nextListChunk]
+// }, [])
 
 export const selectThreeDayForecast = createSelector(
     [selectDailyForecast],
