@@ -1,8 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { buttonStyle } from './Button'
 import emoji from '../data/emoji'
+
+const LegendContainer = styled.div`
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
 
 const Info = styled.div`
     font-size: 0.7rem;
@@ -13,6 +20,7 @@ const ButtonGroup = styled.div`
     align-items: center;
     padding-bottom: 0.5rem;
     justify-content: space-around;
+    align-self: stretch;
 `
 
 const BottomButton = styled.a`
@@ -142,7 +150,7 @@ export const UpperAirLegend = ({ isobar }: Props) => {
     const upperAirLink = 'https://www.weather.gov/jetstream/constant_intro'
 
     return (
-        <div>
+        <LegendContainer>
             <Container>
                 {
                     elements.map((el: Elements, idx: number) => {
@@ -161,7 +169,7 @@ export const UpperAirLegend = ({ isobar }: Props) => {
                 <Info>Learn More:</Info>
                 <BottomButton href={upperAirLink}>Upper Air Info {emoji.arrow.ne}</BottomButton>
             </ButtonGroup>
-        </div>
+        </LegendContainer>
         
     )
 }
@@ -170,14 +178,14 @@ export const SurfaceLegend = () => {
     const frontsLink = 'https://www.wpc.ncep.noaa.gov/html/fntcodes2.shtml'
     const obsLink = 'https://www.wpc.ncep.noaa.gov/html/stationplot.shtml'
     return (
-        <div>
+        <LegendContainer>
             <ButtonGroup>
                 <Info>Learn More:</Info>
                 <BottomButton href={obsLink}>Sfc Obs {emoji.arrow.ne}</BottomButton>
                 <BottomButton href={frontsLink}>Fronts {emoji.arrow.ne}</BottomButton>
             </ButtonGroup>
 
-        </div>
+        </LegendContainer>
     )
 }
 
@@ -186,12 +194,12 @@ export const SkewTLegend = () => {
     const skewTLink = 'https://www.weather.gov/jetstream/skewt'
     const severeWxLink = 'https://www.weather.gov/jetstream/skewt_severe_max'
     return (
-        <div>
+        <LegendContainer>
             <ButtonGroup>
                 <Info>Learn More:</Info>
                 <BottomButton href={skewTLink}>Skew T Info {emoji.arrow.ne}</BottomButton>
                 <BottomButton href={severeWxLink}>Severe WX Info {emoji.arrow.ne}</BottomButton>
             </ButtonGroup>
-        </div>
+        </LegendContainer>
     )
 }
