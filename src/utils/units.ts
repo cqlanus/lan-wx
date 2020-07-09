@@ -19,7 +19,7 @@ const DISPLAY_UNIT_MAP: any = {
     'm_s-1': 'm/s'
 }
 
-const degreesToCompass = (value: number) => {
+export const degreesToCompass = (value: number) => {
     const val = Math.round(value / 22.5)
     const compassVals = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
     const index = val % 16

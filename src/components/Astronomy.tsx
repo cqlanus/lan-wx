@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import moment from 'moment'
 import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getAstronomy } from '../redux/slice/climate'
-import { selectAstronomy, selectCoords, selectDayLengths, selectMoonPhase, selectTomorrowLength } from '../redux/selectors'
+import { selectAstronomy, selectCoords, selectDayLengths, selectMoonPhase, selectTomorrowLength, selectAstronoyPosition } from '../redux/selectors'
 import Emoji from '../data/emoji'
 
 type ASTRO_MAP = {
@@ -49,6 +49,10 @@ const tableStructure = [
     }
 ]
 
+const Container = styled.div`
+    margin-bottom: 7rem;
+`
+
 const Table = styled.table`
     width: 100%;
 `
@@ -90,11 +94,36 @@ const TableCell = styled.td`
     ${(p: TC) => titleCellStyles(p)}
 `
 
-const FlexContainer = styled.div`
+const flex = css`
     display: flex;
     align-items: center;
+`
+
+const FlexContainer = styled.div`
+    ${flex}
     padding: 1rem;
 `
+
+const MoonPhaseContainer = styled.div`
+    ${flex}
+    justify-content: space-around;
+    margin-left: 0.5rem;
+`
+
+const Bold = styled.span`
+    font-weight: bold;
+`
+
+const DetailsTable = styled.table`
+    width: 100%;
+    padding: 0 0.5rem;
+`
+
+const TitleCell = styled.td`
+    width: 1%;
+    white-space: nowrap;
+`
+
 const Col = styled.div`
     margin: 0 1rem;
     font-size: 1.5rem;
@@ -104,6 +133,7 @@ const Astronomy = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const astronomy = useSelector(selectAstronomy)
+    const astroPosition = useSelector(selectAstronoyPosition)
     const [visibleLight, lengthOfDay] = useSelector(selectDayLengths)
     const [moonFraction, moonPhase] = useSelector(selectMoonPhase)
     const compareStatement = useSelector(selectTomorrowLength)
@@ -141,36 +171,88 @@ const Astronomy = () => {
         prepareRow,
     } = useTable({ columns, data })
 
-    const renderMoonPhase = () => {
-        const { icon, name } = moonPhase || {}
-
+    const renderSunDetails = () => {
+        if (!astroPosition) { return null }
+        const { azimuth, altitude, moon_azimuth, moon_altitude } = astroPosition
         return (
-            <FlexContainer>
-                <Col> {icon} </Col>
-                <div>
-                    <div>
-                        {name}
-                    </div>
-                    <div>
-                        {moonFraction} of the moon is illuminated
-                    </div>
-                </div>
-            </FlexContainer>
+            <div>
+                <h3>{Emoji.weather.sunny} Details</h3>
+                <DetailsTable>
+                    <tbody>
+                        <tr>
+                            <TitleCell>
+                                <Bold>{`Pos ${Emoji.arrow.e}`}</Bold>
+                            </TitleCell>
+                            <td>
+
+                                <div> <Bold>{'Az: '}</Bold> {azimuth.value} </div>
+                            </td>
+                            <td>
+
+                                <div> <Bold>{'Alt: '}</Bold> {altitude.value} deg</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <TitleCell>
+                                <Bold >{`Day ${Emoji.arrow.e}`}</Bold>
+                            </TitleCell>
+                            <td colSpan={2}> {compareStatement} </td>
+                        </tr>
+                    </tbody>
+                </DetailsTable>
+            </div>
         )
     }
 
-    const renderTomorrowLight = () => {
-        return (
+    const renderMoonDetails = () => {
 
-            <FlexContainer>
-                <Col>{Emoji.weather.sunny}</Col>
-                <div> {compareStatement} </div>
-            </FlexContainer>
+        if (!astroPosition) { return null }
+        const { moon_azimuth, moon_altitude } = astroPosition
+        const { icon, name } = moonPhase || {}
+        return (
+            <div>
+                <h3>{Emoji.moonPhases.fullMoon} Details</h3>
+                <DetailsTable>
+                    <tbody>
+                        <tr>
+                            <TitleCell>
+                                <Bold>{`Pos ${Emoji.arrow.e}`}</Bold>
+                            </TitleCell>
+                            <td>
+
+                                <div> <Bold>{'Az: '}</Bold> {moon_azimuth.value} </div>
+                            </td>
+                            <td>
+
+                                <div> <Bold>{'Alt: '}</Bold> {moon_altitude.value} deg</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <TitleCell>
+                                <Bold >{`Phase ${Emoji.arrow.e}`}</Bold>
+                            </TitleCell>
+                            <td>
+                                <MoonPhaseContainer>
+                                    <div>
+                                        {` ${icon} `}
+                                    </div>
+                                    <div>
+                                        {name}
+                                    </div>
+                                </MoonPhaseContainer>
+                            </td>
+                            <td>{moonFraction} of the moon is illuminated </td>
+
+                        </tr>
+                    </tbody>
+                </DetailsTable>
+            </div>
         )
+
     }
 
     return (
-        <div>
+        <Container>
             <h3>Astronomy</h3>
             <TableContainer>
                 <Table {...getTableProps()}>
@@ -203,9 +285,9 @@ const Astronomy = () => {
                     </tbody>
                 </Table>
             </TableContainer>
-            {renderMoonPhase()}
-            {renderTomorrowLight()}
-        </div>
+            {renderSunDetails()}
+            {renderMoonDetails()}
+        </Container>
     )
 }
 

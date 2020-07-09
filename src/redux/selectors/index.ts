@@ -9,6 +9,7 @@ import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
 import Emoji from '../../data/emoji'
 import { normalizeForecastUnits, parseDeviceWeather } from '../../utils/weather'
+import { parseAstronomyPosition } from '../../utils/astronomy'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -61,7 +62,21 @@ export const selectDetailed = (state: RootState): any | undefined => {
 // CLIMATE
 export const selectNorms = (state: RootState): any | undefined => state.climate.norms
 export const selectAlmanac = (state: RootState): any | undefined => state.climate.almanac
-export const selectAstronomy = (state: RootState): any | undefined => state.climate.astronomy
+export const selectAstronomyData = (state: RootState): any | undefined => state.climate.astronomy
+export const selectAstronomy = createSelector(
+    [selectAstronomyData],
+    (astroData) => {
+
+        return astroData
+    }
+)
+export const selectAstronoyPosition = createSelector(
+    [selectAstronomyData],
+    (astroData) => {
+        if (!astroData) { return }
+        return parseAstronomyPosition(astroData)
+    }
+)
 export const selectNormMonth = (state: RootState): number | undefined => state.climate.month
 export const selectNormsByMonth = createSelector(
     [selectNorms, selectNormMonth],
