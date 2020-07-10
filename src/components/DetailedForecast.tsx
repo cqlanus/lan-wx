@@ -71,6 +71,11 @@ const CHARTS: CHART_CONFIG = {
         title: "Quants",
         keys: ['quantitativePrecipitation'],
         axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
+    },
+    clouds: {
+        title: 'Atmosphere',
+        keys: ['ceilingHeight', 'mixingHeight'],
+        axes: (daysAhead: number, length: number) => [{ ...BASE_X_AXIS(daysAhead, length), type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     }
 }
 

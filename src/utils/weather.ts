@@ -2,7 +2,7 @@ import { has, split } from 'ramda'
 import { convertUnits } from './units'
 import type { NWSValue, CurrentWeatherResponse, DeviceWeather } from '../types/weather'
 
-type UNIT_STRUCTURE = { [key: string]: [string, string] }
+type UNIT_STRUCTURE = { [key: string]: [string, string] | [string] }
 const DEFAULT_UNITS: UNIT_STRUCTURE = {
     elevation: ['ft', 'm'],
     temperature: ['degF', 'degC'],
@@ -15,6 +15,10 @@ const DEFAULT_UNITS: UNIT_STRUCTURE = {
     visibility: ['mi', 'm'],
     windChill: ['degF', 'degC'],
     heatIndex: ['degF', 'degC'],
+    precipitationLastHour: [ 'in', 'm' ],
+    precipitationLast3Hours: [ 'in', 'm' ],
+    precipitationLast6Hours: [ 'in', 'm' ],
+    quantitativePrecipitation: [ 'in', 'mm' ],
 }
 
 const DEFAULT_DEVICE_UNITS: UNIT_STRUCTURE = {
@@ -24,8 +28,8 @@ const DEFAULT_DEVICE_UNITS: UNIT_STRUCTURE = {
     tempf: ['degF', 'degF'],
     feelsLike: ['degF', 'degF'],
     feelsLikein: ['degF', 'degF'],
-    // humidity: [ 'm', 'm' ],
-    // humidityin: ['m', 'm'],
+    humidity: [ 'percent' ],
+    humidityin: [ 'percent' ],
     winddir: ['deg', 'deg'],
     windgustmph: ['mi/h', 'mi/h'],
     windspeedmph: ['mi/h', 'mi/h'],
@@ -50,6 +54,9 @@ const normalizeUnits = (value: string | number, key: string, units: UNIT_STRUCTU
     if (!convertableValue) { return { value, unit: null } }
 
     const [toUnit, fromUnit] = convertableValue
+    if (!fromUnit) {
+        return { value, unit: toUnit }
+    }
     const convertedValue = convertUnits(fromUnit, toUnit, +value)
     const num = convertedValue.toNumber(toUnit)
     const rounded = parseFloat(num.toFixed(3))
@@ -62,6 +69,9 @@ export const parseValue = ({ value, unitCode }: NWSValue, key: string, units: UN
     const convertableValue = units[key]
     if (convertableValue && value) {
         const [toUnit, fromUnit] = convertableValue
+        if (!fromUnit) {
+            return { value, unit: toUnit }
+        }
         const convertedValue = convertUnits(fromUnit, toUnit, +value)
         const num = convertedValue.toNumber(toUnit)
         const rounded = parseFloat(num.toFixed(3))

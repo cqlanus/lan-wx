@@ -13,10 +13,13 @@ export const convertUnits = (fromUnit: string, toUnit: string, value: number) =>
 
 const DISPLAY_UNIT_MAP: any = {
     degF: '°F',
+    deg: '°',
     degC: '°C',
     'degree_(angle)': '°',
     percent: '%',
-    'm_s-1': 'm/s'
+    'm_s-1': 'm/s',
+    'mi/h': 'mph',
+    'in': '"'
 }
 
 export const degreesToCompass = (value: number) => {
@@ -31,6 +34,13 @@ const degreesToCompassSimple = (value: number) => {
     const compassVals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW',]
     const index = val % 8
     return (compassVals[index])
+}
+
+export const displayUnit = (unit: string | undefined) => {
+    if (unit) {
+        return DISPLAY_UNIT_MAP[unit] || unit
+    }
+    return ''
 }
 
 export const getDisplayUnit = ({ value, unit }: WeatherValue, key?: string) => {

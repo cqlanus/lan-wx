@@ -33,7 +33,7 @@ const LayerDropdown = () => {
         if (layerTypeId && layerId) {
             dispatch(getLayer({ layerTypeId, layerId }))
         }
-    }, [layerTypeId, layerId])
+    }, [layerTypeId, layerId, dispatch])
 
     const handleType = (e: any) => {
         const { value } = e.target

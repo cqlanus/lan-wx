@@ -11,7 +11,7 @@ import { getNorms } from '../redux/slice/climate'
 import { selectCoords, selectDepartures } from '../redux/selectors'
 import type { CHART_CONFIG } from '../types/chart'
 
-const dataFor = (key: string) => (d: any) => d[key]
+const dataFor = (key: string) => (d: any) => d[key] && d[key].value
 const formatTime = (d: string) => {
     const timeString = moment(d).format('MM-DD')
     return timeString

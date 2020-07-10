@@ -20,7 +20,7 @@ const Container = styled.div`
     margin-bottom: 6rem;
 `
 
-const dataFor = (key: string) => (d: any) => d[key]
+const dataFor = (key: string) => (d: any) => d[key] && d[key].value
 
 const formatTime = (d: string) => {
     const timeString = moment(d).format('ha')

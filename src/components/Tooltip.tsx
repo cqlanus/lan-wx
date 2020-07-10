@@ -1,8 +1,10 @@
 import React from 'react'
 import moment from 'moment'
 import { Tooltip as Tool } from 'recharts'
+import { displayUnit } from '../utils/units'
 
-const formatTooltip = (val: any, name: string) => {
+const formatTooltip = (val: any, name: string, { payload }: any) => {
+    const { unit } = payload[name] || {}
     const formattedValue = val > 1 ? Math.round(val) : val
     const hasDashes = /-/.test(name)
     let formattedName = ''
@@ -11,7 +13,9 @@ const formatTooltip = (val: any, name: string) => {
     } else {
         formattedName = name.replace(/[A-Z]/g, (x: any) => `_${x.toLowerCase()}`).split('_').map(w => w[0]).join('')
     }
-    return [formattedValue, formattedName]
+    const disUnit = displayUnit(unit)
+    const finalValue = `${formattedValue}${disUnit}`
+    return [finalValue, formattedName]
 }
 const formatTooltipLabel = (val: any) => {
     return moment(val).format('M/D|ha')

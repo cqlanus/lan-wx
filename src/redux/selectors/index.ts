@@ -267,9 +267,9 @@ export const selectDepartures = createSelector(
             const departure = Number((temperature - val).toFixed(2))
             return {
                 date,
-                [`forecast${k}`]: temperature,
-                [`departure${k}`]: departure,
-                [`normal${k}`]: val,
+                [`forecast${k}`]: { value: temperature, unit: 'degF' },
+                [`departure${k}`]: { value: departure, unit: 'degF' },
+                [`normal${k}`]: { value: val, unit: 'degF' },
             }
         }).reduce((acc: { [key: string]: any }, curr) => {
             const { date } = curr
@@ -292,7 +292,7 @@ export const selectCurrentDeviceWeather = createSelector(
         const { lastData, info } = deviceInfo
         if (lastData) {
             const parsed = parseDeviceWeather(lastData)
-            return { data: parsed, info  }
+            return { data: parsed, info }
         }
     }
 )
@@ -312,11 +312,11 @@ export const selectHasDevices = createSelector<RootState, any, boolean>(
     [selectPwsDevices],
     (devices) => devices.length > 0
 )
-export const selectDeviceWeather = (state: RootState) => state.pws.weather
-/* export const selectDeviceWeather = createSelector(
- *     [selectDevWeather],
- *     (deviceWeather) => deviceWeather.map(parseDeviceWeather)
- * ) */
+export const selectDevWeather = (state: RootState) => state.pws.weather
+export const selectDeviceWeather = createSelector(
+    [selectDevWeather],
+    (deviceWeather) => deviceWeather.map(parseDeviceWeather)
+)
 export const selectFavoriteStations = createSelector(
     [selectUser],
     (user) => {

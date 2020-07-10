@@ -99,11 +99,6 @@ const flex = css`
     align-items: center;
 `
 
-const FlexContainer = styled.div`
-    ${flex}
-    padding: 1rem;
-`
-
 const MoonPhaseContainer = styled.div`
     ${flex}
     justify-content: space-around;
@@ -122,11 +117,6 @@ const DetailsTable = styled.table`
 const TitleCell = styled.td`
     width: 1%;
     white-space: nowrap;
-`
-
-const Col = styled.div`
-    margin: 0 1rem;
-    font-size: 1.5rem;
 `
 const Astronomy = () => {
 
@@ -173,7 +163,7 @@ const Astronomy = () => {
 
     const renderSunDetails = () => {
         if (!astroPosition) { return null }
-        const { azimuth, altitude, moon_azimuth, moon_altitude } = astroPosition
+        const { azimuth, altitude, } = astroPosition
         return (
             <div>
                 <h3>{Emoji.weather.sunny} Details</h3>
