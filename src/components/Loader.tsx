@@ -24,7 +24,7 @@ const Dot = styled.span`
     font-size: 3rem;
     animation-name: ${blink};
     animation-duration: 1.4s;
-    animation-iteration-cound: infinite;
+    animation-iteration-count: infinite;
     animation-fill-mode: both;
 
     &:nth-child(2) {
