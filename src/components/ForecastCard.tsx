@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import Card from './Card'
 import Button from './Button'
+import Loader from './Loader'
 
 import { getDailyForecast } from '../redux/slice/weather'
 import { selectCoords, selectDailyForecast, selectThreeDayForecast } from '../redux/selectors'
@@ -94,7 +95,7 @@ const ForecastCard = () => {
         dispatch(getDailyForecast())
     }, [coords, dispatch])
 
-    if (!dailyForecast) { return null }
+    if (!dailyForecast) { return <Loader/> }
 
     const isPeriodDetailed = (p: any) => detailsShowing[p.number]
 

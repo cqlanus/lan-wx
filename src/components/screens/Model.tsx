@@ -6,6 +6,7 @@ import { useParams, } from 'react-router'
 import BottomNav from '../BottomNav'
 import Button from '../Button'
 import Select from '../Select'
+import Loader from '../Loader'
 
 import ModelGuidance from '../../data/modelGuidance'
 import { getModelGuidance } from '../../redux/slice/model'
@@ -147,7 +148,7 @@ const Model = () => {
         <Container>
 
             <ImgContainer>
-                {currentChart && <ChartImage src={currentChart} alt="" />}
+                {currentChart ? <ChartImage src={currentChart} alt="" /> : <Loader/>}
             </ImgContainer>
 
             <BottomNav root="model" options={MODEL_TYPES} selected={(k: string) => k === modelType}>

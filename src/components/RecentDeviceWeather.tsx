@@ -9,6 +9,7 @@ import {
 } from 'recharts'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Loader from './Loader'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
@@ -101,6 +102,8 @@ const RecentDeviceWeather = () => {
     }, [dispatch, device, devices])
 
     const deviceWeather = useSelector(selectDeviceWeather)
+
+    if (deviceWeather.length === 0) { return <Loader/> }
 
     return (
         <Container>

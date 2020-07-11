@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { XAxis, YAxis, Legend, Tooltip, } from 'recharts'
 
+import Loader from './Loader'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
@@ -54,6 +55,9 @@ const Departures = () => {
         dispatch(getDailyForecast())
         dispatch(getNorms())
     }, [dispatch, coords])
+
+    if (departures.length === 0) { return <Loader/> } 
+
     return (
         <div>
             {

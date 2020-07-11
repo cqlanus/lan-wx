@@ -9,6 +9,7 @@ import {
     Tooltip
 } from 'recharts'
 
+import Loader from './Loader'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
@@ -88,7 +89,7 @@ const DetailedForecast = () => {
         dispatch(getDetailedForecast())
     }, [coords, dispatch])
 
-    if (!detailedForecast) { return null }
+    if (!detailedForecast || detailedForecast.length === 0) { return <Loader/> }
     const { length } = detailedForecast
 
     return (

@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import { XAxis, YAxis, Legend, Tooltip, } from 'recharts'
 
+import Loader from './Loader'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
@@ -62,7 +63,7 @@ const RecentWeather = () => {
         dispatch(getRecentWeather())
     }, [dispatch, coords])
 
-    if (!recent) { return null }
+    if (!recent || recent.length === 0) { return <Loader/> }
 
     return (
         <div>

@@ -4,6 +4,8 @@ import moment from 'moment'
 import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Loader from './Loader'
+
 import { getAstronomy } from '../redux/slice/climate'
 import { selectAstronomy, selectCoords, selectDayLengths, selectMoonPhase, selectTomorrowLength, selectAstronoyPosition } from '../redux/selectors'
 import Emoji from '../data/emoji'
@@ -160,6 +162,8 @@ const Astronomy = () => {
         rows,
         prepareRow,
     } = useTable({ columns, data })
+
+    if (data.length === 0) { return <Loader/> }
 
     const renderSunDetails = () => {
         if (!astroPosition) { return null }

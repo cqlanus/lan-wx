@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Card from './Card'
+import Loader from './Loader'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { favoriteStation } from '../redux/slice/user'
 import { selectCoords, selectCurrentWeather, selectIsStationFavorite, selectAuthUser } from '../redux/selectors'
@@ -103,7 +104,7 @@ const Current = () => {
         dispatch(getCurrentWeather())
     }, [dispatch, coords])
 
-    if (!currentWeather) { return null }
+    if (!currentWeather) { return <Loader/> }
 
     const { main, secondary } = CURRENT_WX_STRUCTURE
     const { timestamp, icon, station } = currentWeather

@@ -3,6 +3,8 @@ import moment from 'moment'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Loader from './Loader'
+
 import { getDeviceInfo, setCurrentDevice } from '../redux/slice/pws'
 import { selectPwsDevices, selectCurrentDeviceWeather, selectCurrentDevice } from '../redux/selectors'
 import { getDisplayUnit } from '../utils/units'
@@ -98,7 +100,7 @@ const CurrentDeviceWeather = () => {
 
     const currentWeather: { data: any, info: any } | undefined = useSelector(selectCurrentDeviceWeather)
 
-    if (!currentWeather) { return null }
+    if (!currentWeather) { return <Loader/> }
 
     const { data, info } = currentWeather
 

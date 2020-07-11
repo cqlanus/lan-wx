@@ -9,6 +9,7 @@ import {
     Tooltip
 } from 'recharts'
 
+import Loader from './Loader'
 import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
 import { TooltipProps } from './Tooltip'
 
@@ -91,6 +92,9 @@ const Norms = () => {
     useEffect(() => {
         dispatch(getNorms())
     }, [dispatch, coords,])
+
+    if (norms.length === 0) { return <Loader/> }
+
     return (
         <PageContainer>
             <Title>Climate Norms</Title>

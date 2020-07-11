@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
+import Loader from './Loader'
+
 import { getForecastDiscussion } from '../redux/slice/forecast'
 import { selectForecastDiscussion, selectCoords } from '../redux/selectors'
 import type { Discussion } from '../types/forecast'
@@ -48,7 +50,7 @@ const ForecastDiscussion = (p: any) => {
         dispatch(getForecastDiscussion())
     }, [coords, dispatch])
 
-    if (!discussion) { return null }
+    if (!discussion) { return <Loader/> }
 
     return (
         <Container>

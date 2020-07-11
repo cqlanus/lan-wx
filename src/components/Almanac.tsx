@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Loader from './Loader'
+
 import { getRecentWeather } from '../redux/slice/weather'
 import { getAlmanac } from '../redux/slice/climate'
 import { selectAlmanac, selectCoords, } from '../redux/selectors'
@@ -129,6 +131,8 @@ const Almanac = () => {
         rows,
         prepareRow,
     } = useTable({ columns, data })
+
+    if (data.length === 0) { return <Loader/> }
 
     const renderMeta = () => {
         if (!meta) { return null }
