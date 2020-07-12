@@ -9,6 +9,7 @@ import Loader from './Loader'
 import { getDailyForecast } from '../redux/slice/weather'
 import { selectCoords, selectDailyForecast, selectThreeDayForecast } from '../redux/selectors'
 import emoji from '../data/emoji'
+import getTheme from '../themes'
 
 const Container = styled(Card)`
     margin: 2rem 0;
@@ -23,7 +24,7 @@ const Period = styled.div`
     padding-left: 1rem;
     padding-bottom: 1rem;
     text-align: left;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid ${() => getTheme().fg};
     display: flex;
     cursor: pointer;
 `

@@ -11,6 +11,8 @@ import { getRecentWeather } from '../redux/slice/weather'
 import { selectCoords, selectRecentWeather } from '../redux/selectors'
 import type { CHART_CONFIG } from '../types/chart'
 
+import getTheme from '../themes'
+
 const dataFor = (key: string) => (d: any) => d[key] && d[key].value
 
 const formatTime = (d: string) => {
@@ -75,7 +77,7 @@ const RecentWeather = () => {
                             title={val.title}
                             data={recent}
                         >
-                            <Tooltip {...TooltipProps} />
+                            <Tooltip {...TooltipProps(getTheme())} />
                             {
                                 val.axes.map(({ type: Axis, ...rest }, idx) => {
                                     return <Axis key={idx} {...rest} />

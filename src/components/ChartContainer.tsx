@@ -6,13 +6,14 @@ import {
     CartesianGrid,
     Line
 } from 'recharts'
+import getTheme from '../themes'
 
 const Container = styled.div`
     width: 100%;
     height: 25vh;
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dashed ${() => getTheme().fg};
 
     &:last-child {
     border-bottom: none;
@@ -49,4 +50,4 @@ export const BASE_AXIS = { style: { fontSize: '0.6rem' }, mirror: true }
 export const DASH_PATTERNS = ['', '2 2', '5 5']
 export const getBaseElement = (findFn: (k: string) => any) => 
     (key: string, idx: number) => 
-        ({ name: key, type: Line, dataKey: findFn(key), stroke: 'rgba(0,0,0,0.7)', strokeWidth: '1.5', strokeDasharray: DASH_PATTERNS[idx] })
+        ({ name: key, type: Line, dataKey: findFn(key), stroke: getTheme().line, strokeWidth: '1.5', strokeDasharray: DASH_PATTERNS[idx] })

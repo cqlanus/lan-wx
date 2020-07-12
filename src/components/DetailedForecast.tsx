@@ -15,6 +15,7 @@ import { TooltipProps } from './Tooltip'
 
 import { getDetailedForecast } from '../redux/slice/forecast'
 import { selectDetailedForecast, selectCoords, selectDaysAhead } from '../redux/selectors'
+import getTheme from '../themes'
 
 const dataFor = (key: string) => (d: any) => d[key] && d[key].value
 
@@ -102,7 +103,7 @@ const DetailedForecast = () => {
                             key={k}
                             title={val.title}
                             data={detailedForecast}>
-                            <Tooltip {...TooltipProps} />
+                            <Tooltip {...TooltipProps(getTheme())} />
                             {
                                 val.axes(daysAhead, length).map(({ type: Axis, ...rest }, idx) => {
                                     return (<Axis key={idx} {...rest} padding={{ left: 20 }} />)

@@ -10,6 +10,8 @@ import { TooltipProps } from './Tooltip'
 import { getDailyForecast } from '../redux/slice/weather'
 import { getNorms } from '../redux/slice/climate'
 import { selectCoords, selectDepartures } from '../redux/selectors'
+import getTheme from '../themes'
+
 import type { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => d[key] && d[key].value
@@ -68,7 +70,7 @@ const Departures = () => {
                             title={val.title}
                             data={departures}
                         >
-                            <Tooltip {...TooltipProps} />
+                            <Tooltip {...TooltipProps(getTheme())} />
                             {
                                 val.axes.map(({ type: Axis, ...rest }, idx) => {
                                     return <Axis key={idx} {...rest} />

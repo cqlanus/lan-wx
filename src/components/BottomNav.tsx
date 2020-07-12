@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import Button from './Button'
+import getTheme from '../themes'
 
 const BottomContainer = styled.div`
     position: fixed;
@@ -17,13 +18,13 @@ const ButtonGroup = styled.div`
 
 type BottomNavButtonProps = { selected: boolean }
 const BottomNavButton = styled(Button)`
-    color: black;
+    color: ${() => getTheme().fg};
     text-decoration: none;
     flex: 1;
     font-weight: ${(p: BottomNavButtonProps) => p.selected ? 'bold' : 'normal'};
 
     &:visited {
-         color: black;
+         color: ${() => getTheme().fg};
     }
 `
 

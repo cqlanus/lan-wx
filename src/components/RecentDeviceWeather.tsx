@@ -16,6 +16,7 @@ import { TooltipProps } from './Tooltip'
 import { getDeviceWeather, setCurrentDevice } from '../redux/slice/pws'
 import { selectDeviceWeather, selectPwsDevices, selectCurrentDevice } from '../redux/selectors'
 import { CHART_CONFIG } from '../types/chart'
+import getTheme from '../themes'
 
 const Container = styled.div`
     margin-bottom: 6rem;
@@ -115,10 +116,10 @@ const RecentDeviceWeather = () => {
                             title={val.title}
                             data={deviceWeather}
                         >
-                            <Tooltip {...TooltipProps} />
+                            <Tooltip {...TooltipProps(getTheme())} />
                             {
-                                val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                    return <Axis key={idx} {...rest} />
+                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
+                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
                                 })
                             }
                             {

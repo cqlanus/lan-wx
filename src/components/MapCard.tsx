@@ -9,8 +9,10 @@ import Card from './Card'
 import LayerDropdown from './LayerDropdown'
 import { selectCoords, selectLayerUrl, selectLegendUrl } from '../redux/selectors'
 
+import getTheme from '../themes'
+
 const Container = styled(Card)`
-    background-color: white;
+    background-color: ${() => getTheme().bg};
 `
 
 const MapCard = () => {
@@ -29,7 +31,6 @@ const MapCard = () => {
         }
     }, [coords])
     
-    const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {
         "type": "raster",
         "tiles": [
@@ -42,7 +43,7 @@ const MapCard = () => {
             return (
                 <MapBox
                     center={center}
-                    style={defaultStyle}
+                    style={getTheme().map}
                     containerStyle={{ height: '40vh', width: '100%' }}
                     zoom={zoom}
                 >

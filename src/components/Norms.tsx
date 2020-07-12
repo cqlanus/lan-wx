@@ -15,6 +15,7 @@ import { TooltipProps } from './Tooltip'
 
 import { getNorms } from '../redux/slice/climate'
 import { selectCoords, selectNormsByMonth } from '../redux/selectors'
+import getTheme from '../themes'
 import type { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => {
@@ -106,7 +107,7 @@ const Norms = () => {
                             title={val.title}
                             data={norms}
                         >
-                            <Tooltip {...TooltipProps} />
+                            <Tooltip {...TooltipProps(getTheme())} />
                             {
                                 val.axes.map(({ type: Axis, ...rest }, idx) => {
                                     return <Axis key={idx} {...rest} />

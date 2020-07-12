@@ -325,6 +325,7 @@ export const selectFavoriteStations = createSelector(
         return stations
     }
 )
+export const selectTheme = (state: RootState) => state.user.theme
 
 export const selectIsStationFavorite = createSelector(
     [selectUser, selectCurrentWeather],

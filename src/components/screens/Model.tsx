@@ -12,13 +12,15 @@ import ModelGuidance from '../../data/modelGuidance'
 import { getModelGuidance } from '../../redux/slice/model'
 import { selectModelImage } from '../../redux/selectors'
 
+import getTheme from '../../themes'
+
 const Container = styled.div`
     min-height: 90vh;
     margin-bottom: 200px;
 `
 
 const OptionsContainer = styled.div`
-    background: white;
+    background: ${() => getTheme().bg};
 `
 
 const ButtonGroup = styled.div`
@@ -28,7 +30,7 @@ const ButtonGroup = styled.div`
 `
 
 const BottomButton = styled(Button)`
-    color: black;
+    color: ${() => getTheme().fg};
     flex: 1;
 
     &:hover: {

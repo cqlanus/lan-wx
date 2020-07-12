@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components'
 import Button from './Button'
 
 import { selectHasDevices } from '../redux/selectors'
+import getTheme from '../themes'
 import emoji from '../data/emoji'
 
 const PAGES = {
@@ -32,7 +33,7 @@ const Drawer = styled.div`
     left: 0;
     overflow-x: hidden;
     height: ${(p: DrawerProps) => p.isOpen ? '100vh' : '0'};
-    background-color: white;
+    background-color: ${() => getTheme().bg};
     width: 100vw;
     transition: 0.5s;
     display: flex;
@@ -44,10 +45,10 @@ const Drawer = styled.div`
 `
 
 const linkStyles = css`
-    color: black;
+    color: ${() => getTheme().fg};
     text-decoration: none;
     margin-top: 1rem;
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dashed ${() => getTheme().fg};
 
     &:hover {
         font-weight: bold;

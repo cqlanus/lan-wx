@@ -8,6 +8,8 @@ import Loader from './Loader'
 import { getCurrentWeather } from '../redux/slice/weather'
 import { favoriteStation } from '../redux/slice/user'
 import { selectCoords, selectCurrentWeather, selectIsStationFavorite, selectAuthUser } from '../redux/selectors'
+
+import getTheme from '../themes'
 import emoji from '../data/emoji'
 import { getDisplayUnit } from '../utils/units'
 
@@ -53,7 +55,7 @@ const Reload = styled.span`
 
 const FavoriteBtn = styled.span`
 cursor: pointer;
-    border: 1px dashed black;
+    border: 1px dashed ${() => getTheme().fg};
     padding: 0 0.5rem;
 `
 

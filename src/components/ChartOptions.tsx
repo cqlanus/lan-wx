@@ -9,6 +9,7 @@ import Select from './Select'
 import { UpperAirLegend, SurfaceLegend, SkewTLegend } from './UpperAirLegend'
 
 import { formatUtcHour } from '../utils'
+import getTheme from '../themes'
 
 const OptionTitle = styled.div`
     text-decoration: underline;
@@ -30,7 +31,7 @@ const ButtonGroup = styled.div`
 `
 
 const BottomButton = styled(Button)`
-    color: black;
+    color: ${() => getTheme().fg};
     flex: 1;
 
     &:hover: {

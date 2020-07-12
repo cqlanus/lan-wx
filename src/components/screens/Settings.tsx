@@ -8,10 +8,12 @@ import { buttonStyle } from '../Button'
 
 import { addDevice } from '../../redux/slice/pws'
 import { setLocation } from '../../redux/slice/location'
-import { removeFavorite } from '../../redux/slice/user'
+import { removeFavorite, setTheme } from '../../redux/slice/user'
 import { logout } from '../../redux/slice/auth'
-import { selectPwsDevices, selectFavoriteStations } from '../../redux/selectors'
+import { selectPwsDevices, selectFavoriteStations, selectTheme } from '../../redux/selectors'
 import { Link } from 'react-router-dom'
+
+import getTheme from '../../themes'
 import emoji from '../../data/emoji'
 
 const Container = styled.div`
@@ -21,12 +23,12 @@ const Container = styled.div`
 
 const SubContainer = styled.div`
     margin-bottom: 2rem;
+    padding: 0.5rem;
 `
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
 `
 
 const InputGroup = styled.div`
@@ -61,7 +63,7 @@ const Remove = styled.span`
 
 const Select = styled(Link)`
     text-decoration: none;
-    color: black;
+    color: ${() => getTheme().fg};
 
     &:hover {
         font-weight: bold;
@@ -75,6 +77,8 @@ const Settings = () => {
     const dispatch = useDispatch()
     const devices = useSelector(selectPwsDevices)
     const stations: any[] = useSelector(selectFavoriteStations)
+    const theme = useSelector(selectTheme)
+
     const [macAddress, setMacAddress] = useState('')
     const [apiKey, setApiKey] = useState('')
 
@@ -97,6 +101,11 @@ const Settings = () => {
     const handleSelectStation = (station: any) => () => {
         const { lat_prp, lon_prp } = station
         dispatch(setLocation({ latitude: lat_prp, longitude: lon_prp }))
+    }
+
+    const toggleTheme = () => {
+        const nextTheme = theme === 'light' ? 'dark' : 'light'
+        dispatch(setTheme(nextTheme))
     }
 
     const renderFavorites = () => {
@@ -160,11 +169,25 @@ const Settings = () => {
         )
     }
 
+    const renderUISettings = () => {
+        const isDark = theme === 'dark'
+        return (
+            <SubContainer>
+                <Title>UI Settings</Title>
+                <InputGroup>
+                    <Label>Dark Mode:</Label>
+                    <input type="checkbox" checked={isDark} onChange={toggleTheme} />
+                </InputGroup>
+            </SubContainer>
+        )
+    }
+
     return (
         <Container>
             {renderDevices()}
             {renderAddDevice()}
             {renderFavorites()}
+            {renderUISettings()}
             <LogoutContainer>
                 <Logout to="/home/current" onClick={handleLogout}>Logout</Logout>
             </LogoutContainer>

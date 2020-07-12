@@ -13,9 +13,11 @@ import { getLayer } from '../../redux/slice/map'
 import { getCurrentLocation } from '../../redux/slice/location'
 import { selectCoords, selectMapData, selectLegendUrl, selectCurrentLayer } from '../../redux/selectors'
 
+import getTheme from '../../themes'
+
 type ButtonType = { disabled?: boolean }
 
-const getButtonColor = ({ disabled }: ButtonType) => (disabled ? 'rgba(0,0,0,0.5)' : 'black')
+const getButtonColor = ({ disabled }: ButtonType) => (disabled ? 'rgba(0,0,0,0.5)' : getTheme().fg)
 const getHoverState = ({ disabled }: ButtonType) => (
     !disabled ? '' : `
         cursor: not-allowed;
@@ -25,7 +27,7 @@ const getHoverState = ({ disabled }: ButtonType) => (
     `
 )
 const Container = styled(Card)`
-    background-color: white;
+    background-color: ${() => getTheme().bg};
     display: flex;
     flex-direction: column;
 `
@@ -36,7 +38,7 @@ const Legend = styled.img`
 
 const BottomContainer = styled.div`
     padding-top: 0.5rem;
-    background-color: white;
+    background-color: ${() => getTheme().bg};
     position: fixed;
     bottom: 0;
     left: 0;
@@ -115,7 +117,6 @@ const MapScreen = () => {
         }
     }
 
-    const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {
         "type": "raster",
         "tiles": [
@@ -128,7 +129,7 @@ const MapScreen = () => {
             return (
                 <MapBox
                     center={center}
-                    style={defaultStyle}
+                    style={getTheme().map}
                     containerStyle={{ height: '80vh', width: '100%' }}
                     zoom={zoom}
                 >

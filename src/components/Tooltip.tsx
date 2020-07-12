@@ -2,6 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import { Tooltip as Tool } from 'recharts'
 import { displayUnit } from '../utils/units'
+import getTheme from '../themes'
+import { Theme } from '../types/theme'
 
 const formatTooltip = (val: any, name: string, { payload }: any) => {
     const { unit } = payload[name] || {}
@@ -21,11 +23,11 @@ const formatTooltipLabel = (val: any) => {
     return moment(val).format('M/D|ha')
 }
 
-export const TooltipProps = {
+export const TooltipProps = (theme: Theme) => ( {
     formatter: formatTooltip,
     labelFormatter: formatTooltipLabel,
-    contentStyle: { fontSize: '0.6rem' }
-}
+    contentStyle: { fontSize: '0.6rem', backgroundColor: theme.bg  }
+} )
 
 const Tooltip = () => (
     <Tool

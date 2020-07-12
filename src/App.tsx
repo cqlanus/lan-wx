@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
+import styled, { ThemeProvider } from 'styled-components'
 import Amplify, { Hub } from "aws-amplify"
-import { useDispatch, } from 'react-redux'
+import { useDispatch, useSelector, } from 'react-redux'
 import {
     BrowserRouter as Router,
     Switch,
@@ -21,7 +22,11 @@ import Model from './components/screens/Model'
 
 import { getAuthUser } from './redux/slice/auth'
 import { getCurrentLocation } from './redux/slice/location'
+import { selectTheme } from './redux/selectors'
 
+import light from './themes/light'
+import dark from './themes/dark'
+import GlobalStyles from './themes/global'
 import './App.css';
 import 'toastr/build/toastr.css'
 
@@ -30,6 +35,8 @@ Amplify.configure(awsExports);
 
 function App() {
     const dispatch = useDispatch()
+    const themeStr = useSelector(selectTheme)
+    const theme = themeStr === 'light' ? light : dark
     useEffect(() => {
         dispatch(getCurrentLocation())
         dispatch(getAuthUser())
@@ -42,35 +49,39 @@ function App() {
     }, [dispatch])
 
   return (
-      <div className="App">
-          <Router>
-              <NavDrawer/>
-              <LocationSearch/>
-              <Switch>
-                  <Route exact path="/"><Redirect to="/home/current"/></Route>
-                  <Route exact path="/home/:type"><Home/></Route>
+      <ThemeProvider theme={theme}>
+          <GlobalStyles/>
+          <div className="App">
+              <Router>
+                  <NavDrawer/>
+                  <LocationSearch/>
+                  <Switch>
+                      <Route exact path="/"><Redirect to="/home/current"/></Route>
+                      <Route exact path="/home/:type"><Home/></Route>
 
-                  <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
-                  <Route path="/charts/:chartType"><Charts/></Route>
+                      <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
+                      <Route path="/charts/:chartType"><Charts/></Route>
 
-                  <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
-                  <Route path="/forecast/:forecastType"><Forecast/></Route>
+                      <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
+                      <Route path="/forecast/:forecastType"><Forecast/></Route>
 
-                  <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
-                  <Route path="/climate/:climateType"><Climate/></Route>
+                      <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
+                      <Route path="/climate/:climateType"><Climate/></Route>
 
-                  <Route exact path="/map"><MapScreen /></Route>
-                  <Route exact path="/settings"><Settings /></Route>
+                      <Route exact path="/map"><MapScreen /></Route>
+                      <Route exact path="/settings"><Settings /></Route>
 
-                  <Route exact path="/pws"><Redirect to="/pws/current"/></Route>
-                  <Route path="/pws/:pwsType"><PWS /></Route>
+                      <Route exact path="/pws"><Redirect to="/pws/current"/></Route>
+                      <Route path="/pws/:pwsType"><PWS /></Route>
 
-                  <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
-                  <Route path="/model/:modelType"><Model /></Route>
+                      <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
+                      <Route path="/model/:modelType"><Model /></Route>
 
-              </Switch>
-          </Router>
-      </div>
+                  </Switch>
+              </Router>
+          </div>    
+      </ThemeProvider>
+      
   );
 }
 

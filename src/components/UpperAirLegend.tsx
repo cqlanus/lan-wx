@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import emoji from '../data/emoji'
+import getTheme from '../themes'
 
 const LegendContainer = styled.div`
-    background-color: white;
+    background-color: ${() => getTheme().bg};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -24,7 +25,7 @@ const ButtonGroup = styled.div`
 `
 
 const BottomButton = styled.a`
-    color: black;
+    color: ${() => getTheme().fg};
     font-size: 0.7rem;
     text-decoration: underline;
     border: none;

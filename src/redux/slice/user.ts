@@ -6,11 +6,13 @@ import { selectUser } from '../selectors';
 import { getAuthUser } from './auth';
 
 interface UserState {
-    current: any
+    current: any,
+    theme: 'light' | 'dark'
 }
 
 const initialState: UserState = {
-    current: undefined
+    current: undefined,
+    theme: 'dark'
 }
 
 export const user = createSlice({
@@ -19,11 +21,14 @@ export const user = createSlice({
     reducers: {
         setUser: (state, action: PayloadAction<UserState>) => {
             state.current = action.payload
+        },
+        setTheme: (state, action) => {
+            state.theme = action.payload
         }
     }
 })
 
-export const { setUser } = user.actions
+export const { setUser, setTheme } = user.actions
 
 export const createUser = (username: string) => async ( dispatch: any ) => {
     try {

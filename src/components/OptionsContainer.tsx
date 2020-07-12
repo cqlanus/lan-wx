@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import getTheme from '../themes'
 
 
 type Props = {
@@ -18,9 +19,9 @@ const renderFlex = (p: Props) => {
     `
 }
 const OptionContainer = styled.div`
-    border: 1px dashed black;
+    border: 1px dashed ${() => getTheme().fg};
     border-bottom: none;
-    background-color: white;
+    background-color: ${() => getTheme().bg};
     ${renderFlex}
 `
 
