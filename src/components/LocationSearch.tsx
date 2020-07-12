@@ -22,7 +22,8 @@ const LocationSearch = () => {
     const [location, setLocation] = useState('')
     const dispatch = useDispatch()
     const handleChange = (e: any) => setLocation(e.target.value)
-    const handleSearch = () => {
+    const handleSearch = (e: any) => {
+        e.preventDefault()
         if (!location) { return }
         dispatch(getLocation(location))
     }
