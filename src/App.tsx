@@ -22,6 +22,7 @@ import Model from './components/screens/Model'
 
 import { getAuthUser } from './redux/slice/auth'
 import { getCurrentLocation } from './redux/slice/location'
+import { setTheme } from './redux/slice/user'
 import { selectTheme } from './redux/selectors'
 
 import light from './themes/light'
@@ -37,7 +38,13 @@ function App() {
     const dispatch = useDispatch()
     const themeStr = useSelector(selectTheme)
     const theme = themeStr === 'light' ? light : dark
+    const setUserTheme = () => {
+        if ( window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ) {
+            dispatch(setTheme('light'))
+        }
+    }
     useEffect(() => {
+        setUserTheme()
         dispatch(getCurrentLocation())
         dispatch(getAuthUser())
       Hub.listen('auth', (data: any) => {
