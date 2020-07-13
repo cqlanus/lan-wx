@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
+import Loader from '../Loader'
 import BottomNav from '../BottomNav'
 import { getChart } from '../../redux/slice/chart'
 import { selectCurrentChart, selectCoords } from '../../redux/selectors'
@@ -29,18 +30,18 @@ const CHART_TYPES: CH_TYPES = {
 }
 
 const Container = styled.div`
-    height: 90vh;
+    min-height: 90vh;
+    margin-bottom: 200px;
 `
 
 const ImgContainer = styled.div`
     height: 100%;
+    overflow-x: scroll;
     display: flex;
-    justify-content: center;
-    align-items: center;
 `
 
 const ChartImage = styled.img`
-    width: 100%;
+    max-width: 1024px;
 `
 const Charts = (p: any) => {
     const params: { chartType: keyof CH_TYPES } = useParams()
@@ -84,7 +85,7 @@ const Charts = (p: any) => {
     return (
         <Container>
             <ImgContainer>
-                {currentChart && <ChartImage src={currentChart} alt="" />}
+                {currentChart ? <ChartImage src={currentChart} alt="" /> : <Loader/>}
             </ImgContainer>
 
             <BottomNav root="charts" options={CHART_TYPES} selected={ (k: string) => k === chartType }>

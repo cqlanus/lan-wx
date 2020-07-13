@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import toastr from 'toastr'
 
 import { AppThunk } from '../store'
 import { selectCoords } from '../selectors'
@@ -7,6 +8,7 @@ import { CurrentWeather, DailyForecast } from '../../types/weather'
 
 interface WeatherState {
     current?: CurrentWeather,
+    recent?: CurrentWeather[],
     dailyForecast?: DailyForecast
 }
 
@@ -24,11 +26,14 @@ export const weather = createSlice({
         },
         setDailyForecast: (state, action: PayloadAction<DailyForecast | undefined>) => {
             state.dailyForecast = action.payload
+        },
+        setRecentWeather: (state, action: PayloadAction<CurrentWeather[] | undefined>) => {
+            state.recent = action.payload
         }
     }
 })
 
-export const { setCurrentWeather, setDailyForecast } = weather.actions
+export const { setCurrentWeather, setDailyForecast, setRecentWeather } = weather.actions
 
 // THUNKS
 export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
@@ -40,11 +45,24 @@ export const getCurrentWeather = (): AppThunk => async (dispatch, getState) => {
         dispatch(setCurrentWeather(currentWeather))
     } catch (err) {
         console.log({ err })
-        dispatch(setCurrentWeather(undefined))
+        toastr.error('Could not get current weather')
     }
 }
 
-export const getDailyForecast = (): AppThunk => async(dispatch, getState) => {
+export const getRecentWeather = (limit?: number): AppThunk => async (dispatch, getState) => {
+    try {
+        const state = getState()
+        const coords = selectCoords(state)
+        if (!coords) { return }
+        const recentWeather = await api.weather.getRecentConditions(coords, limit)
+        dispatch(setRecentWeather(recentWeather))
+    } catch (err) {
+        console.log({ err })
+        toastr.error('Could not get recent weather')
+    }
+}
+
+export const getDailyForecast = (): AppThunk => async (dispatch, getState) => {
     try {
         const coords = selectCoords(getState())
         if (!coords) { return }
@@ -52,7 +70,8 @@ export const getDailyForecast = (): AppThunk => async(dispatch, getState) => {
         dispatch(setDailyForecast(dailyForecast))
     } catch (err) {
         console.log({ err })
-        dispatch(setDailyForecast(undefined))
+        toastr.error('Could not get daily forecast')
+
     }
 }
 

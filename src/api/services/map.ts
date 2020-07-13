@@ -2,6 +2,8 @@ import qs from 'query-string'
 import LAYERS from '../../data/layers'
 
 export default class MapService {
+    LEGEND_BASE = 'https://nowcoast.noaa.gov/LayerInfo'
+
     selectLayerUrl = ({ layerTypeId, layerId, time }: any): string => {
         const layer = LAYERS[layerTypeId]
         if (!layer) { return '' }
@@ -25,7 +27,7 @@ export default class MapService {
         return decodeURI(url)
     }
 
-    buildLegendUrl = ({ layerTypeId, layerId }: any): string => {
+    buildLegendUrl = async ({ layerTypeId, layerId }: any) => {
         const layer = LAYERS[layerTypeId]
         if (!layer) { return '' }
         const foundLayer = layer.layers.find(({ id: layId }) => layId === layerId)
@@ -33,11 +35,13 @@ export default class MapService {
         const queryParams = {
             request: 'legend',
             service: layer.service,
-            layers: foundLayer.id + 2,
+            layers: foundLayer.arcgisId,
             format: 'json',
         }
         const queryString = qs.stringify(queryParams)
-        const url = `${layer.url}?${queryString}`
-        return decodeURI(url)
+        const url = `${this.LEGEND_BASE}?${queryString}`
+        const resp = await fetch(url)
+        const data = await resp.json()
+        return data[0]
     }
 }

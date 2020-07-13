@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import toastr from 'toastr'
 
 import { AppThunk } from '../store'
 import type { Coords } from '../../types/location'
@@ -34,6 +35,21 @@ export const getCurrentLocation = (): AppThunk => async dispatch => {
     } catch (err) {
         console.log(err)
     }
+}
+
+export const getLocation = (location: string) => async (dispatch: any) => {
+    try {
+        const coords = await api.location.geocode(location)
+        const { latitude } = coords
+        if (!latitude) {
+            throw coords
+        }
+        dispatch(setLocation(coords))
+        
+    } catch (err) {
+        console.log({err})
+        toastr.warning('testing')
+    } 
 }
 
 export default location.reducer

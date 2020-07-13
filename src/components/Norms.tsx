@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react'
+import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
-    ComposedChart,
-    Line,
     XAxis,
     YAxis,
     Legend,
-    ResponsiveContainer,
-    CartesianGrid,
+    Tooltip
 } from 'recharts'
+
+import Loader from './Loader'
+import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
+import { TooltipProps } from './Tooltip'
+
 import { getNorms } from '../redux/slice/climate'
-import { selectCoords, selectNorms } from '../redux/selectors'
+import { selectCoords, selectNormsByMonth } from '../redux/selectors'
+import getTheme from '../themes'
+import type { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => {
     if (d[key]) {
@@ -20,41 +25,32 @@ const dataFor = (key: string) => (d: any) => {
     }
 }
 
+const formatTime = (d: string) => {
+    const timeString = moment(d).format('MM-DD')
+    return timeString
+}
+
+const formatDate = (d: string) => `${d}-2020`.replace(/-/g, '/')
+
+const BASE_X_AXIS = { 
+    ...BASE_AXIS, 
+    dataKey: (d: any) => {
+        const dateStr = formatDate(d.DATE)
+        const date = moment(dateStr).format('MM/DD/YYYY')
+        return date
+    },
+    tickFormatter: (d: string) => formatTime(d),
+    mirror: false,
+}
+
 // STYLED COMPONENTS
 const PageContainer = styled.div`
     margin-bottom: 8rem;
 `
 
-const Container = styled.div`
-    width: 100%;
-    height: 25vh;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px dashed black;
-
-    &:last-child {
-        border-bottom: none;
-    }
-`
-
 const Title = styled.h3``
 
-const Subtitle = styled.h4`
-    margin: 0.5rem 0;
-`
-
-type CHART_CONFIG = {
-    [key: string]: {
-        title: string,
-        keys: Array<string>,
-        axes: Array<{ type: any, dataKey?: any, style?: object }>
-    }
-}
-
-const BASE_AXIS = { style: { fontSize: '0.6rem' } }
-const BASE_X_AXIS = { ...BASE_AXIS, dataKey: 'date' }
-const DASH_PATTERNS = ['', '2 2', '5 5']
-const baseElement = (key: string, idx: number) => ({ name: key, type: Line, dataKey: dataFor(key), stroke: 'rgba(0,0,0,0.7)', strokeWidth: '1.5', strokeDasharray: DASH_PATTERNS[idx] })
+const baseElement = getBaseElement(dataFor)
 
 const CHARTS: CHART_CONFIG = {
     temp: {
@@ -64,7 +60,7 @@ const CHARTS: CHART_CONFIG = {
     },
     precip: {
         title: 'Precipitation Norms',
-        keys: [ 'DLY-PRCP-25PCTL', 'DLY-PRCP-50PCTL', 'DLY-PRCP-75PCTL'],
+        keys: ['DLY-PRCP-25PCTL', 'DLY-PRCP-50PCTL', 'DLY-PRCP-75PCTL'],
         axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     },
     degreeDay: {
@@ -92,38 +88,39 @@ const CHARTS: CHART_CONFIG = {
 const Norms = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
-    const norms = useSelector(selectNorms)
+    const norms = useSelector(selectNormsByMonth)
 
     useEffect(() => {
         dispatch(getNorms())
     }, [dispatch, coords,])
+
+    if (norms.length === 0) { return <Loader/> }
+
     return (
         <PageContainer>
             <Title>Climate Norms</Title>
             {
                 Object.entries(CHARTS).map(([k, val]) => {
                     return (
-                        <Container key={k}>
-                            <Subtitle>{val.title}</Subtitle>
-                            <ResponsiveContainer height="90%" width="100%">
-                                <ComposedChart data={norms}>
-                                    <CartesianGrid />
-                                    {
-                                        val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                            return <Axis key={idx} {...rest} mirror />
-                                        })
-                                    }
-                                    {
-                                        val.keys.map(baseElement)
-                                            .map(({ type: ChartElement, name, ...rest }) =>
-                                                <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                            )
-                                    }
-
-                                    <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
-                                </ComposedChart>
-                            </ResponsiveContainer>
-                        </Container>
+                        <ChartContainer
+                            key={k}
+                            title={val.title}
+                            data={norms}
+                        >
+                            <Tooltip {...TooltipProps(getTheme())} />
+                            {
+                                val.axes.map(({ type: Axis, ...rest }, idx) => {
+                                    return <Axis key={idx} {...rest} />
+                                })
+                            }
+                            {
+                                val.keys.map(baseElement)
+                                    .map(({ type: ChartElement, name, ...rest }) =>
+                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
+                                    )
+                            }
+                            <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
+                        </ChartContainer>
                     )
                 })
             }

@@ -1,26 +1,71 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
+import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLayer } from '../redux/slice/map'
-import { selectAllLayers, selectMapData } from '../redux/selectors'
+import { getLayer, setLayerId, setLayerType } from '../redux/slice/map'
+import { selectLayerTypes, selectLayerIds, selectMapData } from '../redux/selectors'
 import Select from './Select'
 
-type LayerListItem = { layerTypeId: string, layerId: string, key: string, name: string }
+import type { Layer } from '../types/layer'
+
+const Container = styled.div`
+    display: flex;
+    justify-content: space-around;
+`
+
+const Info = styled.div`
+    font-size: 0.7rem;
+    font-weight: bold;
+`
+
+const Flex = styled.div`
+    flex: 1;
+`
+
+type LayerType = {
+    id: string,
+    name: string
+}
+
 const LayerDropdown = () => {
     const dispatch = useDispatch()
     const { layerId, layerTypeId } = useSelector(selectMapData)
-    const handleSelect = (e: any) => {
+    useEffect(() => {
+        if (layerTypeId && layerId) {
+            dispatch(getLayer({ layerTypeId, layerId }))
+        }
+    }, [layerTypeId, layerId, dispatch])
+
+    const handleType = (e: any) => {
         const { value } = e.target
-        const [ layerTypeId, layerId ] = value.split('_')
-        dispatch(getLayer({ layerTypeId, layerId }))
+        dispatch(setLayerType(value))
     }
-    const layers: Array<LayerListItem> = useMemo(selectAllLayers, [])
-    const value = `${layerTypeId}_${layerId}`
+    const handleLayer = (e: any) => {
+        const { value } = e.target
+        dispatch(setLayerId(value))
+    }
+    const layerTypes: LayerType[] = useMemo(selectLayerTypes, [])
+    const layerIds: Layer[] = useSelector(selectLayerIds)
     return (
-        <Select id="" name="" value={value} onChange={handleSelect}>
-            {layers.map((l: any) => (
-                <option key={l.key} value={l.key} >{l.name}</option>
-            ))}
-        </Select>
+        <Container>
+            <Flex>
+                <Info> {'Layer Type'} </Info>
+                <Select value={layerTypeId} onChange={handleType}>
+                    {layerTypes.map((l) => (
+                        <option key={l.id} value={l.id} >{l.name}</option>
+                    ))}
+                </Select>    
+            </Flex>
+            <Flex>
+                <Info> {'Layer'} </Info>
+                <Select value={layerId} onChange={handleLayer}>
+                    {layerIds.map((l) => (
+                        <option key={l.id} value={l.id} >{l.name}</option>
+                    ))}
+                </Select>    
+            </Flex>
+            
+        </Container>
+
     )
 }
 

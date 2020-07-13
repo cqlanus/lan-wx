@@ -3,8 +3,13 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Loader from './Loader'
+
+import { getRecentWeather } from '../redux/slice/weather'
 import { getAlmanac } from '../redux/slice/climate'
-import { selectAlmanac, selectCoords } from '../redux/selectors'
+import { selectAlmanac, selectCoords, } from '../redux/selectors'
+
+import getTheme from '../themes'
 
 type Alm = {
     [key: string]: {
@@ -24,12 +29,12 @@ const TableContainer = styled.div`
 `
 
 const HeaderRow = styled.tr`
-    background-color: #f2f2f2;
+    background-color: ${() => getTheme().altRow};
 `
 
 const TableRow = styled.tr`
     &:nth-child(even) {
-        background-color: #f2f2f2;
+        background-color: ${() => getTheme().altRow};
     }
 `
 
@@ -42,7 +47,7 @@ type TC = { isTitleRow: boolean | undefined, isTitleCell: boolean }
 const titleStyles = ({ isTitleRow }: TC) => isTitleRow ? `
     font-weight: bold;
     padding-top: 1rem;
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dashed ${() => getTheme().fg};
 ` : ''
 
 const titleCellStyles = ({ isTitleCell }: TC) => isTitleCell ? `
@@ -102,6 +107,7 @@ const Almanac = () => {
     const coords = useSelector(selectCoords)
     const almanac: Alm = useSelector(selectAlmanac)
     useEffect(() => {
+        dispatch(getRecentWeather())
         dispatch(getAlmanac())
     }, [dispatch, coords])
 
@@ -127,6 +133,8 @@ const Almanac = () => {
         rows,
         prepareRow,
     } = useTable({ columns, data })
+
+    if (data.length === 0) { return <Loader/> }
 
     const renderMeta = () => {
         if (!meta) { return null }

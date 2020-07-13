@@ -7,11 +7,16 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 id: '1',
-                name: 'Radar'
+                arcgisId: '3',
+                name: 'Base Reflectivity',
+                max: 0,
+                interval: 1,
+                start: 0,
             }
         ],
         name: 'Radar',
-        id: 'radar'
+        id: 'radar',
+        forecast: false,
     },
     satellite: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/sat_meteo_imagery_time/MapServer/WMSServer',
@@ -19,31 +24,57 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 name: 'Global SWIR',
-                id: '1'
+                id: '1',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'Global LWIR',
-                id: '5'
+                id: '5',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'Global V',
-                id: '9'
+                id: '9',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'GOES SWIR',
-                id: '13'
+                id: '13',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'GOES LWIR',
-                id: '17'
+                id: '17',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'GOES V',
-                id: '25'
+                id: '25',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
+            {
+                name: 'Water Vapor Imagery',
+                id: '21',
+                max: 0,
+                interval: 1,
+                start: 0,
+            }
         ],
         name: 'Satellite',
-        id: 'satellite'
+        id: 'satellite',
+        forecast: false,
     },
     rtma: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_rtma_time/MapServer/WMSServer',
@@ -51,27 +82,56 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 name: 'Temperature',
-                id: '17'
+                arcgisId: '11',
+                id: '17',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'Wind Speed',
-                id: '9'
-            },
-            {
-                name: 'Wind Gusts',
-                id: '5'
+                id: '9',
+                arcgisId: '19',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'Dew Point',
-                id: '13'
+                arcgisId: '15',
+                id: '13',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
             {
                 name: 'Precip',
-                id: '21'
+                arcgisId: '7',
+                id: '21',
+                max: 0,
+                interval: 1,
+                start: 0,
             },
+            {
+                name: 'Wind Velo',
+                arcgisId: '3',
+                id: '25',
+                max: 0,
+                interval: 1,
+                start: 0,
+            },
+            {
+                name: 'Visibility',
+                arcgisId: '27',
+                id: '1',
+                max: 0,
+                interval: 1,
+                start: 0,
+            }
         ],
         name: 'Current',
-        id: 'rtma'
+        id: 'rtma',
+        forecast: false,
     },
     forecast: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/forecast_meteoceanhydro_sfc_ndfd_time/MapServer/WMSServer',
@@ -79,54 +139,97 @@ const LAYERS: LAYER_MAPPING = {
         layers: [
             {
                 name: 'Temperature',
-                id: '25'
+                arcgisId: '31',
+                id: '25',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Feels Like',
-                id: '17'
+                arcgisId: '39',
+                id: '17',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Dew Point',
-                id: '21'
+                arcgisId: '35',
+                id: '21',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Humidity',
-                id: '13'
+                arcgisId: '43',
+                id: '13',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Chance Precip',
-                id: '33'
+                arcgisId: '23',
+                id: '33',
+                max: 72,
+                interval: 12,
+                start: 12,
+            },
+            {
+                name: 'Quant Precip',
+                arcgisId: '15',
+                id: '41',
+                max: 72,
+                interval: 6,
+                start: 6,
+            },
+            {
+                name: 'Sky Cover %',
+                arcgisId: '27',
+                id: '29',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Wind Speed',
-                id: '9'
+                arcgisId: '47',
+                id: '9',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
             {
                 name: 'Wind Gusts',
-                id: '5'
+                arcgisId: '51',
+                id: '5',
+                max: 36,
+                interval: 1,
+                start: 1,
             },
         ],
         name: 'Forecast',
         id: 'forecast',
+        forecast: true
     },
-    // lightning: {
-    //     url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/sat_meteo_emulated_imagery_lightningstrikedensity_goes_time/MapServer/WMSServer',
-    // service: 'sat_meteo_emulated_imagery_lightningstrikedensity_goes_time',
-    //     layers: '1',
-    //     name: 'Lightning',
-    //     id: 'lightning'
-    // },
     severe: {
         url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/guidance_natlcenters_meteoceanhydro_outlooks_time/MapServer/WMSServer',
         service: 'guidance_natlcenters_meteoceanhydro_outlooks_time',
         layers: [
             {
                 id: '9',
-                name: 'Severe Outlook'
+                arcgisId: '3',
+                name: 'Severe Outlook .',
+                max: 0,
+                interval: 1,
+                start: 0,
             }
         ],
         name: 'Severe Outlook',
-        id: 'severe'
+        id: 'severe',
+        forecast: false,
     }
 }
 

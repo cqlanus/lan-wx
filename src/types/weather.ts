@@ -1,5 +1,10 @@
-export type NWSValue = { value: number, unitCode: string }
+export type NWSValue = { value: number | string, unitCode: string }
 export type WeatherValue = { value: number, unit: string }
+
+export type NWSStation = {
+    stationIdentifier: string,
+    name: string,
+}
 
 export type CurrentWeatherResponse = {
     elevation: NWSValue,
@@ -10,7 +15,7 @@ export type CurrentWeatherResponse = {
     seaLevelPressure: NWSValue,
     visibility: NWSValue,
     relativeHumidity: NWSValue,
-    station: string,
+    station: NWSStation,
     textDescription: string,
     cloudLayers: any,
     icon: string,
@@ -26,7 +31,7 @@ export type CurrentWeather = {
     seaLevelPressure: WeatherValue,
     visibility: WeatherValue,
     relativeHumidity: WeatherValue,
-    station: string,
+    station: NWSStation,
     textDescription: string,
     cloudLayers: any,
     icon: string,
@@ -47,4 +52,32 @@ type Period = {
 }
 export type DailyForecast = {
     periods: Array<Period>
+}
+
+export type DeviceWeather = {
+    dateutc: number,
+    tempinf: number,
+    humidityin: number,
+    baromrelin: number,
+    baromabsin: number,
+    tempf: number,
+    humidity: number,
+    winddir: number,
+    windspeedmph: number,
+    windgustmph: number,
+    maxdailygust: number,
+    hourlyrainin: number,
+    eventrainin: number,
+    dailyrainin: number,
+    weeklyrainin: number,
+    monthlyrainin: number,
+    totalrainin: number,
+    solarradiation: number,
+    uv: number,
+    feelsLike: number,
+    dewPoint: number,
+    feelsLikein: number,
+    dewPointin: number,
+    lastRain: string,
+    date: string,
 }

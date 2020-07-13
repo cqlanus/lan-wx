@@ -7,14 +7,13 @@ import { Layer, Source, ZoomControl, ScaleControl } from 'react-mapbox-gl'
 import MapBox from './Map'
 import Card from './Card'
 import LayerDropdown from './LayerDropdown'
-import { selectCoords, selectLayerUrl } from '../redux/selectors'
+import { selectCoords, selectLayerUrl, selectLegendUrl } from '../redux/selectors'
+
+import getTheme from '../themes'
 
 const Container = styled(Card)`
-    background-color: white;
+    background-color: ${() => getTheme().bg};
 `
-
-// TODO:
-// * Create a settings screen that facilitates unit selection
 
 const MapCard = () => {
     const initialZoom: [number] = [7]
@@ -23,15 +22,15 @@ const MapCard = () => {
     const [ center, setCenter ] = useState(initialCenter)
     const coords = useSelector(selectCoords)
     const layerUrl = useSelector(selectLayerUrl)
+    const legendUrl = useSelector(selectLegendUrl)
 
     useEffect(() => {
-        if (!center && coords) {
+        if (coords) {
             const { longitude, latitude } = coords
             setCenter([longitude, latitude])
         }
-    })
+    }, [coords])
     
-    const defaultStyle = "mapbox://styles/mapbox/light-v10"
     const RASTER_SOURCE_OPTIONS = {
         "type": "raster",
         "tiles": [
@@ -44,7 +43,7 @@ const MapCard = () => {
             return (
                 <MapBox
                     center={center}
-                    style={defaultStyle}
+                    style={getTheme().map}
                     containerStyle={{ height: '40vh', width: '100%' }}
                     zoom={zoom}
                 >
@@ -58,11 +57,11 @@ const MapCard = () => {
     }
 
     const MapEl = renderMap()
-    console.log({ MapEl })
     return (
         <Container>
             <LayerDropdown />
             { MapEl }
+            { legendUrl && center && <img src={legendUrl} alt="" /> }
         </Container>
     )
 }
