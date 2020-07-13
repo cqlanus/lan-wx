@@ -5,6 +5,9 @@ type Props = {
 }
 
 export default createGlobalStyle`
+    html {
+        background: ${({ theme }: Props) => theme.body};
+    }
     body {
         text-align: center;
         font-family: monospace;
