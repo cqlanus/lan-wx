@@ -37,12 +37,11 @@ const Container = styled.div`
 const ImgContainer = styled.div`
     height: 100%;
     overflow-x: scroll;
-    display: flex;
-    background-color: white;
 `
 
 const ChartImage = styled.img`
     max-width: 1024px;
+    background-color: white;
 `
 const Charts = (p: any) => {
     const params: { chartType: keyof CH_TYPES } = useParams()
