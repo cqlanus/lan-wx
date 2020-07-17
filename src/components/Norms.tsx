@@ -32,8 +32,8 @@ const formatTime = (d: string) => {
 
 const formatDate = (d: string) => `${d}-2020`.replace(/-/g, '/')
 
-const BASE_X_AXIS = { 
-    ...BASE_AXIS, 
+const BASE_X_AXIS = {
+    ...BASE_AXIS,
     dataKey: (d: any) => {
         const dateStr = formatDate(d.DATE)
         const date = moment(dateStr).format('MM/DD/YYYY')
@@ -109,15 +109,15 @@ const Norms = () => {
                         >
                             <Tooltip {...TooltipProps(getTheme())} />
                             {
-                                val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                    return <Axis key={idx} {...rest} />
+                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
+                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
                                 })
                             }
                             {
                                 val.keys.map(baseElement)
-                                    .map(({ type: ChartElement, name, ...rest }) =>
-                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                    )
+                                   .map(({ type: ChartElement, name, ...rest }) =>
+                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
+                                   )
                             }
                             <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
                         </ChartContainer>

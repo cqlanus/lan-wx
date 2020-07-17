@@ -21,8 +21,8 @@ const formatTime = (d: string) => {
 }
 
 
-const BASE_X_AXIS = { 
-    ...BASE_AXIS, 
+const BASE_X_AXIS = {
+    ...BASE_AXIS,
     reversed: true,
     dataKey: 'timestamp',
     tickFormatter: (d: string) => formatTime(d),
@@ -79,15 +79,15 @@ const RecentWeather = () => {
                         >
                             <Tooltip {...TooltipProps(getTheme())} />
                             {
-                                val.axes.map(({ type: Axis, ...rest }, idx) => {
-                                    return <Axis key={idx} {...rest} />
+                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
+                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
                                 })
                             }
                             {
                                 val.keys.map(baseElement)
-                                    .map(({ type: ChartElement, name, ...rest }) =>
-                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                    )
+                                   .map(({ type: ChartElement, name, ...rest }) =>
+                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
+                                   )
                             }
                             <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
                         </ChartContainer>
