@@ -38,6 +38,7 @@ const ImgContainer = styled.div`
     height: 100%;
     overflow-x: scroll;
     display: flex;
+    background-color: white;
 `
 
 const ChartImage = styled.img`

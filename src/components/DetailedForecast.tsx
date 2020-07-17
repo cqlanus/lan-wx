@@ -105,14 +105,14 @@ const DetailedForecast = () => {
                             data={detailedForecast}>
                             <Tooltip {...TooltipProps(getTheme())} />
                             {
-                                val.axes(daysAhead, length).map(({ type: Axis, ...rest }, idx) => {
-                                    return (<Axis key={idx} {...rest} padding={{ left: 20 }} />)
+                                val.axes(daysAhead, length).map(({ type: Axis, style, ...rest }, idx) => {
+                                    return (<Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} padding={{ left: 20 }} />)
                                 })
                             }
                             {
                                 val.keys.map(baseElement)
-                                    .map(({ type: ChartElement, name, ...rest }) =>
-                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />)
+                                   .map(({ type: ChartElement, name, ...rest }) =>
+                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />)
                             }
                             <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
                         </ChartContainer>
