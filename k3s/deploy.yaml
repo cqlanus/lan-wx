@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lan-wx
+  namespace: lan-wx
+  labels:
+    app: lan-wx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: lan-wx-pod
+  template:
+    metadata:
+      labels:
+        pod-label: lan-wx-pod
+    spec:
+      containers:
+        - name: lan-wx
+          image: cqlanus/lan-wx:arm64
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lan-wx
+  namespace: lan-wx
+  labels:
+    app: lan-wx
+spec:
+  selector:
+    pod-label: lan-wx-pod
+  ports:
+    - protocol: TCP
+      port: 80
+    
