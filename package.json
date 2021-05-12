@@ -25,7 +25,7 @@
     "aws-amplify": "^3.0.18",
     "dotenv": "^8.2.0",
     "mapbox-gl": "^1.10.1",
-    "mathjs": "^7.0.1",
+    "mathjs": "^7.5.1",
     "moment": "^2.26.0",
     "query-string": "^6.13.0",
     "ramda": "^0.27.0",
