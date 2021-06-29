@@ -31,6 +31,11 @@ const ASTRO_TABLE_MAPPING: (data: any) => ASTRO_MAP = ({ times: astroData }: any
         first: formatAstro('nauticalDawn', astroData),
         second: formatAstro('nauticalDusk', astroData),
     },
+    night: {
+        title: 'Night',
+        first: formatAstro('night', astroData),
+        second: formatAstro('nightEnd', astroData),
+    },
     moon: {
         title: 'Moon',
         first: formatAstro('moonrise', astroData),
@@ -135,7 +140,7 @@ const Astronomy = () => {
     }, [dispatch, coords])
     const data = useMemo(() => {
         if (astronomy) {
-            const { moon, ...astroMap } = ASTRO_TABLE_MAPPING(astronomy)
+            const { moon, night, ...astroMap } = ASTRO_TABLE_MAPPING(astronomy)
             const dataObject: ASTRO_MAP = {
                 ...astroMap,
                 empty: {},
@@ -148,6 +153,7 @@ const Astronomy = () => {
                     first: lengthOfDay,
                 },
                 empty2: {},
+                night,
                 moon,
             }
             return Object.values(dataObject)
