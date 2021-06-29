@@ -8,8 +8,10 @@ COPY package.json ./
 # RUN npm config set unsafe-perm true
 # RUN yarn install --frozen-lockfile
 # RUN yarn install
-RUN yarn clean & yarn cache clean & yarn --network-timeout 100000
-RUN yarn global add react-scripts@3.4.1 -g --silent
+RUN yarn set version berry
+RUN yarn
+# RUN yarn --network-timeout 600000
+# RUN yarn global add react-scripts@4.0.3 -g --silent
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 COPY . ./
 RUN yarn run build
