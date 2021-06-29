@@ -69,7 +69,7 @@ function App() {
                       <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
                       <Route path="/charts/:chartType"><Charts/></Route>
 
-                      <Route exact path="/forecast"><Redirect to="/forecast/details"/></Route>
+                      <Route exact path="/forecast"><Redirect to="/forecast/discussion"/></Route>
                       <Route path="/forecast/:forecastType"><Forecast/></Route>
 
                       <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
