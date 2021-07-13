@@ -34,13 +34,13 @@
     "react-mapbox-gl": "^4.8.6",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "4.0.3",
     "react-table": "^7.1.0",
     "recharts": "^1.8.5",
     "reselect": "^4.0.0",
     "styled-components": "^5.1.1",
     "toastr": "^2.1.4",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.10"
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
