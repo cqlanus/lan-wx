@@ -44,7 +44,7 @@
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
-    "dev": "REACT_APP_LOCAL=true yarn start",
+    "dev": "REACT_APP_LOCAL=true npm run start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
