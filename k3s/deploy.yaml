@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: lan-wx
-          image: cqlanus/lan-wx:test
+          image: cqlanus/lan-wx:latest
 ---
 apiVersion: v1
 kind: Service

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components'
 import Amplify, { Hub } from "aws-amplify"
 import { useDispatch, useSelector, } from 'react-redux'
 import {
@@ -19,6 +19,7 @@ import LocationSearch from './components/LocationSearch'
 import Settings from './components/screens/Settings'
 import PWS from './components/screens/PWS'
 import Model from './components/screens/Model'
+import Astronomy from './components/screens/Astronomy'
 
 import { getAuthUser } from './redux/slice/auth'
 import { getCurrentLocation } from './redux/slice/location'
@@ -84,6 +85,8 @@ function App() {
                       <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
                       <Route path="/model/:modelType"><Model /></Route>
 
+                      <Route exact path="/astronomy"><Redirect to="/astronomy/times"/></Route>
+                      <Route path="/astronomy/:astroType"><Astronomy /></Route>
                   </Switch>
               </Router>
           </div>    

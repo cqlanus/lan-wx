@@ -338,3 +338,15 @@ export const selectIsStationFavorite = createSelector(
 )
 
 export const selectModelImage = (state: RootState) => state.model.current
+
+// ASTRONOMY
+const selectAstronomySlice = (state: RootState) => state.astronomy
+export const selectTimes = createSelector(
+    selectAstronomySlice,
+    astro => astro.times
+)
+
+export const selectPositions = createSelector(
+    selectAstronomySlice,
+    astro => astro.positions
+)

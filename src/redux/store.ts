@@ -10,6 +10,7 @@ import pwsReducer from './slice/pws'
 import userReducer from './slice/user'
 import authReducer from './slice/auth'
 import modelReducer from './slice/model'
+import astroReducer from './slice/astronomy'
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
       user: userReducer,
       auth: authReducer,
       model: modelReducer,
+      astronomy: astroReducer,
   },
 });
 

@@ -6,6 +6,7 @@ import PWSService from './services/pws'
 import UserService from './services/user'
 import AuthService from './services/auth'
 import StationService from './services/station'
+import AstronomyService from './services/astronomy'
 
 type ApiConfig = {
     Location: Location,
@@ -16,6 +17,7 @@ type ApiConfig = {
     User: UserService
     Auth: AuthService
     Station: StationService
+    Astronomy: AstronomyService
 }
 
 class API {
@@ -27,6 +29,7 @@ class API {
     user: UserService
     auth: AuthService
     station: StationService
+    astronomy: AstronomyService
 
     constructor(config: ApiConfig) {
         this.location = config.Location
@@ -37,6 +40,7 @@ class API {
         this.user = config.User
         this.auth = config.Auth
         this.station = config.Station
+        this.astronomy = config.Astronomy
     }
 }
 
@@ -49,6 +53,7 @@ const config: ApiConfig = {
     User: new UserService(),
     Auth: new AuthService(),
     Station: new StationService(),
+    Astronomy: new AstronomyService(),
 }
 const api = new API(config)
 export default api
