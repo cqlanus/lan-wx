@@ -341,6 +341,7 @@ export const selectModelImage = (state: RootState) => state.model.current
 
 // ASTRONOMY
 const selectAstronomySlice = (state: RootState) => state.astronomy
+
 export const selectTimes = createSelector(
     selectAstronomySlice,
     astro => astro.times
@@ -349,4 +350,14 @@ export const selectTimes = createSelector(
 export const selectPositions = createSelector(
     selectAstronomySlice,
     astro => astro.positions
+)
+
+export const selectSunSummary = createSelector(
+    selectAstronomySlice,
+    astro => astro.sun,
+)
+
+export const selectMoonSummary = createSelector(
+    selectAstronomySlice,
+    astro => astro.moon,
 )

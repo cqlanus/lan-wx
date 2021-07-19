@@ -3,16 +3,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../store'
 import api from '../../api'
 import { selectCoords } from '../selectors'
-import type { BodyTimes, BodyPositions } from '../../types/astronomy'
+import type { BodyTimes, BodyPositions, SunSummary, MoonSummary } from '../../types/astronomy'
 
 interface AstronomyState {
     times?: BodyTimes,
     positions?: BodyPositions,
+    sun?: SunSummary,
+    moon?: MoonSummary,
 }
 
 const initialState: AstronomyState = {
     times: undefined,
     positions: undefined,
+    sun: undefined,
+    moon: undefined,
 }
 
 export const astronomy = createSlice({
@@ -24,11 +28,17 @@ export const astronomy = createSlice({
         },
         setPositions: (state, action: PayloadAction<BodyPositions | undefined>) => {
             state.positions = action.payload
-        }
+        },
+        setSunSummary: (state, action: PayloadAction<SunSummary | undefined>) => {
+            state.sun = action.payload
+        },
+        setMoonSummary: (state, action: PayloadAction<MoonSummary | undefined>) => {
+            state.moon = action.payload
+        },
     }
 })
 
-export const { setTimes, setPositions } = astronomy.actions
+export const { setTimes, setPositions, setSunSummary, setMoonSummary, } = astronomy.actions
 
 export const getTimes = (): AppThunk => async (dispatch, getState) => {
     try {
@@ -54,4 +64,27 @@ export const getPositions = (): AppThunk => async (dispatch, getState) => {
     } 
 }
 
+export const getSunSummary = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const sunSummary = await api.astronomy.getSunSummary(coords)
+        dispatch(setSunSummary(sunSummary))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setSunSummary(undefined))
+    } 
+}
+
+export const getMoonSummary = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const moonSummary = await api.astronomy.getMoonSummary(coords)
+        dispatch(setMoonSummary(moonSummary))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setMoonSummary(undefined))
+    } 
+}
 export default astronomy.reducer

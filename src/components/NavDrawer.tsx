@@ -16,6 +16,7 @@ const PAGES = {
     map: { path: '/map', display: 'Map' },
     charts: { path: '/charts', display: 'Charts' },
     climate: { path: '/climate', display: 'Climate' },
+    astronomy: { path: '/astronomy', display: 'Astronomy' },
 }
 
 const Trigger = styled(Button)`

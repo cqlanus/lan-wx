@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { useTable } from 'react-table'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Loader from './Loader'
+import Table from './Table'
 
 import { getRecentWeather } from '../redux/slice/weather'
 import { getAlmanac } from '../redux/slice/climate'
 import { selectAlmanac, selectCoords, } from '../redux/selectors'
-
-import getTheme from '../themes'
 
 type Alm = {
     [key: string]: {
@@ -19,46 +17,12 @@ type Alm = {
     }
 }
 
-const MetaContainer = styled.div`
-  padding: 1rem;
-`
-
-const TableContainer = styled.div`
-    overflow-x: auto;
+const Container = styled.div`
     margin-bottom: 4rem;
 `
 
-const HeaderRow = styled.tr`
-    background-color: ${() => getTheme().altRow};
-`
-
-const TableRow = styled.tr`
-    &:nth-child(even) {
-        background-color: ${() => getTheme().altRow};
-    }
-`
-
-const HeaderCell = styled.th`
-    height: 100%;
-    padding: 0.5rem 1rem;
-`
-
-type TC = { isTitleRow: boolean | undefined, isTitleCell: boolean }
-const titleStyles = ({ isTitleRow }: TC) => isTitleRow ? `
-    font-weight: bold;
-    padding-top: 1rem;
-    border-bottom: 1px dashed ${() => getTheme().fg};
-` : ''
-
-const titleCellStyles = ({ isTitleCell }: TC) => isTitleCell ? `
-    text-align: left;
-`: ''
-
-const TableCell = styled.td`
-    padding: 0.25rem 1rem;
-    max-width: 100px;
-    ${(p: TC) => titleStyles(p)}
-    ${(p: TC) => titleCellStyles(p)}
+const MetaContainer = styled.div`
+  padding: 1rem;
 `
 
 const HeaderContainer = styled.div` `
@@ -126,13 +90,6 @@ const Almanac = () => {
         return []
     }, [almanac])
     const columns = React.useMemo(() => tableStructure, [])
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({ columns, data })
 
     if (data.length === 0) { return <Loader/> }
 
@@ -147,40 +104,10 @@ const Almanac = () => {
     }
 
     return (
-        <div>
+        <Container>
             {renderMeta()}
-            <TableContainer>
-                <table {...getTableProps()}>
-                    <thead>
-                        {headerGroups.map(headerGroup => (
-                            <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map(column => (
-                                    <HeaderCell {...column.getHeaderProps()}>{column.render('Header')}</HeaderCell>
-                                ))}
-                            </HeaderRow>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {rows.map(row => {
-                            const isTitleRow = !!row.original.isTitleRow
-                            prepareRow(row)
-                            return (
-                                <TableRow {...row.getRowProps()}>
-                                    {row.cells.map(cell => {
-                                        const isTitleCell = cell.column.id === 'title'
-                                        return (<TableCell
-                                            isTitleRow={isTitleRow}
-                                            isTitleCell={isTitleCell}
-                                            {...cell.getCellProps()}
-                                        >{cell.render('Cell')}</TableCell>)
-                                    })}
-                                </TableRow>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </TableContainer>
-        </div>
+            <Table columns={columns} data={data} />
+        </Container>
     )
 }
 
