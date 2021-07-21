@@ -7,6 +7,12 @@ export const localFormattedTime = (date: string) => {
     return format(localDate, 'HH:mm')
 }
 
+export const localFormattedDate = (date: string) => {
+    const tz = 'America/Chicago'
+    const localDate = utcToZonedTime(date, tz)
+    return format(localDate, 'MM/dd')
+}
+
 const twoDigitTimeNumber = (num: number) => {
     return `${num}`.length === 1 ? `0${num}` : `${num}`
 }

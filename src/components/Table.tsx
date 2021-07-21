@@ -45,7 +45,7 @@ const TableCell = styled.td`
     ${(p: TC) => titleCellStyles(p)}
 `
 
-const TableComponent = ({ columns, data }: any) => {
+const TableComponent = ({ columns, data, showHeader = true }: any) => {
 
     const {
         getTableProps,
@@ -58,7 +58,7 @@ const TableComponent = ({ columns, data }: any) => {
     return (
         <TableContainer>
             <Table {...getTableProps()}>
-                <thead>
+                { showHeader && <thead>
                     {headerGroups.map((headerGroup: any) => (
                         <HeaderRow {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column: any) => (
@@ -66,7 +66,7 @@ const TableComponent = ({ columns, data }: any) => {
                             ))}
                         </HeaderRow>
                     ))}
-                </thead>
+                </thead> }
                 <tbody {...getTableBodyProps()}>
                     {rows.map((row: any) => {
                         const isTitleRow = !!row.original.isTitleRow

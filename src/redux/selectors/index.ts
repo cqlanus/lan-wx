@@ -130,6 +130,8 @@ export const selectTomorrowLength = createSelector(
     }
 )
 
+const MOON_QUARTER_MAPPING = ['new', 'firstQuarter', 'full', 'lastQuarter']
+
 const MOON_PHASES: any = {
     'new': {
         name: 'New Moon',
@@ -155,7 +157,7 @@ const MOON_PHASES: any = {
         name: 'Waning Gibbous',
         icon: Emoji.moonPhases.waningGibbous,
     },
-    lastQuarterr: {
+    lastQuarter: {
         name: 'Last Quarter',
         icon: Emoji.moonPhases.lastQuarter,
     },
@@ -360,4 +362,33 @@ export const selectSunSummary = createSelector(
 export const selectMoonSummary = createSelector(
     selectAstronomySlice,
     astro => astro.moon,
+)
+
+export const selectMoonPhases = createSelector(
+    selectAstronomySlice,
+    astro => astro.moonPhase,
+)
+
+export const selectCurrentPhaseData = createSelector(
+    selectMoonPhases,
+    phaseData => {
+        if (!phaseData) { return }
+        const { phase } = phaseData
+        const { illumination, name, value } = phase
+        const percentIlluminated = `${( illumination * 100 ).toFixed(2)}%`
+        const { name: displayName, icon  } = MOON_PHASES[name]
+        return {...phase, displayName, icon, percentIlluminated, value: `${value.toFixed(2)}°` }
+    }
+)
+
+export const selectNextPhases = createSelector(
+    selectMoonPhases,
+    phaseData => {
+        if (!phaseData) { return [] }
+        return (phaseData.nextQuarters || []).map(({ quarter, date }) => {
+            const phaseKey = MOON_QUARTER_MAPPING[quarter]
+            const { name, icon } = MOON_PHASES[phaseKey]
+            return { name, icon, date }
+        })
+    }
 )

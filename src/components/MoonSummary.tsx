@@ -2,17 +2,47 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Table from './Table'
+import Container from './Container'
 
-import { getMoonSummary } from '../redux/slice/astronomy'
-import { selectCoords, selectMoonSummary } from '../redux/selectors'
-import { localFormattedTime, formatDuration, formatTimeCompare } from '../utils/time'
+import { getMoonSummary, getMoonPhases } from '../redux/slice/astronomy'
+import {
+    selectCoords,
+    selectMoonSummary,
+    selectCurrentPhaseData,
+    selectNextPhases,
+} from '../redux/selectors'
+import {
+    localFormattedTime,
+    localFormattedDate,
+    formatDuration,
+    formatTimeCompare
+} from '../utils/time'
 
-import type { 
+import type {
     MoonSummary as MoonSummaryType,
     AstroDuration,
 
 } from '../types/astronomy'
 
+const nextPhasesStructure = [
+    { accessor: 'name' },
+    { accessor: 'icon' },
+    { accessor: ({ date }: { date: string }) => localFormattedDate(date), id: 'date' }
+]
+const moonPhaseStructure = [
+    {
+        accessor: 'displayName'
+    },
+    {
+        accessor: 'icon'
+    },
+    {
+        accessor: 'percentIlluminated'
+    },
+    {
+        accessor: 'value'
+    }
+]
 const riseSetStructure = [
     {
         Header: 'Rise',
@@ -63,7 +93,7 @@ const lengthsStructure = [
 const comparedStructure = [
     {
         Header: 'Tonight is',
-        accessor: (comp: AstroDuration & {title: string}) => formatTimeCompare(comp),
+        accessor: (comp: AstroDuration & { title: string }) => formatTimeCompare(comp),
         id: 'tonightIs'
     }
 ]
@@ -72,8 +102,11 @@ const MoonSummary = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const moonSummary = useSelector(selectMoonSummary)
+    const phaseData = useSelector(selectCurrentPhaseData)
+    const nextPhases = useSelector(selectNextPhases)
     useEffect(() => {
         dispatch(getMoonSummary())
+        dispatch(getMoonPhases())
     }, [dispatch, coords])
 
     const data = useMemo(() => ([moonSummary].filter(Boolean)), [moonSummary])
@@ -93,23 +126,21 @@ const MoonSummary = () => {
         }, [])
     }, [moonSummary])
 
-    const riseSetColumns = useMemo(() => riseSetStructure, [])
-    const positionColumns = useMemo(() => positionStructure, [])
+    const currentPhase = useMemo(() => phaseData ? [phaseData] : [], [phaseData])
 
     if (!coords) { return null }
 
     return (
-        <>
+        <Container>
             <h3>Moon Summary</h3>
-            <h4>Times</h4>
-            <Table columns={riseSetColumns} data={data} />
-            <h4>Current Position</h4>
-            <Table columns={positionColumns} data={data} />
-            <h4>Lengths</h4>
+            <Table columns={moonPhaseStructure} data={currentPhase} showHeader={false} />
+            <Table columns={riseSetStructure} data={data} />
+            <Table columns={positionStructure} data={data} />
             <Table columns={lengthsStructure} data={lengths} />
-            <h4>Current Position</h4>
             <Table columns={comparedStructure} data={comparisons} />
-        </>
+            <h4>Next Phases</h4>
+            <Table columns={nextPhasesStructure} data={nextPhases} showHeader={false} />
+        </Container>
     )
 }
 

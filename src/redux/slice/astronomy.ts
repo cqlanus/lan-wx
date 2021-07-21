@@ -3,13 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../store'
 import api from '../../api'
 import { selectCoords } from '../selectors'
-import type { BodyTimes, BodyPositions, SunSummary, MoonSummary } from '../../types/astronomy'
+import type { BodyTimes, BodyPositions, SunSummary, MoonSummary, MoonPhaseData } from '../../types/astronomy'
 
 interface AstronomyState {
     times?: BodyTimes,
     positions?: BodyPositions,
     sun?: SunSummary,
     moon?: MoonSummary,
+    moonPhase?: MoonPhaseData,
 }
 
 const initialState: AstronomyState = {
@@ -17,6 +18,7 @@ const initialState: AstronomyState = {
     positions: undefined,
     sun: undefined,
     moon: undefined,
+    moonPhase: undefined,
 }
 
 export const astronomy = createSlice({
@@ -35,10 +37,19 @@ export const astronomy = createSlice({
         setMoonSummary: (state, action: PayloadAction<MoonSummary | undefined>) => {
             state.moon = action.payload
         },
+        setMoonPhases: (state, action: PayloadAction<MoonPhaseData | undefined>) => {
+            state.moonPhase = action.payload
+        },
     }
 })
 
-export const { setTimes, setPositions, setSunSummary, setMoonSummary, } = astronomy.actions
+export const {
+    setTimes,
+    setPositions,
+    setSunSummary,
+    setMoonSummary,
+    setMoonPhases,
+} = astronomy.actions
 
 export const getTimes = (): AppThunk => async (dispatch, getState) => {
     try {
@@ -49,7 +60,7 @@ export const getTimes = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setTimes(undefined))
-    } 
+    }
 }
 
 export const getPositions = (): AppThunk => async (dispatch, getState) => {
@@ -61,7 +72,7 @@ export const getPositions = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setPositions(undefined))
-    } 
+    }
 }
 
 export const getSunSummary = (): AppThunk => async (dispatch, getState) => {
@@ -73,7 +84,7 @@ export const getSunSummary = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setSunSummary(undefined))
-    } 
+    }
 }
 
 export const getMoonSummary = (): AppThunk => async (dispatch, getState) => {
@@ -85,6 +96,19 @@ export const getMoonSummary = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setMoonSummary(undefined))
-    } 
+    }
 }
+
+export const getMoonPhases = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const moonPhases = await api.astronomy.getMoonPhases(coords)
+        dispatch(setMoonPhases(moonPhases))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setMoonSummary(undefined))
+    }
+}
+
 export default astronomy.reducer

@@ -8,7 +8,7 @@ const AstroSummary = () => {
     return (
         <>
             <Switch>
-                <Route exact path="/astronomy/summary"><Redirect to="/astronomy/summary/sun" /></Route>
+                <Route exact path="/astronomy/summary"><Redirect to="/astronomy/summary/moon" /></Route>
                 <Route path="/astronomy/summary/sun"><SunSummary/></Route>
                 <Route path="/astronomy/summary/moon"><MoonSummary/></Route>
             </Switch>

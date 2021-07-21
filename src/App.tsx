@@ -85,7 +85,7 @@ function App() {
                       <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
                       <Route path="/model/:modelType"><Model /></Route>
 
-                      <Route exact path="/astronomy"><Redirect to="/astronomy/summary/sun"/></Route>
+                      <Route exact path="/astronomy"><Redirect to="/astronomy/summary/moon"/></Route>
                       <Route path="/astronomy/:astroType"><Astronomy /></Route>
                   </Switch>
               </Router>

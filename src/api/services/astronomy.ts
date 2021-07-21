@@ -1,6 +1,12 @@
 import { getConfigVar, request } from '../../utils'
 import type { Coords } from '../../types/location'
-import { BodyTimes, BodyPositions, SunSummary, MoonSummary } from '../../types/astronomy'
+import {
+    BodyTimes,
+    BodyPositions,
+    SunSummary,
+    MoonSummary,
+    MoonPhaseData,
+} from '../../types/astronomy'
 
 export default class Astronomy {
     BASE = getConfigVar('LAN_WX_API')
@@ -12,11 +18,6 @@ export default class Astronomy {
 
     getPositions = async ({ latitude, longitude }: Coords): Promise<BodyPositions> => {
         const url = `${this.BASE}/astronomy/positions?lat=${latitude}&lon=${longitude}`
-        return await request(url)
-    }
-
-    getMoonPhases = async ({ latitude, longitude }: Coords): Promise<any> => {
-        const url = `${this.BASE}/astronomy/moonphase?lat=${latitude}&lon=${longitude}`
         return await request(url)
     }
 
@@ -32,6 +33,11 @@ export default class Astronomy {
 
     getMoonSummary = async ({ latitude, longitude }: Coords): Promise<MoonSummary> => {
         const url = `${this.BASE}/astronomy/moon?lat=${latitude}&lon=${longitude}`
+        return await request(url)
+    }
+
+    getMoonPhases = async ({ latitude, longitude }: Coords): Promise<MoonPhaseData> => {
+        const url = `${this.BASE}/astronomy/moonphase?lat=${latitude}&lon=${longitude}`
         return await request(url)
     }
 }

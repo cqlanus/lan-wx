@@ -105,13 +105,9 @@ const SunSummary = () => {
     return (
         <>
             <h3>Sun Summary</h3>
-            <h4>Times</h4>
             <Table columns={riseSetColumns} data={data} />
-            <h4>Current Position</h4>
             <Table columns={positionColumns} data={data} />
-            <h4>Lengths</h4>
             <Table columns={lengthsStructure} data={lengths} />
-            <h4>Comparisons</h4>
             <Table columns={comparedStructure} data={comparisons} />
         </>
     )

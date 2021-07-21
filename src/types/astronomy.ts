@@ -71,3 +71,20 @@ export type MoonSummary = {
     compared: AstroTimeCompare,
     lengths: { [key: string]: AstroDuration }
 }
+
+export type MoonPhase = {
+    value: number,
+    name: string,
+    illumination: number,
+}
+
+export type NextQuarter = {
+    quarter: number,
+    date: string
+}
+
+export type MoonPhaseData = {
+    date: string,
+    phase: MoonPhase,
+    nextQuarters: NextQuarter[]
+}
