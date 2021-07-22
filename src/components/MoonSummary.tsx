@@ -46,12 +46,12 @@ const moonPhaseStructure = [
 const riseSetStructure = [
     {
         Header: 'Rise',
-        accessor: ({ times }: MoonSummaryType) => localFormattedTime(times.moonrise),
+        accessor: ({ times }: MoonSummaryType) => times.moonrise ? localFormattedTime(times.moonrise) : '',
         id: 'moonrise',
     },
     {
         Header: 'Set',
-        accessor: ({ times }: MoonSummaryType) => localFormattedTime(times.moonset),
+        accessor: ({ times }: MoonSummaryType) => times.moonset ? localFormattedTime(times.moonset) : '',
         id: 'moonset',
     },
 ]
