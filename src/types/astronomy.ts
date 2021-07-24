@@ -28,22 +28,22 @@ export type BodyPositions = {
 } & { date: string }
 
 type AstroTimes = {
-    solarNoon: string,
-    nadir: string,
-    sunrise: string,
-    sunset: string,
-    sunriseEnd: string,
-    sunriseStart: string,
-    dawn: string,
-    dusk: string,
-    nauticalDawn: string,
-    nauticalDusk: string,
-    nightEnd: string,
-    night: string,
-    goldenHourEnd: string,
-    goldenHour: string,
-    moonrise: string,
-    moonset: string,
+    solarNoon: Date,
+    nadir: Date,
+    sunrise: Date,
+    sunset: Date,
+    sunriseEnd: Date,
+    sunriseStart: Date,
+    dawn: Date,
+    dusk: Date,
+    nauticalDawn: Date,
+    nauticalDusk: Date,
+    nightEnd: Date,
+    night: Date,
+    goldenHourEnd: Date,
+    goldenHour: Date,
+    moonrise: Date,
+    moonset: Date,
 }
 
 export type AstroDuration = {
@@ -87,4 +87,9 @@ export type MoonPhaseData = {
     date: string,
     phase: MoonPhase,
     nextQuarters: NextQuarter[]
+}
+
+export type DayLength = {
+    date: string,
+    times: AstroTimes,
 }

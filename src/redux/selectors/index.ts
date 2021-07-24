@@ -10,6 +10,7 @@ import { Discussion } from '../../types/forecast'
 import Emoji from '../../data/emoji'
 import { normalizeForecastUnits, parseDeviceWeather } from '../../utils/weather'
 import { parseAstronomyPosition } from '../../utils/astronomy'
+import { differenceInMilliseconds } from 'date-fns'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -82,7 +83,7 @@ export const selectNormsByMonth = createSelector(
     [selectNorms, selectNormMonth],
     (norms = [], normMonth) => {
         if (normMonth !== undefined && normMonth >= 0) {
-            return norms.filter((n: any, ) => {
+            return norms.filter((n: any,) => {
                 const { DATE } = n
                 const dateStr = `${DATE}-2020`.replace(/-/g, '/')
                 const month = moment(dateStr).month()
@@ -375,9 +376,9 @@ export const selectCurrentPhaseData = createSelector(
         if (!phaseData) { return }
         const { phase } = phaseData
         const { illumination, name, value } = phase
-        const percentIlluminated = `${( illumination * 100 ).toFixed(2)}%`
-        const { name: displayName, icon  } = MOON_PHASES[name]
-        return {...phase, displayName, icon, percentIlluminated, value: `${value.toFixed(2)}°` }
+        const percentIlluminated = `${(illumination * 100).toFixed(2)}%`
+        const { name: displayName, icon } = MOON_PHASES[name]
+        return { ...phase, displayName, icon, percentIlluminated, value: `${value.toFixed(2)}°` }
     }
 )
 
@@ -390,5 +391,35 @@ export const selectNextPhases = createSelector(
             const { name, icon } = MOON_PHASES[phaseKey]
             return { name, icon, date }
         })
+    }
+)
+
+const getTimeDuration = (ms: number) => {
+    const hours = Math.floor(ms / 3.6e6)
+    const minutes = Math.floor((ms % 3.6e6) / 6e4)
+    const seconds = Math.floor((ms % 6e4) / 1000)
+    return { hours, minutes, seconds }
+}
+
+
+export const selectDayLengthTimeseries = createSelector(
+    selectAstronomySlice,
+    ({ dayLengthTimeseries }) => {
+        if (!dayLengthTimeseries) { return [] }
+        return dayLengthTimeseries.map(({ date, times }) => {
+            const sunset = new Date(times.sunset)
+            const sunrise = new Date(times.sunrise)
+            const nightEnd = new Date(times.nightEnd)
+            const night = new Date(times.night)
+            const day = differenceInMilliseconds(sunset, sunrise)
+            const msInOneDay = 1000 * 60 * 60 * 24
+            return {
+                date,
+                days: day,
+                inverseDay: msInOneDay - day,
+                nights: msInOneDay + differenceInMilliseconds(nightEnd, night),
+            }
+        })
+
     }
 )

@@ -1,3 +1,4 @@
+import { utcToZonedTime, format } from 'date-fns-tz'
 import { getConfigVar, request } from '../../utils'
 import type { Coords } from '../../types/location'
 import {
@@ -6,7 +7,9 @@ import {
     SunSummary,
     MoonSummary,
     MoonPhaseData,
+    DayLength,
 } from '../../types/astronomy'
+import { addDays } from 'date-fns'
 
 export default class Astronomy {
     BASE = getConfigVar('LAN_WX_API')
@@ -38,6 +41,21 @@ export default class Astronomy {
 
     getMoonPhases = async ({ latitude, longitude }: Coords): Promise<MoonPhaseData> => {
         const url = `${this.BASE}/astronomy/moonphase?lat=${latitude}&lon=${longitude}`
+        return await request(url)
+    }
+
+    getDayLengths = async ({ latitude, longitude }: Coords): Promise<DayLength[]> => {
+        const start = '2021-01-01'
+        const end = '2021-12-31'
+        const url = `${this.BASE}/astronomy/interval/daylengths?lat=${latitude}&lon=${longitude}&start=${start}&end=${end}`
+        return await request(url)
+    }
+
+    getPositionTimeseries = async ({ latitude, longitude }: Coords): Promise<BodyPositions[]> => {
+        const today = new Date()
+        const start = format(today, 'yyyy-mm-dd')
+        const end = format(addDays(today, 1), 'yyyy-mm-dd')
+        const url = `${this.BASE}/astronomy/interval/positions?lat=${latitude}&lon=${longitude}&start=${start}&end=${end}`
         return await request(url)
     }
 }

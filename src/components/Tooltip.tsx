@@ -23,9 +23,9 @@ const formatTooltipLabel = (val: any) => {
     return moment(val).format('M/D|ha')
 }
 
-export const TooltipProps = (theme: Theme) => ( {
-    formatter: formatTooltip,
-    labelFormatter: formatTooltipLabel,
+export const TooltipProps = (theme: Theme, labelFormat?: any, formatter?: any) => ( {
+    formatter: formatter || formatTooltip,
+    labelFormatter: labelFormat || formatTooltipLabel,
     contentStyle: { fontSize: '0.6rem', backgroundColor: theme.bg  }
 } )
 

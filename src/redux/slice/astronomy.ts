@@ -3,7 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '../store'
 import api from '../../api'
 import { selectCoords } from '../selectors'
-import type { BodyTimes, BodyPositions, SunSummary, MoonSummary, MoonPhaseData } from '../../types/astronomy'
+import type {
+    BodyTimes,
+    BodyPositions,
+    SunSummary,
+    MoonSummary,
+    MoonPhaseData,
+    DayLength,
+} from '../../types/astronomy'
 
 interface AstronomyState {
     times?: BodyTimes,
@@ -11,6 +18,9 @@ interface AstronomyState {
     sun?: SunSummary,
     moon?: MoonSummary,
     moonPhase?: MoonPhaseData,
+    dayLengthTimeseries?: DayLength[]
+    positionTimeseries?: BodyPositions[]
+
 }
 
 const initialState: AstronomyState = {
@@ -19,6 +29,8 @@ const initialState: AstronomyState = {
     sun: undefined,
     moon: undefined,
     moonPhase: undefined,
+    dayLengthTimeseries: undefined,
+    positionTimeseries: undefined,
 }
 
 export const astronomy = createSlice({
@@ -40,6 +52,12 @@ export const astronomy = createSlice({
         setMoonPhases: (state, action: PayloadAction<MoonPhaseData | undefined>) => {
             state.moonPhase = action.payload
         },
+        setDaylengthTimeseries: (state, action: PayloadAction<DayLength[] | undefined>) => {
+            state.dayLengthTimeseries = action.payload
+        },
+        setPositionTimeseries: (state, action: PayloadAction<BodyPositions[] | undefined>) => {
+            state.positionTimeseries = action.payload
+        },
     }
 })
 
@@ -49,6 +67,8 @@ export const {
     setSunSummary,
     setMoonSummary,
     setMoonPhases,
+    setDaylengthTimeseries,
+    setPositionTimeseries,
 } = astronomy.actions
 
 export const getTimes = (): AppThunk => async (dispatch, getState) => {
@@ -108,6 +128,30 @@ export const getMoonPhases = (): AppThunk => async (dispatch, getState) => {
     } catch (err) {
         console.log({ err })
         dispatch(setMoonSummary(undefined))
+    }
+}
+
+export const getDayLengths = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const daylengths = await api.astronomy.getDayLengths(coords)
+        dispatch(setDaylengthTimeseries(daylengths))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setDaylengthTimeseries(undefined))
+    }
+}
+
+export const getPositionTimeseries = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const positions = await api.astronomy.getPositionTimeseries(coords)
+        dispatch(setPositionTimeseries(positions))
+    } catch (err) {
+        console.log({ err })
+        dispatch(setPositionTimeseries(undefined))
     }
 }
 
