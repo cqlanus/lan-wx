@@ -148,6 +148,7 @@ export const getPositionTimeseries = (): AppThunk => async (dispatch, getState) 
         const coords = selectCoords(getState())
         if (!coords) { return }
         const positions = await api.astronomy.getPositionTimeseries(coords)
+        console.log({ positions })
         dispatch(setPositionTimeseries(positions))
     } catch (err) {
         console.log({ err })

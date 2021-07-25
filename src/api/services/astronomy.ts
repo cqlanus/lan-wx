@@ -53,8 +53,8 @@ export default class Astronomy {
 
     getPositionTimeseries = async ({ latitude, longitude }: Coords): Promise<BodyPositions[]> => {
         const today = new Date()
-        const start = format(today, 'yyyy-mm-dd')
-        const end = format(addDays(today, 1), 'yyyy-mm-dd')
+        const start = format(today, 'yyyy-MM-dd')
+        const end = format(addDays(today, 1), 'yyyy-MM-dd')
         const url = `${this.BASE}/astronomy/interval/positions?lat=${latitude}&lon=${longitude}&start=${start}&end=${end}`
         return await request(url)
     }

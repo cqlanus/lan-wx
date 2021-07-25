@@ -394,13 +394,6 @@ export const selectNextPhases = createSelector(
     }
 )
 
-const getTimeDuration = (ms: number) => {
-    const hours = Math.floor(ms / 3.6e6)
-    const minutes = Math.floor((ms % 3.6e6) / 6e4)
-    const seconds = Math.floor((ms % 6e4) / 1000)
-    return { hours, minutes, seconds }
-}
-
 
 export const selectDayLengthTimeseries = createSelector(
     selectAstronomySlice,
@@ -421,5 +414,13 @@ export const selectDayLengthTimeseries = createSelector(
             }
         })
 
+    }
+)
+
+export const selectPositionTimeseries = createSelector(
+    selectAstronomySlice,
+    ({ positionTimeseries }) => {
+        if (!positionTimeseries) { return [] }
+        return positionTimeseries.map(({ bodies }) => bodies)
     }
 )
