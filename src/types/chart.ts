@@ -5,11 +5,13 @@ export type CH_TYPES = {
     surface: any,
 }
 
+type Axis = { type: any, dataKey?: any, style?: object, domain?: [AxisDomain, AxisDomain] }
+
 export type CHART_CONFIG = {
     [key: string]: {
         title: string,
         keys: Array<string>,
-        axes: Array<{ type: any, dataKey?: any, style?: object, domain?: [AxisDomain, AxisDomain] }>
+        axes: Axis[]
     }
 }
 

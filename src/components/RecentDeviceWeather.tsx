@@ -4,19 +4,16 @@ import moment from 'moment'
 import {
     XAxis,
     YAxis,
-    Legend,
-    Tooltip
 } from 'recharts'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Loader from './Loader'
-import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
-import { TooltipProps } from './Tooltip'
+import Charts from './Chartz'
+import { BASE_AXIS, } from './ChartContainer'
 
 import { getDeviceWeather, setCurrentDevice } from '../redux/slice/pws'
 import { selectDeviceWeather, selectPwsDevices, selectCurrentDevice } from '../redux/selectors'
 import { CHART_CONFIG } from '../types/chart'
-import getTheme from '../themes'
 
 const Container = styled.div`
     margin-bottom: 6rem;
@@ -35,7 +32,6 @@ const BASE_X_AXIS = {
     dataKey: 'date',
     tickFormatter: (d: string) => formatTime(d),
 }
-const baseElement = getBaseElement(dataFor)
 
 const PWS_CHARTS: CHART_CONFIG = {
     outsideTemp: {
@@ -108,31 +104,11 @@ const RecentDeviceWeather = () => {
 
     return (
         <Container>
-            {
-                Object.entries(PWS_CHARTS).map(([k, val]) => {
-                    return (
-                        <ChartContainer
-                            key={k}
-                            title={val.title}
-                            data={deviceWeather}
-                        >
-                            <Tooltip {...TooltipProps(getTheme())} />
-                            {
-                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
-                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
-                                })
-                            }
-                            {
-                                val.keys.map(baseElement)
-                                    .map(({ type: ChartElement, name, ...rest }) =>
-                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                    )
-                            }
-                            <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
-                        </ChartContainer>
-                    )
-                })
-            }
+            <Charts
+            charts={PWS_CHARTS}
+            data={deviceWeather}
+            findFn={dataFor}
+            />
         </Container>
     )
 }

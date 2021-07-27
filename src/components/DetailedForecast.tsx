@@ -90,7 +90,7 @@ const DetailedForecast = () => {
         dispatch(getDetailedForecast())
     }, [coords, dispatch])
 
-    if (!detailedForecast || detailedForecast.length === 0) { return <Loader/> }
+    if (!detailedForecast || detailedForecast.length === 0) { return <Loader /> }
     const { length } = detailedForecast
 
     return (
@@ -111,8 +111,8 @@ const DetailedForecast = () => {
                             }
                             {
                                 val.keys.map(baseElement)
-                                   .map(({ type: ChartElement, name, ...rest }) =>
-                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />)
+                                    .map(({ type: ChartElement, name, ...rest }) =>
+                                        <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />)
                             }
                             <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
                         </ChartContainer>

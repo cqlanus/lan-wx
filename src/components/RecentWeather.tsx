@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import { XAxis, YAxis, Legend, Tooltip, } from 'recharts'
+import { XAxis, YAxis, } from 'recharts'
 
 import Loader from './Loader'
-import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
-import { TooltipProps } from './Tooltip'
+import Charts from './Chartz'
+import { BASE_AXIS, } from './ChartContainer'
 
 import { getRecentWeather } from '../redux/slice/weather'
 import { selectCoords, selectRecentWeather } from '../redux/selectors'
 import type { CHART_CONFIG } from '../types/chart'
-
-import getTheme from '../themes'
 
 const dataFor = (key: string) => (d: any) => d[key] && d[key].value
 
@@ -20,15 +18,12 @@ const formatTime = (d: string) => {
     return timeString
 }
 
-
 const BASE_X_AXIS = {
     ...BASE_AXIS,
     reversed: true,
     dataKey: 'timestamp',
     tickFormatter: (d: string) => formatTime(d),
 }
-const baseElement = getBaseElement(dataFor)
-
 const CHARTS: CHART_CONFIG = {
     temp: {
         title: "Temperature",
@@ -52,10 +47,11 @@ const CHARTS: CHART_CONFIG = {
     },
     precip: {
         title: "Precipitation",
-        keys: ['precipitationLastHour', ],
+        keys: ['precipitationLastHour',],
         axes: [{ ...BASE_X_AXIS, type: XAxis }, { ...BASE_AXIS, type: YAxis }]
     }
 }
+
 const RecentWeather = () => {
     const dispatch = useDispatch()
     const recent = useSelector(selectRecentWeather)
@@ -65,35 +61,15 @@ const RecentWeather = () => {
         dispatch(getRecentWeather())
     }, [dispatch, coords])
 
-    if (!recent || recent.length === 0) { return <Loader/> }
+    if (!recent || recent.length === 0) { return <Loader /> }
 
     return (
         <div>
-            {
-                Object.entries(CHARTS).map(([k, val]) => {
-                    return (
-                        <ChartContainer
-                            key={k}
-                            title={val.title}
-                            data={recent}
-                        >
-                            <Tooltip {...TooltipProps(getTheme())} />
-                            {
-                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
-                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
-                                })
-                            }
-                            {
-                                val.keys.map(baseElement)
-                                   .map(({ type: ChartElement, name, ...rest }) =>
-                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                   )
-                            }
-                            <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
-                        </ChartContainer>
-                    )
-                })
-            }
+            <Charts
+                charts={CHARTS}
+                data={recent}
+                findFn={dataFor}
+            />
         </div>
     )
 }

@@ -1,13 +1,13 @@
 import { utcToZonedTime, format } from 'date-fns-tz'
 import { AstroDuration } from '../types/astronomy'
 
-export const localFormattedTime = (date: string) => {
+export const localFormattedTime = (date: Date) => {
     const tz = 'America/Chicago'
     const localDate = utcToZonedTime(date, tz)
     return format(localDate, 'HH:mm')
 }
 
-export const localFormattedDate = (date: string) => {
+export const localFormattedDate = (date: Date) => {
     const tz = 'America/Chicago'
     const localDate = utcToZonedTime(date, tz)
     // console.log({ localDate, date })

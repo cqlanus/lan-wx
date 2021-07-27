@@ -1,10 +1,5 @@
 import React, { useMemo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-/* import { useParams, } from 'react-router' */
-
-/* import BottomNav from './BottomNav'
- * import Button from './Button'
- * import Select from './Select' */
 import Loader from './Loader'
 import Table from './Table'
 
@@ -20,7 +15,7 @@ const tableStructure = [
     },
     {
         Header: 'Rise',
-        accessor: ({ rise }: { rise: string }) => localFormattedTime(rise),
+        accessor: ({ rise }: { rise: Date }) => localFormattedTime(rise),
         id: 'rise'
     },
     {
@@ -35,7 +30,7 @@ const tableStructure = [
     },
     {
         Header: 'Set',
-        accessor: ({ set }: { set: string }) => localFormattedTime(set),
+        accessor: ({ set }: { set: Date }) => localFormattedTime(set),
         id: 'set'
     }
 ]

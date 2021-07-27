@@ -5,17 +5,14 @@ import styled from 'styled-components'
 import {
     XAxis,
     YAxis,
-    Legend,
-    Tooltip
 } from 'recharts'
 
 import Loader from './Loader'
-import ChartContainer, { BASE_AXIS, getBaseElement } from './ChartContainer'
-import { TooltipProps } from './Tooltip'
+import Charts from './Chartz'
+import { BASE_AXIS, } from './ChartContainer'
 
 import { getNorms } from '../redux/slice/climate'
 import { selectCoords, selectNormsByMonth } from '../redux/selectors'
-import getTheme from '../themes'
 import type { CHART_CONFIG } from '../types/chart'
 
 const dataFor = (key: string) => (d: any) => {
@@ -49,8 +46,6 @@ const PageContainer = styled.div`
 `
 
 const Title = styled.h3``
-
-const baseElement = getBaseElement(dataFor)
 
 const CHARTS: CHART_CONFIG = {
     temp: {
@@ -94,36 +89,16 @@ const Norms = () => {
         dispatch(getNorms())
     }, [dispatch, coords,])
 
-    if (norms.length === 0) { return <Loader/> }
+    if (norms.length === 0) { return <Loader /> }
 
     return (
         <PageContainer>
             <Title>Climate Norms</Title>
-            {
-                Object.entries(CHARTS).map(([k, val]) => {
-                    return (
-                        <ChartContainer
-                            key={k}
-                            title={val.title}
-                            data={norms}
-                        >
-                            <Tooltip {...TooltipProps(getTheme())} />
-                            {
-                                val.axes.map(({ type: Axis, style, ...rest }, idx) => {
-                                    return <Axis key={idx} style={{ ...style, fill: getTheme().fg }} {...rest} />
-                                })
-                            }
-                            {
-                                val.keys.map(baseElement)
-                                   .map(({ type: ChartElement, name, ...rest }) =>
-                                       <ChartElement key={name} dot={false} connectNulls name={name} {...rest} />
-                                   )
-                            }
-                            <Legend iconType="plainline" verticalAlign="top" iconSize={20} wrapperStyle={{ fontSize: '0.6rem' }} />
-                        </ChartContainer>
-                    )
-                })
-            }
+            <Charts
+                charts={CHARTS}
+                data={norms}
+                findFn={dataFor}
+            />
         </PageContainer >
     )
 }

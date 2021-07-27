@@ -1,16 +1,13 @@
 import React, { useMemo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-/* import { useParams, } from 'react-router' */
-import { format } from 'date-fns-tz'
+import { format } from 'date-fns'
 
-/* import BottomNav from './BottomNav'
- * import Button from './Button'
- * import Select from './Select' */
 import Loader from './Loader'
 import Table from './Table'
 
-import { getPositions } from '../redux/slice/astronomy'
-import { selectPositions, selectCoords } from '../redux/selectors'
+import { getPositions, } from '../redux/slice/astronomy'
+import { selectPositions, selectCoords, } from '../redux/selectors'
+
 import type { BodyPosition } from '../types/astronomy'
 
 const tableStructure = [
