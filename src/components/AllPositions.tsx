@@ -1,14 +1,34 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
+import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 
 import Loader from './Loader'
 import Table from './Table'
+import emoji from '../data/emoji'
 
 import { getPositions, } from '../redux/slice/astronomy'
 import { selectPositions, selectCoords, } from '../redux/selectors'
 
 import type { BodyPosition } from '../types/astronomy'
+
+const InputContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+`
+
+const Input = styled.input`
+    padding: 0.25rem 1rem;
+    font-size: 1rem;
+`
+
+const EmojiBtn = styled.div`
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    cursor: pointer;
+`
 
 const tableStructure = [
     {
@@ -41,12 +61,22 @@ const tableStructure = [
 ]
 
 const AllPositions = () => {
+    const [time, setTime] = useState(new Date())
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const positions = useSelector(selectPositions)
     useEffect(() => {
-        dispatch(getPositions())
+        dispatch(getPositions(time))
     }, [dispatch, coords])
+
+    const handleSetTime = (e: any) => {
+        const { value } = e.target
+        const parsed = parse(value, "HH:mm:ss", new Date())
+        setTime(parsed)
+    }
+
+    const handleReset = () => setTime(new Date())
+    const handleClick = () => dispatch(getPositions(time))
 
     const data = useMemo(() => {
         if (positions) {
@@ -61,11 +91,22 @@ const AllPositions = () => {
     const columns: any = useMemo(() => tableStructure, [])
 
     if (!positions) { return <Loader /> }
-    const title = `Astronomical Positions -- ${format(new Date(), 'HH:mm')}`
+    const title = 'Astronomical Positions'
 
     return (
         <div>
             <h3>{title}</h3>
+
+            <InputContainer>
+                <EmojiBtn onClick={handleReset}>{emoji.reload}</EmojiBtn>
+                <Input
+                    onChange={handleSetTime}
+                    type="time"
+                    name="time"
+                    value={format(time, "HH:mm:ss")}
+                />
+                <EmojiBtn onClick={handleClick}>{emoji.arrow.e}</EmojiBtn>
+            </InputContainer>
             <Table columns={columns} data={data} />
         </div>
     )

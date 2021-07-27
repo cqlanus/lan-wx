@@ -19,8 +19,8 @@ export default class Astronomy {
         return await request(url)
     }
 
-    getPositions = async ({ latitude, longitude }: Coords): Promise<BodyPositions> => {
-        const url = `${this.BASE}/astronomy/positions?lat=${latitude}&lon=${longitude}`
+    getPositions = async ({ latitude, longitude }: Coords, date: Date): Promise<BodyPositions> => {
+        const url = `${this.BASE}/astronomy/positions?lat=${latitude}&lon=${longitude}&date=${date}`
         return await request(url)
     }
 

@@ -83,11 +83,11 @@ export const getTimes = (): AppThunk => async (dispatch, getState) => {
     }
 }
 
-export const getPositions = (): AppThunk => async (dispatch, getState) => {
+export const getPositions = (time: Date): AppThunk => async (dispatch, getState) => {
     try {
         const coords = selectCoords(getState())
         if (!coords) { return }
-        const positions = await api.astronomy.getPositions(coords)
+        const positions = await api.astronomy.getPositions(coords, time)
         dispatch(setPositions(positions))
     } catch (err) {
         console.log({ err })

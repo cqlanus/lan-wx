@@ -1,13 +1,14 @@
 import React from 'react'
-import { withRouter } from 'react-router'
+import { useHistory, useLocation, } from 'react-router'
 
 import OptionsContainer from './OptionsContainer'
 import Select from './Select'
 
-type Props = {
-    history: any
-}
-const AstroSummaryOptions = ({ history }: Props) => {
+const AstroSummaryOptions = () => {
+    const history = useHistory()
+    const { pathname } = useLocation()
+    const pathArr = pathname.split('/')
+    const current = pathArr[pathArr.length - 1]
     const summaries = [ 'moon', 'sun' ]
     const handleSelect = (e: any) => {
         const { value } = e.target
@@ -16,7 +17,7 @@ const AstroSummaryOptions = ({ history }: Props) => {
     }
     return (
         <OptionsContainer>
-            <Select onChange={handleSelect}>
+            <Select value={current} onChange={handleSelect}>
                 {
                     summaries.map(s => (
                         <option key={s} value={s}>{s}</option>
@@ -27,7 +28,11 @@ const AstroSummaryOptions = ({ history }: Props) => {
     )
 }
 
-const BodiesOptions = ({ history }: Props) => {
+const BodiesOptions = () => {
+    const history = useHistory()
+    const { pathname } = useLocation()
+    const pathArr = pathname.split('/')
+    const current = pathArr[pathArr.length - 1]
     const options = [ 'times', 'positions' ]
     const handleSelect = (e: any) => {
         const { value } = e.target
@@ -36,7 +41,7 @@ const BodiesOptions = ({ history }: Props) => {
     }
     return (
         <OptionsContainer>
-            <Select onChange={handleSelect}>
+            <Select value={current} onChange={handleSelect}>
                 {
                     options.map(s => (
                         <option key={s} value={s}>{s}</option>
@@ -52,6 +57,6 @@ export type AST_OPTIONS = {
     bodies: any
 }
 export const ASTRO_OPTIONS: AST_OPTIONS = {
-    summary: withRouter(AstroSummaryOptions),
-    bodies: withRouter(BodiesOptions),
+    summary: AstroSummaryOptions,
+    bodies: BodiesOptions,
 }
