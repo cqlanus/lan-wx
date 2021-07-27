@@ -10,7 +10,6 @@ export const localFormattedTime = (date: Date) => {
 export const localFormattedDate = (date: Date) => {
     const tz = 'America/Chicago'
     const localDate = utcToZonedTime(date, tz)
-    // console.log({ localDate, date })
     return format(localDate, 'MM/dd')
 }
 

@@ -56,7 +56,6 @@ const Bodies = () => {
     const coords = useSelector(selectCoords)
     const positionSeries = useSelector(selectPositionTimeseries)
     useEffect(() => {
-        console.log({ here: 1 })
         dispatch(getPositionTimeseries())
     }, [dispatch, coords])
 

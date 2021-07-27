@@ -38,7 +38,10 @@ export type CurrentWeather = {
     timestamp: string,
 }
 
-type Period = {
+export type Period = {
+    name: string,
+    icon: string,
+    number: number,
     startTime: string,
     endTime: string,
     isDaytime: boolean,
@@ -51,7 +54,8 @@ type Period = {
     detailedForecast: string
 }
 export type DailyForecast = {
-    periods: Array<Period>
+    periods: Array<Period>,
+    updated: string,
 }
 
 export type DeviceWeather = {

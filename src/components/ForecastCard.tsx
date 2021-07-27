@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { format } from 'date-fns'
 import styled from 'styled-components'
 
 import Card from './Card'
@@ -11,12 +12,23 @@ import { selectCoords, selectDailyForecast, selectThreeDayForecast } from '../re
 import emoji from '../data/emoji'
 import getTheme from '../themes'
 
+import type { Period as PeriodType } from '../types/weather'
+
 const Container = styled(Card)`
     margin: 2rem 0;
 `
 
 const BottomButton = styled(Button)`
     margin-bottom: 2rem;
+`
+
+const Info = styled.span`
+    font-size: 0.7rem;
+`
+
+const Reload = styled.span`
+    cursor: pointer;
+    margin-left: 0.5rem;
 `
 
 const Period = styled.div`
@@ -45,7 +57,13 @@ const PeriodTitle = styled.span`
     font-weight: bold;
 `
 
-const Title = styled.h3``
+const Title = styled.h3`
+    margin-bottom: 0;
+`
+
+const SubTitle = styled.div`
+    margin-bottom: 1.5rem;
+`
 
 const StatLine = styled.div`
     font-weight: bold;
@@ -92,6 +110,8 @@ const ForecastCard = () => {
         }
     }
 
+    const handleGetForecast = () => dispatch(getDailyForecast())
+
     useEffect(() => {
         dispatch(getDailyForecast())
     }, [coords, dispatch])
@@ -126,17 +146,23 @@ const ForecastCard = () => {
     }
 
     const periods = isShowingFull ? dailyForecast.periods : threeDayForecast
+    const updatedAt = format(new Date(dailyForecast.updated), 'HH:mm')
     return (
         <Container>
             <Title>Forecast</Title>
+            <SubTitle>
+                <Info>{`as of ${updatedAt}`}</Info>
+                <Reload onClick={handleGetForecast}>{emoji.reload}</Reload>
+            </SubTitle>
             {
-                periods.map((p: any) => {
+                periods.map((p: PeriodType) => {
+                    const date = format(new Date(p.startTime), 'M.d')
                     return (
                         <Period key={p.number} onClick={handleToggleDetails(p)}>
                             <ConditionIcon src={p.icon} alt="icon" />
                             <DetailsContainer>
                                 <PeriodTitle>
-                                    {p.name}
+                                    {`${ p.name } | ${date}`}
                                 </PeriodTitle>
                                 {renderStatLine(p)}
                                 {renderDescription(p)}

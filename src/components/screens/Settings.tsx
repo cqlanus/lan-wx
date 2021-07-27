@@ -114,7 +114,6 @@ const Settings = () => {
                 <h4>Favorite Stations</h4>
                 {
                     stations.map(station => {
-                        console.log({ station })
                         return (
                             <div key={station.id}>
                                 <Select
