@@ -71,7 +71,8 @@ const AllPositions = () => {
 
     const handleSetTime = (e: any) => {
         const { value } = e.target
-        const parsed = parse(value, "HH:mm:ss", new Date())
+        const validatedVal = value.length === 8 ? value : `${value}:00`
+        const parsed = parse(validatedVal, "HH:mm:ss", new Date())
         setTime(parsed)
     }
 
