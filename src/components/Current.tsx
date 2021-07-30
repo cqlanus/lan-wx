@@ -11,7 +11,7 @@ import { selectCoords, selectCurrentWeather, selectIsStationFavorite, selectAuth
 
 import getTheme from '../themes'
 import emoji from '../data/emoji'
-import { getDisplayUnit } from '../utils/units'
+import { getDisplayUnit, convertUnits } from '../utils/units'
 
 const Container = styled(Card)`
     display: flex;
@@ -106,10 +106,10 @@ const Current = () => {
         dispatch(getCurrentWeather())
     }, [dispatch, coords])
 
-    if (!currentWeather) { return <Loader/> }
+    if (!currentWeather) { return <Loader /> }
 
     const { main, secondary } = CURRENT_WX_STRUCTURE
-    const { timestamp, icon, station } = currentWeather
+    const { timestamp, icon, station, cloudLayers } = currentWeather
     const renderMain = () => {
         return (<Flex>
             <ConditionIcon src={icon} alt="icon" />
@@ -138,6 +138,25 @@ const Current = () => {
             }
         </div>
     ))
+    type CloudLayer = {
+        base: { value: number, unitCode: string },
+        amount: "SCT" | "BKN" | "CLR" | "FEW"
+    }
+
+    const renderClouds = () => (
+        <div>
+            {cloudLayers.reduce((acc: string, layer: CloudLayer) => {
+                const { value } = layer.base
+                const ft = convertUnits('m', 'ft', value).toNumber()
+                const rounded = (Math.round(ft / 100) * 100) / 100
+                const padded = rounded.toString().length === 3 ? rounded : `0${rounded}`
+                const display = `${layer.amount}${padded}`
+                return acc
+                    ? `${acc} | ${display}`
+                    : `${emoji.weather.cloudy}: ${display}`
+            }, '')}
+        </div>
+    )
 
     const renderFavoriteButton = () => {
         const { stationIdentifier } = station
@@ -176,7 +195,10 @@ const Current = () => {
             <Spacer>
                 {renderMain()}
             </Spacer>
-            {renderSecondary()}
+            <Spacer>
+                {renderSecondary()}
+            </Spacer>
+            {renderClouds()}
 
         </Container>
     )
