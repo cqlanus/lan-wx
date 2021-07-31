@@ -4,7 +4,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react'
 import styled from 'styled-components'
 
 import Input from '../Input'
-import { buttonStyle } from '../Button'
+import Button, { buttonStyle } from '../Button'
 
 import { addDevice } from '../../redux/slice/pws'
 import { setLocation } from '../../redux/slice/location'
@@ -70,7 +70,7 @@ const Select = styled(Link)`
     }
 `
 
-const Submit = styled.input`
+const Submit = styled(Button)`
     ${buttonStyle}
 `
 const Settings = () => {
@@ -86,7 +86,10 @@ const Settings = () => {
     const handleApiKey = (e: any) => setApiKey(e.target.value)
     const handleSearch = () => {
         if (macAddress && apiKey) {
+            console.log({ macAddress, apiKey })
             dispatch(addDevice({ macAddress, apiKey }))
+            setMacAddress('')
+            setApiKey('')
         }
     }
 
@@ -153,7 +156,7 @@ const Settings = () => {
         return (
             <SubContainer>
                 <Title>Add a PWS</Title>
-                <Form onSubmit={handleSearch}>
+                {/* <Form onSubmit={handleSearch}> */}
                     <InputGroup>
                         <Label>MAC Address:</Label>
                         <StyledInput value={macAddress} onChange={handleMacAddress} />
@@ -162,8 +165,8 @@ const Settings = () => {
                         <Label>API Key:</Label>
                         <StyledInput value={apiKey} onChange={handleApiKey} />
                     </InputGroup>
-                    <Submit type="submit" />
-                </Form>
+                    <Submit onClick={handleSearch} >Submit</Submit>
+                    {/* </Form> */}
             </SubContainer>
         )
     }

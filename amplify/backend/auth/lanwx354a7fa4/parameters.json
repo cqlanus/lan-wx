@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "lanwx13a030ba_identitypool_13a030ba",
+    "identityPoolName": "lanwx354a7fa4_identitypool_354a7fa4",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "lanwx13a030ba",
-    "userPoolName": "lanwx13a030ba_userpool_13a030ba",
+    "resourceNameTruncated": "lanwx354a7fa4",
+    "userPoolName": "lanwx354a7fa4_userpool_354a7fa4",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "lanwx113a030ba_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "lanwx3354a7fa4_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "13a030ba",
-    "resourceName": "lanwx13a030ba",
+    "sharedId": "354a7fa4",
+    "resourceName": "lanwx354a7fa4",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,7 +46,9 @@
         ]
     },
     "useDefault": "default",
+    "usernameAttributes": [
+        "email"
+    ],
     "userPoolGroupList": [],
-    "dependsOn": [],
-    "hostedUI": true
+    "dependsOn": []
 }

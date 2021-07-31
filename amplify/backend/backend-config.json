@@ -1,16 +1,10 @@
 {
-    "hosting": {
-        "amplifyhosting": {
-            "service": "amplifyhosting",
-            "type": "cicd"
-        }
-    },
-    "auth": {
-        "lanwx13a030ba": {
-            "service": "Cognito",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [],
-            "customAuth": false
-        }
-    }
+	"auth": {
+		"lanwx354a7fa4": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
 }
