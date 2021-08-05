@@ -147,6 +147,7 @@ const Current = () => {
         <div>
             {cloudLayers.reduce((acc: string, layer: CloudLayer) => {
                 const { value } = layer.base
+                if (!value) { return acc }
                 const ft = convertUnits('m', 'ft', value).toNumber()
                 const rounded = (Math.round(ft / 100) * 100) / 100
                 const padded = rounded.toString().length === 3 ? rounded : `0${rounded}`
