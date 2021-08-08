@@ -6,6 +6,14 @@ export type NWSStation = {
     name: string,
 }
 
+export type CloudLayer = {
+    amount: "FEW" | "SCT" | "BKN" | "CLR" | "OVC",
+    base: {
+        unitCode: string,
+        value: number | null
+    }
+}
+
 export type CurrentWeatherResponse = {
     elevation: NWSValue,
     temperature: NWSValue,
@@ -17,7 +25,7 @@ export type CurrentWeatherResponse = {
     relativeHumidity: NWSValue,
     station: NWSStation,
     textDescription: string,
-    cloudLayers: any,
+    cloudLayers: CloudLayer[],
     icon: string,
     timestamp: string,
 }

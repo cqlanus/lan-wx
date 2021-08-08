@@ -10,6 +10,7 @@ import type {
     MoonSummary,
     MoonPhaseData,
     DayLength,
+    CurrentAstroConditions,
 } from '../../types/astronomy'
 
 interface AstronomyState {
@@ -18,9 +19,9 @@ interface AstronomyState {
     sun?: SunSummary,
     moon?: MoonSummary,
     moonPhase?: MoonPhaseData,
-    dayLengthTimeseries?: DayLength[]
-    positionTimeseries?: BodyPositions[]
-
+    dayLengthTimeseries?: DayLength[],
+    positionTimeseries?: BodyPositions[],
+    currentConditions?: CurrentAstroConditions,
 }
 
 const initialState: AstronomyState = {
@@ -31,6 +32,7 @@ const initialState: AstronomyState = {
     moonPhase: undefined,
     dayLengthTimeseries: undefined,
     positionTimeseries: undefined,
+    currentConditions: undefined,
 }
 
 export const astronomy = createSlice({
@@ -58,6 +60,9 @@ export const astronomy = createSlice({
         setPositionTimeseries: (state, action: PayloadAction<BodyPositions[] | undefined>) => {
             state.positionTimeseries = action.payload
         },
+        setCurrentAstroConditions: (state, action: PayloadAction<CurrentAstroConditions | undefined>) => {
+            state.currentConditions = action.payload
+        }
     }
 })
 
@@ -69,6 +74,7 @@ export const {
     setMoonPhases,
     setDaylengthTimeseries,
     setPositionTimeseries,
+    setCurrentAstroConditions,
 } = astronomy.actions
 
 export const getTimes = (): AppThunk => async (dispatch, getState) => {
@@ -153,6 +159,19 @@ export const getPositionTimeseries = (): AppThunk => async (dispatch, getState) 
         console.log({ err })
         dispatch(setPositionTimeseries(undefined))
     }
+}
+
+export const getCurrentAstroConditions = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const conditions = await api.astronomy.getCurrentAstroConditions(coords)
+        dispatch(setCurrentAstroConditions(conditions))
+        
+    } catch (err) {
+        console.log({ err })
+        dispatch(setCurrentAstroConditions(undefined))
+    } 
 }
 
 export default astronomy.reducer

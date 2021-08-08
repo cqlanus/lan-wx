@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
-import { DailyForecast, CurrentWeatherResponse, CurrentWeather } from '../../types/weather'
+import { DailyForecast, CurrentWeatherResponse, CurrentWeather, CloudLayer, NWSValue } from '../../types/weather'
 import { Device } from '../../types/pws'
 import { CH_TYPES } from '../../types/chart'
 import { Discussion } from '../../types/forecast'
@@ -11,6 +11,8 @@ import Emoji from '../../data/emoji'
 import { normalizeForecastUnits, parseDeviceWeather } from '../../utils/weather'
 import { parseAstronomyPosition } from '../../utils/astronomy'
 import { differenceInMilliseconds } from 'date-fns'
+import { AQI } from '../../types/astronomy'
+import { convertUnits } from '../../utils/units'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -424,3 +426,113 @@ export const selectPositionTimeseries = createSelector(
         return positionTimeseries.map(({ bodies }) => bodies)
     }
 )
+
+/*
+ * evaluation of current conditions
+ * 1. clouds:
+ *   - excellent (3): all CLR
+ *   - good (2): all CLR | FEW
+ *   - ok (1): all CLR | FEW | SCT
+ *   - not good (0): any BKN
+ * 2. aqi:
+ *   - excellent (3): <10
+ *   - good (2): <20
+ *   - ok (1): <30
+ *   - not good (0): 30+
+ * 3. darkness:
+ *   - excellent (2): isNight === true
+ *   - good (1): isNauticalTwilight === true
+ *   - not good (0): isNauticalTwilight === false && isNight === false
+ * 4. dewpoint
+ *   - excellent (3): dp < 50
+ *   - good (2): dp < 60
+ *   - ok (1): dp < 70
+ *   - not good (1): dp > 70
+ * 5. moonPosition
+ *   - excellent (3): alt <= 0
+ *   - good (2): alt < 20
+ *   - ok (1): alt < 30
+ *   - not good (0): alt > 30
+ * 6. moonPhase
+ *   - excellent (3): < 10%
+ *   - good (2): < 25%
+ *   - ok (1): < 40%
+ *   - not good (0) > 40%
+ * 
+ * 
+ */
+type Ratings = { excellent: boolean, good: boolean, ok?: boolean, notGood: boolean }
+const getRatings = (ratings: Ratings) => {
+    return Object.entries(ratings).find(entry => {
+        const [ _, value ] = entry
+        return value == true
+    })
+}
+const evalDewpoint = ({ value }: NWSValue) => {
+    const degF = convertUnits('degC', 'degF', +value)
+    const dewpoint = degF.toNumber('degF')
+    const excellent = dewpoint < 50
+    const good = dewpoint < 60
+    const ok = dewpoint < 70
+    const notGood = dewpoint >= 70
+    const ratings = { excellent, good, ok, notGood }
+    return getRatings(ratings)
+}
+const evalMoonPosition = ({ alt }: { alt: number }) => {
+    const excellent = alt <= 0
+    const good = alt < 20
+    const ok = alt < 30
+    const notGood = alt >= 30
+    const ratings = { excellent, good, ok, notGood }
+    return getRatings(ratings)
+}
+
+const evalDarkness = (darkness: { isNauticalTwilight: boolean, isNight: boolean }) => {
+    const excellent = darkness.isNight
+    const good = darkness.isNauticalTwilight
+    const notGood = !(excellent || good)
+    const ratings = { excellent, good, notGood }
+    return getRatings(ratings)
+}
+const evalCloudLayers = (layers: CloudLayer[]) => {
+    const excellent = layers.every(layer => layer.amount === "CLR")
+    const good = layers.every(layer => ['CLR', 'FEW'].includes(layer.amount))
+    const ok = layers.every(layer => ['CLR', 'FEW', 'SCT'].includes(layer.amount))
+    const notGood = layers.some(layer => ['BKN'].includes(layer.amount))
+    const ratings = { excellent, good, ok, notGood }
+    return getRatings(ratings)
+}
+const evalAqi = (data: AQI) => {
+    const aqi = parseFloat(data.value)
+    const excellent = aqi < 10
+    const good = aqi < 20
+    const ok = aqi <= 30
+    const notGood = aqi > 30
+
+    const ratings = { excellent, good, ok, notGood }
+    return getRatings(ratings)
+}
+
+type EvalFn = (arg: any) => any
+const CONDITION_EVALUATIONS: { [key: string]: EvalFn} = {
+    cloudLayers: evalCloudLayers,
+    aqi: evalAqi,
+    darkness: evalDarkness,
+    moonPosition: evalMoonPosition,
+    dewpoint: evalDewpoint,
+}
+
+export const selectCurrentAstroConditions = createSelector(
+    selectAstronomySlice,
+    ({ currentConditions }) => {
+        if (!currentConditions) { return }
+        return Object.entries(currentConditions).reduce((acc, entry) => {
+            const [ key, value ] = entry;
+            const evalFn = CONDITION_EVALUATIONS[key]
+            const ratings = evalFn ? evalFn(value) : null
+            return {
+                ...acc,
+                [key]: { ratings, value }
+            }
+        }, {})
+    })

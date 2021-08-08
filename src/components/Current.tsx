@@ -11,7 +11,8 @@ import { selectCoords, selectCurrentWeather, selectIsStationFavorite, selectAuth
 
 import getTheme from '../themes'
 import emoji from '../data/emoji'
-import { getDisplayUnit, convertUnits } from '../utils/units'
+import { getDisplayUnit, } from '../utils/units'
+import { formatCloudLayers } from '../utils/weather'
 
 const Container = styled(Card)`
     display: flex;
@@ -138,24 +139,10 @@ const Current = () => {
             }
         </div>
     ))
-    type CloudLayer = {
-        base: { value: number, unitCode: string },
-        amount: "SCT" | "BKN" | "CLR" | "FEW"
-    }
 
     const renderClouds = () => (
         <div>
-            {cloudLayers.reduce((acc: string, layer: CloudLayer) => {
-                const { value } = layer.base
-                if (!value) { return acc }
-                const ft = convertUnits('m', 'ft', value).toNumber()
-                const rounded = (Math.round(ft / 100) * 100) / 100
-                const padded = rounded.toString().length === 3 ? rounded : `0${rounded}`
-                const display = `${layer.amount}${padded}`
-                return acc
-                    ? `${acc} | ${display}`
-                    : `${emoji.weather.cloudy}: ${display}`
-            }, '')}
+            {formatCloudLayers(cloudLayers)}
         </div>
     )
 

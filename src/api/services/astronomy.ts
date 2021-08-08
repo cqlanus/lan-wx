@@ -8,6 +8,7 @@ import {
     MoonSummary,
     MoonPhaseData,
     DayLength,
+    CurrentAstroConditions,
 } from '../../types/astronomy'
 import { addDays } from 'date-fns'
 
@@ -58,4 +59,10 @@ export default class Astronomy {
         const url = `${this.BASE}/astronomy/interval/positions?lat=${latitude}&lon=${longitude}&start=${start}&end=${end}`
         return await request(url)
     }
+
+    getCurrentAstroConditions = async ({ latitude, longitude }: Coords): Promise<CurrentAstroConditions> => {
+        const url = `${this.BASE}/astronomy/current?lat=${latitude}&lon=${longitude}`
+        return await request(url)
+    }
+
 }

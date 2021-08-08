@@ -54,9 +54,11 @@ const BodiesOptions = () => {
 
 export type AST_OPTIONS = {
     summary: any,
-    bodies: any
+    bodies: any,
+    conditions: any,
 }
 export const ASTRO_OPTIONS: AST_OPTIONS = {
     summary: AstroSummaryOptions,
     bodies: BodiesOptions,
+    conditions: null,
 }

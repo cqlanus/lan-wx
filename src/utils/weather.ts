@@ -1,6 +1,7 @@
 import { has, split } from 'ramda'
 import { convertUnits } from './units'
-import type { NWSValue, CurrentWeatherResponse, DeviceWeather } from '../types/weather'
+import type { NWSValue, CurrentWeatherResponse, DeviceWeather, CloudLayer } from '../types/weather'
+import emoji from '../data/emoji'
 
 type UNIT_STRUCTURE = { [key: string]: [string, string] | [string] }
 const DEFAULT_UNITS: UNIT_STRUCTURE = {
@@ -15,10 +16,10 @@ const DEFAULT_UNITS: UNIT_STRUCTURE = {
     visibility: ['mi', 'm'],
     windChill: ['degF', 'degC'],
     heatIndex: ['degF', 'degC'],
-    precipitationLastHour: [ 'in', 'm' ],
-    precipitationLast3Hours: [ 'in', 'm' ],
-    precipitationLast6Hours: [ 'in', 'm' ],
-    quantitativePrecipitation: [ 'in', 'mm' ],
+    precipitationLastHour: ['in', 'm'],
+    precipitationLast3Hours: ['in', 'm'],
+    precipitationLast6Hours: ['in', 'm'],
+    quantitativePrecipitation: ['in', 'mm'],
 }
 
 const DEFAULT_DEVICE_UNITS: UNIT_STRUCTURE = {
@@ -28,8 +29,8 @@ const DEFAULT_DEVICE_UNITS: UNIT_STRUCTURE = {
     tempf: ['degF', 'degF'],
     feelsLike: ['degF', 'degF'],
     feelsLikein: ['degF', 'degF'],
-    humidity: [ 'percent' ],
-    humidityin: [ 'percent' ],
+    humidity: ['percent'],
+    humidityin: ['percent'],
     winddir: ['deg', 'deg'],
     windgustmph: ['mi/h', 'mi/h'],
     windspeedmph: ['mi/h', 'mi/h'],
@@ -107,3 +108,17 @@ export const parseDeviceWeather = (deviceWeather: DeviceWeather) => {
     }, {})
     return parsed
 }
+
+export const formatCloudLayers = (cloudLayers: CloudLayer[], showEmoji: boolean = true) => cloudLayers.reduce((acc: string, layer: CloudLayer) => {
+    const { value } = layer.base
+    if (!value) { return acc }
+    const ft = convertUnits('m', 'ft', value).toNumber('ft')
+    const rounded = (Math.round(ft / 100) * 100) / 100
+    const padded = rounded.toString().length === 3 ? rounded : `0${rounded}`
+    const display = `${layer.amount}${padded}`
+    return acc
+        ? `${acc} | ${display}`
+        : showEmoji
+            ? `${emoji.weather.cloudy}: ${display}`
+            : `${display}`
+}, '')

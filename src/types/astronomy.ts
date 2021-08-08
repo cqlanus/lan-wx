@@ -1,3 +1,5 @@
+import { CloudLayer, NWSValue } from "./weather"
+
 export type SetRise = {
     set: string,
     rise: string,
@@ -92,4 +94,25 @@ export type MoonPhaseData = {
 export type DayLength = {
     date: string,
     times: AstroTimes,
+}
+
+export type AQI = {
+    date: string,
+    time: string,
+    aqsid: string,
+    sitename: string,
+    gmtoffset: string,
+    param: string,
+    units: string,
+    value: string,
+    source: string
+}
+
+export type CurrentAstroConditions = {
+    cloudLayers: CloudLayer[],
+    aqi: AQI,
+    dewpoint: NWSValue,
+    isNauticalTwilight: boolean,
+    isNight: boolean,
+    moonPosition: BodyPosition
 }
