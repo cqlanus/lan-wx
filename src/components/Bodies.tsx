@@ -64,7 +64,7 @@ const Bodies = () => {
     return (
         <Container>
             <Switch>
-                <Route exact path="/astronomy/bodies"><Redirect to="/astronomy/bodies/times" /></Route>
+                <Route exact path="/astronomy/bodies"><Redirect to="/astronomy/bodies/positions" /></Route>
                 <Route path="/astronomy/bodies/positions"><AllPositions /></Route>
                 <Route path="/astronomy/bodies/times"><AllTimes /></Route>
             </Switch>

@@ -1,4 +1,4 @@
-export default {
+const light = {
     body: '#fff',
     text: '#000',
     fg: '#000',
@@ -7,3 +7,5 @@ export default {
     map: "mapbox://styles/mapbox/light-v10",
     altRow: '#f2f2f2',
 }
+
+export default light

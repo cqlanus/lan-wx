@@ -67,7 +67,7 @@ const AllPositions = () => {
     const positions = useSelector(selectPositions)
     useEffect(() => {
         dispatch(getPositions(time))
-    }, [dispatch, coords])
+    }, [dispatch, coords, time])
 
     const handleSetTime = (e: any) => {
         const { value } = e.target

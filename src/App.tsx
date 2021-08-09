@@ -39,60 +39,60 @@ function App() {
     const dispatch = useDispatch()
     const themeStr = useSelector(selectTheme)
     const theme = themeStr === 'light' ? light : dark
-    const setUserTheme = () => {
-        if ( window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ) {
-            dispatch(setTheme('light'))
-        }
-    }
     useEffect(() => {
+        const setUserTheme = () => {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                dispatch(setTheme('light'))
+            }
+        }
         setUserTheme()
         dispatch(getCurrentLocation())
         dispatch(getAuthUser())
-      Hub.listen('auth', (data: any) => {
-        const { payload } = data
-        if (payload.event === 'signIn') {
-          dispatch(getAuthUser())
-        }
-      })
+        Hub.listen('auth', (data: any) => {
+            const { payload } = data
+            if (payload.event === 'signIn') {
+                dispatch(getAuthUser())
+            }
+        })
     }, [dispatch])
 
-  return (
-      <ThemeProvider theme={theme}>
-          <GlobalStyles/>
-          <div className="App">
-              <Router>
-                  <NavDrawer/>
-                  <LocationSearch/>
-                  <Switch>
-                      <Route exact path="/"><Redirect to="/home/current"/></Route>
-                      <Route exact path="/home/:type"><Home/></Route>
+    return (
+        <ThemeProvider theme={theme}>
+            <GlobalStyles />
+            <div className="App">
+                <Router>
+                    <NavDrawer />
+                    <LocationSearch />
+                    <Switch>
+                        <Route exact path="/"><Redirect to="/home/current" /></Route>
+                        <Route exact path="/home/:type"><Home /></Route>
 
-                      <Route exact path="/charts"><Redirect to="/charts/upperair"/></Route>
-                      <Route path="/charts/:chartType"><Charts/></Route>
+                        <Route exact path="/charts"><Redirect to="/charts/upperair" /></Route>
+                        <Route path="/charts/:chartType"><Charts /></Route>
 
-                      <Route exact path="/forecast"><Redirect to="/forecast/discussion"/></Route>
-                      <Route path="/forecast/:forecastType"><Forecast/></Route>
+                        <Route exact path="/forecast"><Redirect to="/forecast/discussion" /></Route>
+                        <Route path="/forecast/:forecastType"><Forecast /></Route>
 
-                      <Route exact path="/climate"><Redirect to="/climate/norms"/></Route>
-                      <Route path="/climate/:climateType"><Climate/></Route>
+                        <Route exact path="/climate"><Redirect to="/climate/norms" /></Route>
+                        <Route path="/climate/:climateType"><Climate /></Route>
 
-                      <Route exact path="/map"><MapScreen /></Route>
-                      <Route exact path="/settings"><Settings /></Route>
+                        <Route exact path="/map"><MapScreen /></Route>
+                        <Route exact path="/settings"><Settings /></Route>
 
-                      <Route exact path="/pws"><Redirect to="/pws/current"/></Route>
-                      <Route path="/pws/:pwsType"><PWS /></Route>
+                        <Route exact path="/pws"><Redirect to="/pws/current" /></Route>
+                        <Route path="/pws/:pwsType"><PWS /></Route>
 
-                      <Route exact path="/model"><Redirect to="/model/gfs"/></Route>
-                      <Route path="/model/:modelType"><Model /></Route>
+                        <Route exact path="/model"><Redirect to="/model/gfs" /></Route>
+                        <Route path="/model/:modelType"><Model /></Route>
 
-                      <Route exact path="/astronomy"><Redirect to="/astronomy/summary/moon"/></Route>
-                      <Route path="/astronomy/:astroType"><Astronomy /></Route>
-                  </Switch>
-              </Router>
-          </div>    
-      </ThemeProvider>
-      
-  );
+                        <Route exact path="/astronomy"><Redirect to="/astronomy/summary/moon" /></Route>
+                        <Route path="/astronomy/:astroType"><Astronomy /></Route>
+                    </Switch>
+                </Router>
+            </div>
+        </ThemeProvider>
+
+    );
 }
 
 export default App

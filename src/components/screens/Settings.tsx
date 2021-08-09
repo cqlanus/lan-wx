@@ -26,11 +26,6 @@ const SubContainer = styled.div`
     padding: 0.5rem;
 `
 
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-`
-
 const InputGroup = styled.div`
     flex: 1;
     display: flex;
@@ -156,17 +151,15 @@ const Settings = () => {
         return (
             <SubContainer>
                 <Title>Add a PWS</Title>
-                {/* <Form onSubmit={handleSearch}> */}
-                    <InputGroup>
-                        <Label>MAC Address:</Label>
-                        <StyledInput value={macAddress} onChange={handleMacAddress} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label>API Key:</Label>
-                        <StyledInput value={apiKey} onChange={handleApiKey} />
-                    </InputGroup>
-                    <Submit onClick={handleSearch} >Submit</Submit>
-                    {/* </Form> */}
+                <InputGroup>
+                    <Label>MAC Address:</Label>
+                    <StyledInput value={macAddress} onChange={handleMacAddress} />
+                </InputGroup>
+                <InputGroup>
+                    <Label>API Key:</Label>
+                    <StyledInput value={apiKey} onChange={handleApiKey} />
+                </InputGroup>
+                <Submit onClick={handleSearch} >Submit</Submit>
             </SubContainer>
         )
     }

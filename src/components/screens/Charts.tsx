@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -43,7 +43,7 @@ const ChartImage = styled.img`
     max-width: 1024px;
     background-color: white;
 `
-const Charts = (p: any) => {
+const Charts = () => {
     const params: { chartType: keyof CH_TYPES } = useParams()
     const { chartType } = params
 
@@ -55,11 +55,13 @@ const Charts = (p: any) => {
 
     const coords = useSelector(selectCoords)
 
-    const OPTIONS_STATE: any = {
-        upperair: upperAirOptions,
-        skewt: skewTOptions,
-        surface: surfaceOptions,
-    }
+    const OPTIONS_STATE: any = useMemo(() => {
+        return {
+            upperair: upperAirOptions,
+            skewt: skewTOptions,
+            surface: surfaceOptions,
+        }
+    }, [skewTOptions, upperAirOptions, surfaceOptions]) 
     const OPTIONS_SELECT: any = {
         upperair: setUpperAirOptions,
         skewt: setSkewTOptions,

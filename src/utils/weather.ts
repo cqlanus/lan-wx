@@ -65,8 +65,7 @@ const normalizeUnits = (value: string | number, key: string, units: UNIT_STRUCTU
 }
 
 export const parseValue = ({ value, unitCode }: NWSValue, key: string, units: UNIT_STRUCTURE) => {
-    // tslint:disable-next-line no-unused-vars
-    const [_, unit] = split(':', unitCode)
+    const unit = split(':', unitCode)[1]
     const convertableValue = units[key]
     if (convertableValue && value) {
         const [toUnit, fromUnit] = convertableValue

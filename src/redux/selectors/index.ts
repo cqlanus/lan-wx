@@ -464,8 +464,8 @@ export const selectPositionTimeseries = createSelector(
 type Ratings = { excellent: boolean, good: boolean, ok?: boolean, notGood: boolean }
 const getRatings = (ratings: Ratings) => {
     return Object.entries(ratings).find(entry => {
-        const [ _, value ] = entry
-        return value == true
+        const value = entry[1]
+        return value === true
     })
 }
 const evalDewpoint = ({ value }: NWSValue) => {

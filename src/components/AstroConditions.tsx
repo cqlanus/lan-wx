@@ -25,7 +25,7 @@ const GET_VAL_MAPPING: { [key: string]: any } = {
 
 }
 
-type Condition = { title: string, value: any }
+type Condition = { title: string, value: any,  ratings: [string, number] }
 const getValue = (condition: Condition) => {
     const { title, value } = condition
     const getValFn = GET_VAL_MAPPING[title]
@@ -39,10 +39,27 @@ const RATING_VALUES: { [key: string]: number } = {
     notGood: 0,
 }
 
+const DISPLAY_TITLE: { [key: string]: string } = {
+    cloudLayers: 'Cloud Layers',
+    dewpoint: 'Dewpoint',
+    aqi: 'AQI',
+    darkness: 'Darkness',
+    moonPosition: 'Moon Position',
+    moonPhase: 'Moon Phase',
+}
+
+const DISPLAY_RATING: { [key: string]: string } = {
+    excellent: 'Excellent',
+    good: 'Good',
+    ok: 'OK',
+    notGood: 'Not Good',
+}
+
 const conditionStructure = [
     {
         Header: 'Category',
-        accessor: 'title',
+        accessor: ({ title }: Condition) => DISPLAY_TITLE[title] || title,
+        id: 'title',
     },
     {
         Header: 'Value',
@@ -51,7 +68,7 @@ const conditionStructure = [
     },
     {
         Header: 'Rating',
-        accessor: ({ ratings }: { ratings: [string, number] }) => `${ratings[0]} (${RATING_VALUES[ratings[0]]})`,
+        accessor: ({ ratings }: Condition) => `${DISPLAY_RATING[ratings[0]] || ratings[0]} (${RATING_VALUES[ratings[0]]})`,
         id: 'rating'
     }
 ]

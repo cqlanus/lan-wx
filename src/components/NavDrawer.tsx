@@ -49,6 +49,7 @@ const linkStyles = css`
     color: ${() => getTheme().fg};
     text-decoration: none;
     margin-top: 1rem;
+    font-size: 1.2rem;
     border-bottom: 1px dashed ${() => getTheme().fg};
 
     &:hover {

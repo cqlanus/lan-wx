@@ -92,7 +92,7 @@ const Options = ({ model }: OptionsProps) => {
             const hour = formatForecastHour(forecastHour)
             dispatch(getModelGuidance(model, product, hour))
         }
-    }, [product, model, forecastHour])
+    }, [product, model, forecastHour, dispatch])
 
     if (!modelObj) { return null }
 

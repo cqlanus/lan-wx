@@ -1,4 +1,4 @@
-import { utcToZonedTime, format } from 'date-fns-tz'
+import { format } from 'date-fns-tz'
 import { getConfigVar, request } from '../../utils'
 import type { Coords } from '../../types/location'
 import {
