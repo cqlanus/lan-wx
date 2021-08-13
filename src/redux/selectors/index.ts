@@ -498,7 +498,7 @@ const evalCloudLayers = (layers: CloudLayer[]) => {
     const excellent = layers.every(layer => layer.amount === "CLR")
     const good = layers.every(layer => ['CLR', 'FEW'].includes(layer.amount))
     const ok = layers.every(layer => ['CLR', 'FEW', 'SCT'].includes(layer.amount))
-    const notGood = layers.some(layer => ['BKN'].includes(layer.amount))
+    const notGood = layers.some(layer => ['BKN', 'OVC'].includes(layer.amount))
     const ratings = { excellent, good, ok, notGood }
     return getRatings(ratings)
 }
@@ -514,7 +514,7 @@ const evalAqi = (data: AQI) => {
 }
 
 type EvalFn = (arg: any) => any
-const CONDITION_EVALUATIONS: { [key: string]: EvalFn} = {
+const CONDITION_EVALUATIONS: { [key: string]: EvalFn } = {
     cloudLayers: evalCloudLayers,
     aqi: evalAqi,
     darkness: evalDarkness,
@@ -527,7 +527,7 @@ export const selectCurrentAstroConditions = createSelector(
     ({ currentConditions }) => {
         if (!currentConditions) { return }
         return Object.entries(currentConditions).reduce((acc, entry) => {
-            const [ key, value ] = entry;
+            const [key, value] = entry;
             const evalFn = CONDITION_EVALUATIONS[key]
             const ratings = evalFn ? evalFn(value) : null
             return {

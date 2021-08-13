@@ -68,7 +68,7 @@ const conditionStructure = [
     },
     {
         Header: 'Rating',
-        accessor: ({ ratings }: Condition) => `${DISPLAY_RATING[ratings[0]] || ratings[0]} (${RATING_VALUES[ratings[0]]})`,
+        accessor: ({ ratings = ['', 0] }: Condition) => `${DISPLAY_RATING[ratings[0]] || ratings[0]} (${RATING_VALUES[ratings[0]]})`,
         id: 'rating'
     }
 ]
