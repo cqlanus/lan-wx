@@ -1,5 +1,13 @@
 import { createSelector } from '@reduxjs/toolkit'
 import moment from 'moment'
+import {
+    compose,
+    last,
+    pathOr,
+    split,
+    map,
+    prop,
+} from 'ramda'
 
 import { RootState } from '../store'
 import LAYERS from '../../data/layers'
@@ -13,6 +21,7 @@ import { parseAstronomyPosition } from '../../utils/astronomy'
 import { differenceInMilliseconds } from 'date-fns'
 import { AQI } from '../../types/astronomy'
 import { convertUnits } from '../../utils/units'
+import { weather } from '../slice/weather'
 
 // MAP
 export const selectLayerUrl = (state: RootState) => state.map.layerUrl
@@ -45,6 +54,22 @@ export const selectRecentTemps = createSelector(
             timestamp
         }))
     }
+)
+export const selectZoneId: any = createSelector(
+    [selectCurrentWeather],
+    (weather: CurrentWeather | undefined) => {
+        if (!weather) { return '' }
+        return compose(
+            last,
+            split('/'),
+            pathOr('', ['station', 'forecast']),
+        )(weather)
+
+    }
+)
+export const selectAlerts = compose(
+    map(prop('properties')),
+    pathOr([], ['weather', 'alerts',]),
 )
 
 // CHARTS

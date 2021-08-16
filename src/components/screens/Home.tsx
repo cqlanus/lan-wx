@@ -5,6 +5,7 @@ import { useParams, Route, Switch } from 'react-router'
 import BottomNav from '../BottomNav'
 import MapCard from '../MapCard'
 import Current from '../Current'
+import Alerts from '../Alerts'
 import ForecastCard from '../ForecastCard'
 import RecentWeather from '../RecentWeather'
 
@@ -24,6 +25,7 @@ const Home = () => {
         <Container>
             <Switch>
                 <Route exact path={'/home/current'}>
+                    <Alerts />
                     <Current />
                     <MapCard />
                     <ForecastCard />

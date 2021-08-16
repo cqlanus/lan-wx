@@ -2,11 +2,11 @@ import React, { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Link as L } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+import SlidingModal from './SlidingModal'
 import Button from './Button'
 
 import { selectHasDevices } from '../redux/selectors'
 import getTheme from '../themes'
-import emoji from '../data/emoji'
 
 const PAGES = {
     home: { path: '/', display: 'Home' },
@@ -18,32 +18,6 @@ const PAGES = {
     climate: { path: '/climate', display: 'Climate' },
     astronomy: { path: '/astronomy', display: 'Astronomy' },
 }
-
-const Trigger = styled(Button)`
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2;
-`
-
-type DrawerProps = { isOpen: boolean }
-const Drawer = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-    height: ${(p: DrawerProps) => p.isOpen ? '100vh' : '0'};
-    background-color: ${() => getTheme().bg};
-    width: 100vw;
-    transition: 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-left: 1rem;
-    z-index: 100;
-`
 
 const linkStyles = css`
     color: ${() => getTheme().fg};
@@ -61,22 +35,12 @@ const Link = styled(L)`
     ${linkStyles}
 `
 
-const Dismiss = styled.a`
-    ${linkStyles}
-    cursor: pointer;
-    position: absolute;
+const Trigger = styled(Button)`
+    width: 100%;
+    position: fixed;
     top: 0;
-    right: 2rem;
-    border-bottom: none;
-`
-
-const Settings = styled(Link)`
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 1rem;
-    border-bottom: none;
-    font-size: 1.3rem;
+    left: 0;
+    z-index: 2;
 `
 
 const NavDrawer = () => {
@@ -95,14 +59,12 @@ const NavDrawer = () => {
 
     return (
         <div>
-            <Trigger onClick={toggleOpen}>Menu</Trigger>
-            <Drawer isOpen={isOpen}>
-                <Dismiss onClick={toggleOpen}>✕</Dismiss>
-                {
-                    Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} to={p.path}>{p.display}</Link>)
-                }
-                <Settings onClick={toggleOpen} to="/settings">{ emoji.gear }</Settings>
-            </Drawer>
+            <SlidingModal
+                trigger={(onClick: any) => <Trigger onClick={onClick}>Menu</Trigger>}
+                showSettings
+                body={(toggleOpen: any) =>
+                    Object.entries(pages).map(([k, p]) => <Link key={k} onClick={toggleOpen} to={p.path}>{p.display}</Link>)}
+            />
         </div>
     )
 }

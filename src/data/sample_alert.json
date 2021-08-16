@@ -1,0 +1,136 @@
+[
+    {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.df906d4ef6780e88ad64a54755f6db5bc6edfc05.001.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+            "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.df906d4ef6780e88ad64a54755f6db5bc6edfc05.001.1",
+            "@type": "wx:Alert",
+            "id": "urn:oid:2.49.0.1.840.0.df906d4ef6780e88ad64a54755f6db5bc6edfc05.001.1",
+            "areaDesc": "Winnebago; Boone; McHenry; Lake; Ogle; Lee; De Kalb; Kane; DuPage; La Salle; Kendall; Grundy; Kankakee; Livingston; Iroquois; Ford; Northern Cook; Central Cook; Southern Cook; Northern Will; Southern Will; Eastern Will; Lake; Porter; Newton; Jasper; Benton",
+            "geocode": {
+                "SAME": [
+                    "017201",
+                    "017007",
+                    "017111",
+                    "017097",
+                    "017141",
+                    "017103",
+                    "017037",
+                    "017089",
+                    "017043",
+                    "017099",
+                    "017093",
+                    "017063",
+                    "017091",
+                    "017105",
+                    "017075",
+                    "017053",
+                    "017031",
+                    "017197",
+                    "018089",
+                    "018127",
+                    "018111",
+                    "018073",
+                    "018007"
+                ],
+                "UGC": [
+                    "ILZ003",
+                    "ILZ004",
+                    "ILZ005",
+                    "ILZ006",
+                    "ILZ008",
+                    "ILZ010",
+                    "ILZ011",
+                    "ILZ012",
+                    "ILZ013",
+                    "ILZ019",
+                    "ILZ020",
+                    "ILZ021",
+                    "ILZ023",
+                    "ILZ032",
+                    "ILZ033",
+                    "ILZ039",
+                    "ILZ103",
+                    "ILZ104",
+                    "ILZ105",
+                    "ILZ106",
+                    "ILZ107",
+                    "ILZ108",
+                    "INZ001",
+                    "INZ002",
+                    "INZ010",
+                    "INZ011",
+                    "INZ019"
+                ]
+            },
+            "affectedZones": [
+                "https://api.weather.gov/zones/forecast/ILZ003",
+                "https://api.weather.gov/zones/forecast/ILZ004",
+                "https://api.weather.gov/zones/forecast/ILZ005",
+                "https://api.weather.gov/zones/forecast/ILZ006",
+                "https://api.weather.gov/zones/forecast/ILZ008",
+                "https://api.weather.gov/zones/forecast/ILZ010",
+                "https://api.weather.gov/zones/forecast/ILZ011",
+                "https://api.weather.gov/zones/forecast/ILZ012",
+                "https://api.weather.gov/zones/forecast/ILZ013",
+                "https://api.weather.gov/zones/forecast/ILZ019",
+                "https://api.weather.gov/zones/forecast/ILZ020",
+                "https://api.weather.gov/zones/forecast/ILZ021",
+                "https://api.weather.gov/zones/forecast/ILZ023",
+                "https://api.weather.gov/zones/forecast/ILZ032",
+                "https://api.weather.gov/zones/forecast/ILZ033",
+                "https://api.weather.gov/zones/forecast/ILZ039",
+                "https://api.weather.gov/zones/forecast/ILZ103",
+                "https://api.weather.gov/zones/forecast/ILZ104",
+                "https://api.weather.gov/zones/forecast/ILZ105",
+                "https://api.weather.gov/zones/forecast/ILZ106",
+                "https://api.weather.gov/zones/forecast/ILZ107",
+                "https://api.weather.gov/zones/forecast/ILZ108",
+                "https://api.weather.gov/zones/forecast/INZ001",
+                "https://api.weather.gov/zones/forecast/INZ002",
+                "https://api.weather.gov/zones/forecast/INZ010",
+                "https://api.weather.gov/zones/forecast/INZ011",
+                "https://api.weather.gov/zones/forecast/INZ019"
+            ],
+            "references": [],
+            "sent": "2021-08-09T14:46:00-05:00",
+            "effective": "2021-08-09T14:46:00-05:00",
+            "onset": "2021-08-10T12:00:00-05:00",
+            "expires": "2021-08-10T00:15:00-05:00",
+            "ends": "2021-08-10T19:00:00-05:00",
+            "status": "Actual",
+            "messageType": "Alert",
+            "category": "Met",
+            "severity": "Moderate",
+            "certainty": "Likely",
+            "urgency": "Expected",
+            "event": "Heat Advisory",
+            "sender": "w-nws.webmaster@noaa.gov",
+            "senderName": "NWS Chicago IL",
+            "headline": "Heat Advisory issued August 9 at 2:46PM CDT until August 10 at 7:00PM CDT by NWS Chicago IL",
+            "description": "* WHAT...Heat index values 102 to 108 expected, highest south and\nwest of the Chicago urban corridor.\n\n* WHERE...North central Illinois, northeast Illinois, and\nnorthwest Indiana.\n\n* WHEN...From noon CDT /1 PM EDT/ to 7 PM CDT /8 PM EDT/ Tuesday.\n\n* IMPACTS...Hot temperatures and high humidity may cause heat\nillnesses to occur.",
+            "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out\nof the sun, and check up on relatives and neighbors. Young\nchildren and pets should never be left unattended in vehicles\nunder any circumstances.\n\nTake extra precautions if you work or spend time outside. When\npossible reschedule strenuous activities to early morning or\nevening. Know the signs and symptoms of heat exhaustion and heat\nstroke. Wear lightweight and loose fitting clothing when\npossible. To reduce risk during outdoor work, the Occupational\nSafety and Health Administration recommends scheduling frequent\nrest breaks in shaded or air conditioned environments. Anyone\novercome by heat should be moved to a cool and shaded location.\nHeat stroke is an emergency! Call 9 1 1.",
+            "response": "Execute",
+            "parameters": {
+                "PIL": [
+                    "LOTNPWLOT"
+                ],
+                "NWSheadline": [
+                    "HEAT ADVISORY IN EFFECT FROM NOON CDT /1 PM EDT/ TO 7 PM CDT /8 PM EDT/ TUESDAY"
+                ],
+                "BLOCKCHANNEL": [
+                    "EAS",
+                    "NWEM",
+                    "CMAS"
+                ],
+                "VTEC": [
+                    "/O.NEW.KLOT.HT.Y.0001.210810T1700Z-210811T0000Z/"
+                ],
+                "eventEndingTime": [
+                    "2021-08-11T00:00:00+00:00"
+                ]
+            }
+        }
+    }
+]

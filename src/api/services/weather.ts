@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { getConfigVar, request } from '../../utils'
 import { parseCurrentWeather } from '../../utils/weather'
+// import sample_alert from '../../data/sample_alert.json'
 import type { CurrentWeather } from '../../types/weather'
 import type { Coords } from '../../types/location'
 
@@ -56,6 +57,12 @@ export default class Weather {
     getModelGuidance = async (model: string, product: string, forecastHour: string) => {
         const currentTime = moment().format()
         const url = `${this.BASE}/charts/model/${model}/${forecastHour}/${product}?currentTime=${currentTime}`
+        return await request(url)
+    }
+
+    getAlerts = async (zoneId: string) => {
+        // return Promise.resolve(sample_alert)
+        const url = `${this.BASE}/alerts/${zoneId}`
         return await request(url)
     }
 }
