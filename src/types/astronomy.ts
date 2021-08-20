@@ -116,3 +116,17 @@ export type CurrentAstroConditions = {
     isNight: boolean,
     moonPosition: BodyPosition
 }
+
+export type AstroTimepoint = {
+    cloudcover: number,
+    seeing: number,
+    transparency: number,
+    lifted_index: number,
+    date: Date,
+    timepoint: number,
+}
+
+export type AstroForecast = {
+    date: Date,
+    dataseries: AstroTimepoint[]
+}

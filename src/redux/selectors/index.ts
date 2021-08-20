@@ -561,3 +561,8 @@ export const selectCurrentAstroConditions = createSelector(
             }
         }, {})
     })
+
+export const selectAstroForecast = createSelector(
+    selectAstronomySlice,
+    ({ forecast }) => forecast
+)

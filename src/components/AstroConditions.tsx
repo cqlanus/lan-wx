@@ -1,14 +1,16 @@
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { format } from 'date-fns'
 
-import { selectCoords, selectCurrentAstroConditions } from '../redux/selectors'
-import { getCurrentAstroConditions } from '../redux/slice/astronomy'
+import { selectCoords, selectCurrentAstroConditions, selectAstroForecast } from '../redux/selectors'
+import { getCurrentAstroConditions, getAstroForecast } from '../redux/slice/astronomy'
 
 import Table from './Table'
 import Container from './Container'
 import { convertUnits } from '../utils/units'
 import { formatCloudLayers } from '../utils/weather'
 import { CloudLayer } from '../types/weather'
+import type { AstroTimepoint } from '../types/astronomy'
 
 const GET_VAL_MAPPING: { [key: string]: any } = {
     dewpoint: ({ value }: any) => {
@@ -20,12 +22,12 @@ const GET_VAL_MAPPING: { [key: string]: any } = {
     aqi: ({ value, units }: { value: string, units: string }) => `${value} ${units.toLowerCase()}`,
     darkness: ({ isNight, isNauticalTwilight }: { isNight: boolean, isNauticalTwilight: boolean }) =>
         isNight ? 'night'
-        : isNauticalTwilight ? 'twilight'
-        : 'light'
+            : isNauticalTwilight ? 'twilight'
+                : 'light'
 
 }
 
-type Condition = { title: string, value: any,  ratings: [string, number] }
+type Condition = { title: string, value: any, ratings: [string, number] }
 const getValue = (condition: Condition) => {
     const { title, value } = condition
     const getValFn = GET_VAL_MAPPING[title]
@@ -73,12 +75,34 @@ const conditionStructure = [
     }
 ]
 
+const forecastStructure = [
+    {
+        Header: 'Date',
+        accessor: ({ date }: AstroTimepoint) => format(new Date(date), 'MM:dd HH:00'),
+        id: 'date',
+    },
+    {
+        Header: 'Clouds',
+        accessor: 'cloudcover'
+    },
+    {
+        Header: 'Transparency',
+        accessor: 'transparency',
+    },
+    {
+        Header: 'Seeing',
+        accessor: 'seeing',
+    }
+]
+
 const AstroConditions = () => {
     const dispatch = useDispatch()
     const coords = useSelector(selectCoords)
     const conditions = useSelector(selectCurrentAstroConditions)
+    const forecast = useSelector(selectAstroForecast)
     useEffect(() => {
         dispatch(getCurrentAstroConditions())
+        dispatch(getAstroForecast())
     }, [dispatch, coords])
 
     const data = useMemo(() => {
@@ -89,12 +113,26 @@ const AstroConditions = () => {
         }, [])
     }, [conditions])
 
-    if (!coords || !conditions) { return null }
+    const forecastData = useMemo(() => forecast && forecast.dataseries, [forecast])
+    if (!coords) { return null }
 
     return (
         <Container>
-            <h3>Astro Conditions</h3>
-            <Table columns={conditionStructure} data={data} />
+            {
+                conditions && (
+                    <>
+                        <h3>Astro Conditions</h3>
+                        <Table columns={conditionStructure} data={data} />
+                    </>
+                )
+            }
+            {forecast && (
+                <>
+                    <h3>Astro Forecast</h3>
+                    <Table columns={forecastStructure} data={forecastData} />
+                </>
+
+            )}
         </Container>
     )
 }

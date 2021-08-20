@@ -11,6 +11,7 @@ import type {
     MoonPhaseData,
     DayLength,
     CurrentAstroConditions,
+    AstroForecast,
 } from '../../types/astronomy'
 
 interface AstronomyState {
@@ -22,6 +23,7 @@ interface AstronomyState {
     dayLengthTimeseries?: DayLength[],
     positionTimeseries?: BodyPositions[],
     currentConditions?: CurrentAstroConditions,
+    forecast?: AstroForecast,
 }
 
 const initialState: AstronomyState = {
@@ -33,6 +35,7 @@ const initialState: AstronomyState = {
     dayLengthTimeseries: undefined,
     positionTimeseries: undefined,
     currentConditions: undefined,
+    forecast: undefined,
 }
 
 export const astronomy = createSlice({
@@ -62,6 +65,9 @@ export const astronomy = createSlice({
         },
         setCurrentAstroConditions: (state, action: PayloadAction<CurrentAstroConditions | undefined>) => {
             state.currentConditions = action.payload
+        },
+        setAstroForecast: (state, action: PayloadAction<AstroForecast | undefined>) => {
+            state.forecast = action.payload
         }
     }
 })
@@ -75,6 +81,7 @@ export const {
     setDaylengthTimeseries,
     setPositionTimeseries,
     setCurrentAstroConditions,
+    setAstroForecast,
 } = astronomy.actions
 
 export const getTimes = (): AppThunk => async (dispatch, getState) => {
@@ -171,6 +178,19 @@ export const getCurrentAstroConditions = (): AppThunk => async (dispatch, getSta
     } catch (err) {
         console.log({ err })
         dispatch(setCurrentAstroConditions(undefined))
+    } 
+}
+
+export const getAstroForecast = (): AppThunk => async (dispatch, getState) => {
+    try {
+        const coords = selectCoords(getState())
+        if (!coords) { return }
+        const forecast = await api.astronomy.getAstroForecast(coords)
+        dispatch(setAstroForecast(forecast))
+        
+    } catch (err) {
+        console.log({ err })
+        dispatch(setAstroForecast(undefined))
     } 
 }
 
